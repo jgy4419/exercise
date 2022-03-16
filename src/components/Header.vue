@@ -1,7 +1,9 @@
 <template>
   <header>
     <nav>
-      <img src="" alt="로고">
+      <router-link to="/">
+        <img src="" alt="로고" class="logo">
+      </router-link>
       <router-link v-for="url, i in url" :key="i" :to="url">
         <button>{{login[i]}}</button>
       </router-link>
@@ -41,6 +43,10 @@ export default {
       border-radius: 10px;
       border: 3px solid #fff;
       font-size: 18px;
+      cursor: pointer;
+    }
+    .logo{
+      cursor: pointer;
     }
   }
 </style>
