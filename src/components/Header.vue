@@ -1,12 +1,14 @@
 <template>
-  <header>
+  <header class="header">
     <nav>
       <router-link to="/">
-        <img src="" alt="로고" class="logo">
+        <img src="https://user-images.githubusercontent.com/76980526/158522490-66bc3bfe-4651-4848-b142-9f932d1f05f7.png" alt="로고" class="logo">
       </router-link>
-      <router-link v-for="url, i in url" :key="i" :to="url">
-        <button>{{login[i]}}</button>
-      </router-link>
+      <div>
+        <router-link v-for="url, i in url" :key="i" :to="url">
+            <button>{{login[i]}}</button>
+        </router-link>
+      </div>
     </nav>
 
   </header>
@@ -26,27 +28,46 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.header{
+  width: 100vw;
+  // background-color: #C9CCD5;
   nav{
-    position: absolute;
+    padding-top: 10px;
     display: flex;
-    z-index: 10;
-    margin-left: 10%;
-    right: 20%;
-    width: 500px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    // margin-left: 10%;
+    // right: 20%;
+    width: 80vw;
     color: rgb(165, 165, 165);
     justify-content: space-between;
+    .logo{
+      width: 75px;
+      // background-color: #fff;
+      // border-radius: 40%;
+    }
     button{
       width: 100px;
       height: 50px;
       background-color: transparent;
       color: rgb(89, 89, 89);
-      border-radius: 10px;
-      border: 3px solid #fff;
+      border-radius: 30px;
+      border: 1px solid #333;
+      // border: 0px;
+      margin-left: 10px;
+      transition: .5s;
       font-size: 18px;
       cursor: pointer;
+    }
+    button:hover{
+      border: 1px solid #fff;
+      background-color: #C9CCD5;
+      color: #fff;
     }
     .logo{
       cursor: pointer;
     }
   }
+}
 </style>

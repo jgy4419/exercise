@@ -44,7 +44,6 @@ export default {
     right: 0;
     width: 40vw;
     height: 50vh;
-    // border: 2px solid #333;
     border-radius: 10px;
     .inner{
         color: #636363;

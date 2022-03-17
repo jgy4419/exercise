@@ -5,7 +5,11 @@
                 <form action="/join" method="post" class="login"> 
                     <p>회원가입</p>
                     <div v-for="value, i in value" :key="i">
-                        <input :type = type[i] :placeholder = value>
+                        <input class="input" :type = type[i] :placeholder = value>
+                    </div>
+                    <div class="fileBox">
+                        <label>프로필 사진을 넣어주새요</label>
+                        <input class="file" type="file">
                     </div>
                     <input class="loginBtn" type="submit" value="회원가입">
                 </form>
@@ -18,8 +22,8 @@
 export default {
     data(){
         return{
-            value: ['이름을 입력하세요', '아이디를 입력하세요', '비밀번호를 입력하세요', '비밀번호를 한번 더 입력해주세요', 'Email', '닉네임', '전화번호', '자기소개', ''],
-            type: ['text', 'text', 'password','password', 'email', 'text', 'tel', 'text', 'file']
+            value: ['이름을 입력하세요', '아이디를 입력하세요', '비밀번호를 입력하세요', '비밀번호를 한번 더 입력해주세요', 'Email', '닉네임', '전화번호', '자기소개'],
+            type: ['text', 'text', 'password','password', 'email', 'text', 'tel', 'text']
         }
     }
 }
@@ -50,8 +54,16 @@ export default {
                 height: 50px;
                 border-radius: 10px;
                 margin-top: 10px;
-                border: 2px solid rgb(181, 181, 181);
+                border: 1px solid rgb(181, 181, 181);
+                // border: 0;
                 padding-left: 10px;
+            }
+            .fileBox{
+                font-size: 13px;
+                text-align: end;
+                .file{
+                    border: 0;
+                }
             }
             .loginBtn{
                 background-color: #93B5C6;
