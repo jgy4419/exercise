@@ -10,7 +10,9 @@
                     <div>
                         <input type="password" placeholder="비밀번호를 입력하세요!"/>
                     </div>
-                    <input class="loginBtn" type="submit" value="로그인">
+                    <router-link to="/community">
+                        <input class="loginBtn" type="submit" value="로그인">
+                    </router-link>
                 </form>
                 <ul class="loginList">
                         <li v-for="loginList, i in loginList" :key="i">

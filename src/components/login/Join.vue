@@ -11,7 +11,9 @@
                         <label>프로필 사진을 넣어주새요</label>
                         <input class="file" type="file">
                     </div>
-                    <input class="loginBtn" type="submit" value="회원가입">
+                    <router-link to="/login">
+                        <input @click="hello()" class="loginBtn" type="submit" value="회원가입">
+                    </router-link>
                 </form>
             </div>
         </div>
@@ -24,6 +26,11 @@ export default {
         return{
             value: ['이름을 입력하세요', '아이디를 입력하세요', '비밀번호를 입력하세요', '비밀번호를 한번 더 입력해주세요', 'Email', '닉네임', '전화번호', '자기소개'],
             type: ['text', 'text', 'password','password', 'email', 'text', 'tel', 'text']
+        }
+    },
+    methods: {
+        hello(){
+            alert('어서오세요! 오운완 입니다!')
         }
     }
 }

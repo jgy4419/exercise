@@ -1,0 +1,112 @@
+<template>
+    <div class="container">
+        <div class="inner">
+            <div class="text">
+                <p class="title">혼자가기 무서울 때.</p>
+                <span class="textInner">
+                    혼자 운동하기 무섭거나 어려운 사람들은 같이 운동할 사람들을 
+                    구할 수 있고,  <br/><br/>운동하는 방법이나, 노하우를 
+                    다른 사람들이 작성한 것들을 참고해서 효과적인 운동이 가능합니다.
+                </span>
+                <p class="title">오늘 운동 제대로했네!</p>
+                <span class="textInner">
+                    운동 기록 작성 시 센서를 통한 데이터로 추가적인 설명이 가능합니다.
+                    <br/>당일 운동 했던 부위를 조금 더 자세하게 설명해보세요.
+                </span>
+                <p class="title">운동 끝나고 보충제 한 잔?</p>
+                <span class="textInner">
+                    운동할 때 필요한 영양제들을 우리가 먹어도 되는지..?
+                    알아 볼 수 있는 시간을 가지자
+                </span>
+            </div>
+            <div class="imgBox">
+                <div class="img"/>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    mounted(){
+        this.scrollEvent();
+    },
+    methods: {
+        scrollEvent(){
+            let img = document.querySelector('.img');
+            let title = document.querySelectorAll('.title');
+            let textInner = document.querySelectorAll('.textInner');
+            document.addEventListener('scroll', function(){
+                let currentScrollValue = document.documentElement.scrollTop;
+                for(let i = 0; i < title.length; i++){
+                    if(currentScrollValue > 1700 && currentScrollValue < 2200){
+                        img.style.backgroundImage = 'url(https://www.canceranswer.co.kr/news/photo/202109/3045_4820_1253.jpg)';
+                        title[2].classList.add('event');
+                        textInner[1].classList.add('event');
+                    }else if(currentScrollValue > 2200){
+                        img.style.backgroundImage = 'url(https://www.ftimes.kr/news/photo/202110/13545_15200_4650.jpg)';
+                    }else{
+                        img.style.backgroundImage = 'url(https://www.dementianews.co.kr/news/photo/201902/1501_1270_5524.jpg)';
+                    }
+                }
+                console.log(currentScrollValue);
+            });
+        }
+    },
+    
+}
+</script>
+
+<style lang="scss" scoped>
+.container{
+    width: 100vw;
+    height: 100vh;
+    .inner{
+        position: relative;
+        color: #333;
+        width: 80vw;
+        height: 330vh;
+        margin: auto;
+        display: flex;
+        .text{
+            position: absolute;
+            right: 0;
+            width: 40%;
+            .title{
+                margin-top: 80%;
+                font-size: 50px;
+                font-weight: 900;
+
+                transition: .5s;
+            }
+            .textInner{
+                font-size: 30px;
+                font-weight: 500;
+                line-height: 180%;
+                transition: .5s;
+            }
+            .title:nth-child(2), .textInner:nth-child(1){
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            .title:nth-child(2).event, .textInner:nth-child(1).event{
+                opacity: 1;
+                transform: translateY(0px);
+            }
+        }
+        .img{
+            position: sticky;
+            border-radius: 20px;
+            // background-image: url('https://www.dementianews.co.kr/news/photo/201902/1501_1270_5524.jpg');
+            background-size: cover;
+            transition: .3s;
+            top: 100px;
+            width: 500px;
+            height: 400px;
+            margin-top: 20%;
+        }
+    }
+        
+    
+}
+</style>

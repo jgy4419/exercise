@@ -1,14 +1,17 @@
 <template>
     <div class="container">
         <Section1/>
+        <Section2/>
     </div>    
 </template>
 
 <script>
 import Section1 from './MainSection1.vue'
+import Section2 from './MainSection2.vue'
 export default {
     components: {
-        Section1
+        Section1,
+        Section2,
     }
 }
 </script>
