@@ -13,7 +13,7 @@
 
 <script>
 export default {
-    // 데이터가 추가적으로 저장이 되면 
+    // signin 브랜치 test
 }
 </script>
 <style lang="scss" scoped>
