@@ -45,8 +45,12 @@ export default {
                         textInner[1].classList.add('event');
                     }else if(currentScrollValue > 2200){
                         img.style.backgroundImage = 'url(https://www.ftimes.kr/news/photo/202110/13545_15200_4650.jpg)';
+                        title[3].classList.add('event');
+                        textInner[2].classList.add('event');
                     }else{
                         img.style.backgroundImage = 'url(https://www.dementianews.co.kr/news/photo/201902/1501_1270_5524.jpg)';
+                        title[i].classList.remove('event');
+                        textInner[i].classList.remove('event');
                     }
                 }
                 console.log(currentScrollValue);
@@ -69,6 +73,7 @@ export default {
         margin: auto;
         display: flex;
         .text{
+            overflow-x: hidden;
             position: absolute;
             right: 0;
             width: 40%;
@@ -76,7 +81,6 @@ export default {
                 margin-top: 80%;
                 font-size: 50px;
                 font-weight: 900;
-
                 transition: .5s;
             }
             .textInner{
@@ -85,13 +89,15 @@ export default {
                 line-height: 180%;
                 transition: .5s;
             }
-            .title:nth-child(2), .textInner:nth-child(1){
+            .title:nth-child(3), .textInner:nth-child(4),
+            .title:nth-child(5), .textInner:nth-child(6){
                 opacity: 0;
-                transform: translateY(100px);
+                transform: translateX(200px);
             }
-            .title:nth-child(2).event, .textInner:nth-child(1).event{
+            .title:nth-child(3).event, .textInner:nth-child(4).event,
+            .title:nth-child(5).event, .textInner:nth-child(6).event{
                 opacity: 1;
-                transform: translateY(0px);
+                transform: translateX(0px);
             }
         }
         .img{
