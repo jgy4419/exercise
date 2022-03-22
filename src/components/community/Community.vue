@@ -10,9 +10,7 @@
                     <button v-for="header in header" :key="header" class="btn">{{header}}</button>
                 </div>
             </header>
-            <br>
-            <hr>
-            <br>
+            <br><hr><br>
             <section>
                 <button class="list" v-for="sort in sort" :key="sort">{{sort}}</button>
                 <Post/>
