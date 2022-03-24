@@ -64,7 +64,6 @@ export default {
 <style lang="scss" scoped>
 .container{
     width: 100vw;
-    height: 100vh;
     .inner{
         position: relative;
         color: #333;

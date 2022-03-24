@@ -1,10 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
+// 메인 페이지
 import Main from '../components/main/Main.vue'
+// 로그인 / 회원가입 관련 페이지
 import Login from '../components/login/Login.vue'
 import Join from '../components/login/Join.vue'
 import SearchId from '../components/login/SearchId'
 import SearchPw from '../components/login/SearchPw'
+// 커뮤니티 페이지
 import Community from '../components/community/Community'
+import PostDetail from '../components/community/PostDetail'
+import  Write from '../components/community/Write'
+import MyPage from '../components/community/MyPage'
 
 
 const routes = [
@@ -40,7 +46,22 @@ const routes = [
       path: "/community",
       name: "Community",
       component: Community
-    }
+    },
+    {
+      path: "/board/:id",
+      name: "PostDetail",
+      component: PostDetail
+    },
+    {
+      path: "/writeBoard",
+      name: "Write",
+      component: Write
+    },
+    {
+      path: "/myPage",
+      name: "MyPage",
+      component: MyPage
+    },
   ];
   
   const router = createRouter({

@@ -29,23 +29,20 @@ export default {
 
 <style lang="scss" scoped>
 .header{
+  position: relative;
+  z-index: 10;
   width: 100vw;
-  // background-color: #C9CCD5;
   nav{
     padding-top: 10px;
     display: flex;
     left: 0;
     right: 0;
     margin: auto;
-    // margin-left: 10%;
-    // right: 20%;
     width: 80vw;
     color: rgb(165, 165, 165);
     justify-content: space-between;
     .logo{
       width: 75px;
-      // background-color: #fff;
-      // border-radius: 40%;
     }
     button{
       width: 100px;
@@ -54,7 +51,6 @@ export default {
       color: rgb(89, 89, 89);
       border-radius: 30px;
       border: 1px solid #333;
-      // border: 0px;
       margin-left: 10px;
       transition: .5s;
       font-size: 18px;

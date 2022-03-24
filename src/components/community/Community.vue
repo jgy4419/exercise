@@ -7,7 +7,11 @@
                         <label><i @click="searchInput" class="fa fa-search search"></i></label>
                         <input class="searchInput" type="text"/>
                     </div>
-                    <button v-for="header in header" :key="header" class="btn">{{header}}</button>
+                    <router-link class="url" v-for="url, i in headerUrl" :key="i" :to="url">
+                        <button :class="btnClass[i]">
+                            {{header[i]}}
+                        </button>
+                    </router-link>
                 </div>
             </header>
             <br><hr><br>
@@ -28,7 +32,9 @@ export default {
     data(){
         return{
             header: ['새 글 작성', ''],
-            sort: ['전체', '인기순', '최신순', '댓글순']
+            btnClass: ['btn1 btn', 'btn2 btn'],
+            sort: ['전체', '인기순', '최신순', '댓글순'],
+            headerUrl: ['/writeBoard', '/myPage'],
         }
     },
     methods:{
@@ -82,32 +88,35 @@ export default {
                     transform: translateX(0px);
                 }
             }
-            .btn{
-                margin-left: 30px;
-                z-index: 10;
-                cursor: pointer;
-                transition: .3s;
-            }
-            .btn:nth-child(2){
-                width: 100px;
-                height: 40px;
-                font-size: 16px;
-                font-weight: 500;
-                background-color: transparent;
-                border: 2px solid #333;
-                border-radius: 30px;
-            }
-            .btn:nth-child(3){
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background-color: transparent;
-            }
-            .btn:nth-child(2):hover{
-                box-sizing: border-box;
-                background-color: #93B5C6;
-                border: 0;
-                color: #fcf3f3;
+            .url{
+                .btn{
+                    position: relative;
+                    margin-left: 30px;
+                    z-index: 10;
+                    cursor: pointer;
+                    transition: .3s;
+                }
+                .btn1{
+                    width: 100px;
+                    height: 40px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    background-color: transparent;
+                    border: 2px solid #333;
+                    border-radius: 30px;
+                }
+                .btn1:hover{
+                    // box-sizing: border-box;
+                    background-color: #93B5C6;
+                    border: 0px #fff;
+                    color: #fcf3f3;
+                }
+                .btn2{
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border: 2px solid #333;
+                }
             }
         }
     }

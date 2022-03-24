@@ -42,6 +42,7 @@ export default {
 <style lang="scss" scoped>
 .container{
     position: relative;
+    height: 90vh;
     .inner{
         position: relative;
         z-index: 10;
@@ -87,7 +88,7 @@ export default {
         .btn:hover{
             background-color: #93B5C6;
             color: #fff;
-            border: 2px solid #fff;
+            border: 0;
         }
     }
     .halfBackground{

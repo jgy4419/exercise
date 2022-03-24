@@ -1,12 +1,15 @@
 <template>
     <div class="container">
         <div class="inner">
-            <div class="titleImg"/>
-            <div class="bottom">
-                <h2 class="title"><strong>글 제목</strong></h2>
-                <p>닉네임 / 아이디</p>
-                <p>날짜</p>
-            </div>
+            <router-link to="/board/:id">
+                <div class="titleImg"/>
+                <div class="bottom">
+                    <span style="display: none">글 번호</span>
+                    <h2 class="title"><strong>글 제목</strong></h2>
+                    <p>닉네임 / 아이디</p>
+                    <p>날짜</p>
+                </div>
+            </router-link>
         </div>
     </div>
 </template>
@@ -20,7 +23,7 @@ export default {
 .container{
     position: relative;
     width: 25vw;
-    height: 30vh;
+    height: 300px;
     border: 3px solid rgb(154, 154, 154);
     border-radius: 10px;
     .inner{
@@ -30,9 +33,16 @@ export default {
         top: 0;
         .titleImg{
             border-radius: 5px;
+            background-image: url('https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg');
+            background-position: center;
+            background-size: 100%;
             width: 100%;
-            height: 40%;
-            background-color: rgb(184, 184, 184);
+            height: 50%;
+            // background-color: rgb(184, 184, 184);
+            transition: .3s;
+        }
+        .titleImg:hover{
+            background-size: 120%;
         }
         .bottom{
             width: 90%;
