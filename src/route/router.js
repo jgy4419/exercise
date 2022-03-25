@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // 메인 페이지
 import Main from '../components/main/Main.vue'
+// 404 에러 페이지
+import ErrorPage from '../components/404Error.vue'
 // 로그인 / 회원가입 관련 페이지
 import Login from '../components/login/Login.vue'
 import Join from '../components/login/Join.vue'
@@ -19,6 +21,11 @@ const routes = [
       path: "/",
       name: "Main",
       component: Main,
+    },
+    {
+      path: "/:id",
+      name: "Error",
+      component: ErrorPage
     },
     // 로그인 관련 페이지
     {
@@ -48,7 +55,7 @@ const routes = [
       component: Community
     },
     {
-      path: "/board/:id",
+      path: "/post/:id/:id",
       name: "PostDetail",
       component: PostDetail
     },

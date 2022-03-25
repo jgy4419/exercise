@@ -100,6 +100,10 @@ export default {
                     padding-top: 50px;
                     border: 5px solid rgb(160, 160, 160);
                     border-radius: 30px;
+                    transition: .3s;
+                }
+                i:hover{
+                    font-size: 70px;
                 }
             }
             .icon.event{

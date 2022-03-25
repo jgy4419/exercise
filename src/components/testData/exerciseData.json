@@ -1,0 +1,41 @@
+{
+    "user": [
+        {
+            "id": "jgy4419",
+            "pw": "1234",
+            "name": "정규영",
+            "introduction": "안녕하세요 개발자 정규영입니다.",
+            "profileImg": "https://www.canceranswer.co.kr/news/photo/202109/3045_4820_1253.jpg"
+        },
+        {
+            "id": "test2",
+            "pw": "1234",
+            "name": "문정환",
+            "introduction": "안녕하세요 개발자 문정환입니다.",
+            "profileImg": "https://www.ftimes.kr/news/photo/202110/13545_15200_4650.jpg"
+        }
+    ],
+    "post": [
+        {
+            "title": "게시글1",
+            "id": "jgy4419",
+            "date": "",
+            "postWrite": "게시글 내용입니다.",
+            "titleImg": "https://www.canceranswer.co.kr/news/photo/202109/3045_4820_1253.jpg"
+        },
+        {
+            "title": "게시글2",
+            "id": "jgy4419",
+            "date": "",
+            "postWrite": "게시글 내용입니다2.",
+            "titleImg": "https://www.ftimes.kr/news/photo/202110/13545_15200_4650.jpg"
+        },
+        {
+            "title": "게시글3",
+            "id": "test",
+            "date": "",
+            "postWrite": "게시글 내용입니다3.",
+            "titleImg": "https://www.canceranswer.co.kr/news/photo/202109/3045_4820_1253.jpg"
+        }
+    ]
+}
