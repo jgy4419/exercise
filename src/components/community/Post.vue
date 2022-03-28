@@ -27,7 +27,7 @@ export default {
                 title: [],
                 id: [],
                 data: [],
-                postWrite: [],
+                postWrite: []
             }
         }
     },
