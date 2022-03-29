@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="contain">
         <div class="inner">
             <p class="title3">시작해보세요!</p>
             <div class="icons">
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container{
+.contain{
     background-color: #f2f4f6;
     width: 100vw;
     height: 100vh;
@@ -65,7 +65,7 @@ export default {
         height: 40%;
         margin: auto;
         .title3{
-            padding-top: 10%;
+            padding: 10% 3%;
             font-size: 50px;
             font-weight: 700;
             text-align: center;
@@ -95,7 +95,7 @@ export default {
                 i{
                     font-size: 50px;
                     width: 150px;
-                    height: 100px;
+                    height: 150px;
                     text-align: center;
                     padding-top: 50px;
                     border: 5px solid rgb(160, 160, 160);
@@ -113,6 +113,57 @@ export default {
         }
         .footer{
             padding-top: 15%;
+        }
+    }
+    @media screen and (max-width: 768px){
+        .inner{
+            width: 100%;
+            .title3{
+                font-size: 30px;
+            }
+            .icons{
+                .icon{
+                    // margin-left: -20px;
+                    .iconText{
+                        font-size: 20px;
+                    }
+                    i{
+                        font-size: 30px;
+                        width: 100px;
+                        height: 100px;
+                        padding-top: 30px;
+                        border: 3px solid rgb(160, 160, 160);
+                    }
+                    i:hover{
+                        font-size: 40px;
+                    }
+                }
+            }
+        }
+    }
+    @media screen and (max-width: 565px){
+        .inner{
+            .icons{
+                display: block;
+                text-align: center;
+                width: 100vw;
+                .icon{
+                    .iconText{
+                        font-size: 15px;
+                        margin-top: 20px;
+                    }
+                    i{
+                        font-size: 20px;
+                        width: 80px;
+                        height: 80px;
+                        padding-top: 25px;
+                        border-radius: 10px;
+                    }
+                    i:hover{
+                        font-size: 30px;
+                    }
+                }
+            }
         }
     }
 }

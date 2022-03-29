@@ -1,21 +1,19 @@
 <template>
-    <div class="container">
+    <div class="contain">
         <div class="inner">
-            <form action="/writeBoard" method="POST">
+            <form action="/writeBoard" method="POST" enctype="multipart/form-data">
                 <div>
                     <input type="text" class="title" placeholder="제목을 입력하세요">
                 </div>
                 <hr class="line">
                 <div class="toolBox">
-                    <button class="textTool" v-for="tool in textTool" :key="tool">{{tool}}</button>
+                    <div class="textTool" v-for="tool in textTool" :key="tool">{{tool}}</div>
                 </div>
-                <div>
-                    <textarea name="content" placeholder="글 내용을 입력하세요." id="content" cols="50" rows="20"></textarea>
+                 <div class="editor-page">
+                    <div id="summernote"></div>
                 </div>
-                <div @click="thickness()">B</div>
                 <div class="btnBox">
-                    <!-- <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">{{btns}}</button> -->
-                    <button type="submit">올리기</button>
+                    <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">{{btns}}</button>
                 </div>
             </form>
         </div>
@@ -30,16 +28,39 @@ export default {
                 btnName: ['<= 나가기', '올리기'],
                 btnType: ['', 'submit'],
             },
-            textTool: ['B', 'I', '사진', '링크', '"']
         }
     },
+    mounted() {
+    $('#summernote').summernote({
+      height: 800,
+      minHeight: null,
+      maxHeight: null,
+      focus: true,
+      toolbar: [
+        ['style', ['bold', 'italic', 'underline']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['paragraph']],
+        ['height', ['height']],
+        ['Insert', ['picture']],
+        ['Mics',['codeview']]
+      ]
+    });
+  },
     methods:{
         // input에 style을 enter 누르면 원래대로 되돌리기..
         // text 두께
         thickness(){
             let content = document.getElementById('content');
-            content.classList.toggle('thickness');
-        }
+            // content.classList.toggle('thickness');
+            let addSpan = document.createElement('span');
+            addSpan.setAttribute('class', 'size');
+            addSpan.innerHTML('안녕');
+            content.appendChild(addSpan);
+        },
+        enterEvent(){
+            
+        },
     }
 }
 </script>
@@ -48,10 +69,10 @@ export default {
 input, textarea{
     outline-style: none;
 }
-.container{
+.contain{
     .inner{
         width: 70%;
-        margin: 5% auto;
+        margin: 2% auto;
         .title, #content{
             width: 100%;
             box-sizing: border-box;
@@ -66,15 +87,20 @@ input, textarea{
         }
         .toolBox{
             margin-top: 30px;
+            display: flex;
             .textTool{
-                width: 40px;
-                height: 30px;
+                text-align: center;
+                width: 30px;
+                height: 20px;
+                padding-top: 5px;
                 background-color: transparent;
+                font-size: 13px;
                 color: rgb(80, 80, 80);
                 border: 2px solid rgb(206, 206, 206);
                 border-radius: 5px;
                 margin-left: 10px;
                 font-weight: 700;
+                cursor: pointer;
             }
         }
         #content{

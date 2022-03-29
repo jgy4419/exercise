@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="contain">
         <div class="inner">
             <div class="post" v-for="data, i in post.img.length" :key="i"
             @click="urlChange(post.id[i], post.title[i])">
@@ -9,7 +9,8 @@
                     <h2 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h2>
                     <p>닉네임 / 아이디 : {{post.id[i]}}</p>
                     <p>날짜: 3월 25일</p>
-                    <!-- <p>{{$store.state.Search.test}}</p> -->
+                    {{searchRes}}
+                    <p>{{$store.state.Search.searchValue}}</p>
                 </div>
             </div>
         </div>
@@ -28,25 +29,29 @@ export default {
                 title: [],
                 id: [],
                 data: [],
-                postWrite: []
-            }
+                postWrite: [],
+            },
+            searchRes: this.$store.state.Search.searchValue,
         }
     },
     props:{
-        searchRes: String,
+        // searchRes: String,
     },
     mounted(){
         this.getPost();
-        setTimeout(() => {
-            console.log('props', this.searchRes);
-        }, 5000);
+        // setTimeout(() => {
+            console.log('props', this.$store.state.Search.searchValue);
+        // }, 5000);
     },
     methods: {
         getPost(){
+            // $store.state.Search.searchValue 이 값이 검색창에 검색어를 입력하면 값이 같이 변경됨.
             axios.get('http://localhost:8800/post')
             .then(res => {
-                console.log(res.data[0].title);
+                // console.log('이거볼랭',res.data[0].title);
+                console.log('이거볼랭', this.$store.state.Search.searchValue);
                 for(let i = 0; i < res.data.length; i++){
+                    console.log('??');
                     this.post.title.push(res.data[i].title);
                     this.post.id.push(res.data[i].id)
                     this.post.img.push(res.data[i].titleImg);
@@ -60,16 +65,17 @@ export default {
     },
     watch: {
         // searchResult의 값이 바뀌면 props로 보낼 값을 변경.. 시키고 싶은데
-        searchResult(res){
-            console.log('a', res);
-        }
+        // searchResult(res){
+        //     console.log('a', res);
+        // }
     },
 
 }
 </script>
 <style lang="scss" scoped>
-.container{
+.contain{
     position: relative;
+    // width: 100vw;
     width: 25vw;
     height: 300px;
     .inner{

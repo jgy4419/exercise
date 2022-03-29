@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="contain">
         <div class="inner">
             <p class="title">
                 <span v-for="text in textLine" :key="text" class="textLine">
@@ -40,13 +40,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container{
+.contain{
     position: relative;
-    height: 90vh;
+    height: 100vh;
     .inner{
         position: relative;
+        top: 10%;
         z-index: 10;
-        width: 1100px;
+        width: 80%;
         margin: auto;
         .title{
             color: rgb(29, 15, 15);
@@ -84,6 +85,7 @@ export default {
             border-radius: 30px;
             transition: .5s;
             cursor: pointer;
+            margin-top: 6%;
         }
         .btn:hover{
             background-color: #93B5C6;
@@ -103,6 +105,48 @@ export default {
         background-size: cover;
         background-position: left;
     }
+    @media screen and (max-width: 768px){
+        .inner{
+            .title{
+                padding-top: 20%;
+                font-size: 50px;
+                text-align: center;
+            }
+            .btn{
+                position: absolute;
+                left: 0;
+                right: 0;
+                margin: 10% auto;
+                font-size: 15px;
+                font-weight: 700;
+                width: 100px;
+                height: 50px;
+            }
+        }
+        .halfBackground{
+            width: 100%;
+        }
+    }
+    @media screen and (max-width: 575px){
+        .inner{
+            width: 100%;
+            .title{
+                font-size: 40px;
+            }
+            .btn{
+                position: absolute;
+                left: 0;
+                right: 0;
+                margin: 10% auto;
+                font-size: 12px;
+                font-weight: 700;
+                width: 80px;
+                height: 40px;
+            }
+        }
+        .halfBackground{
+            width: 100%;
+        }
+    }
 }
-
 </style>

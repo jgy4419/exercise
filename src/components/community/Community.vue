@@ -1,17 +1,17 @@
 <template>
-    <div class="container">
+    <div class="contain">
         <div class="inner">
             <header>
                 <div class="several">
                     <div class="searchBox">
                         <label><i @click="searchInput" class="fa fa-search search"></i></label>
-                        <input v-model="searchValue" class="searchInput" @keyup.enter="searchRes" type="text"/>
+                        <!-- <input v-model="$store.state.Search.searchValue" class="searchInput" @keyup.enter="searchRes" type="text"/> -->
+                        <input @input="searchRes" class="searchInput"  type="text"/>
                     </div>
                     <router-link class="url" v-for="url, i in headerUrl" :key="i" :to="url">
                         <button :class="btnClass[i]">
                             {{header[i]}}
                         </button>
-                        <!-- <p>{{message}}</p> -->
                     </router-link>
                 </div>
             </header>
@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 // import axios from 'axios';
 import Post from './Post.vue';
 export default {
@@ -44,6 +43,7 @@ export default {
         }
     },
     mounted(){
+        console.log('필요해', this.$store.state.Search.searchValue);
         // 로그인한 유저 id를 가져와서 그 값을 url에 넣기. (url은 /myPage/유저이름 이렇게 넣을 예정.)
         // axios.get('http://localhost:8800/post')
         // .then(res => {
@@ -52,32 +52,35 @@ export default {
         
         // 검색기능 개발 : 검색 input에 text를 입력하면 input 값과, 서버의 title 값과 비교해서 같은 것만 보여줌.
     },
+    computed:{
+        searchRes: {
+            get: function(){
+                let a = this.$store.state.Search.searchValue;
+                return a;
+            },
+            set: function(data){
+                this.$store.commit('Search/setSearchValue', data);
+            }
+        }
+    },
     methods:{
         searchInput(){
             let searchInput = document.querySelector('.searchInput');
             searchInput.classList.toggle('event');
         },
-        searchRes(){
-            console.log(this.searchValue);
-            axios.get('http://localhost:8800/post')
-            .then(res => {
-                // console.log(res.data.title);
-                let datas = res.data;
-                for(let i = 0; i < datas.length; i++){
-                    // console.log(datas[i].title);
-                    if(this.searchValue === datas[i].title){
-                        this.searchResult = datas[i].title;
-                        console.log('??', this.searchResult);
-                    }
-                }
-            })
-        }
+        // searchRes(){
+        //     console.log('event');
+        //     get: () => {console.log('!!')}
+        //     set: function res(){
+        //         console.log('..')
+        //     }
+        // }
     },
 }
 </script>
 
 <style lang="scss" scoped>
-.container{
+.contain{
     padding-top: 5%;
     header{
         position: relative;
@@ -155,7 +158,14 @@ export default {
         width: 80%;
         height: 100vh;
         margin: auto;
-        .list{
+        .write{
+            position: absolute;
+            bottom: 20%;
+        }
+        section{
+            position: absolute;
+            left: 0;
+            .list{
             margin: 20px 10px;
             width: 100px;
             height: 40px;
@@ -171,9 +181,6 @@ export default {
             background-color: #6d84c9;
             color:#fff;
         }
-        .write{
-            position: absolute;
-            bottom: 20%;
         }
     }
 }

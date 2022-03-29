@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="contain">
         <div class="detail">
             <div class="postImg">
                 <div class="user">
@@ -19,15 +19,13 @@
 </template>
 
 <script>
-export default {
-    
-}
 </script>
 
 <style lang="scss" scoped>
-.container{
+.contain{
     .detail{
         position: relative;
+        margin-top: 3%;
         .postImg{
             width: 100%;
             height: 300px;

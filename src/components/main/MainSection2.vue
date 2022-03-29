@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="contain">
         <div class="inner">
             <div class="text">
                 <p class="title">혼자가기 무서울 때.</p>
@@ -84,7 +84,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container{
+.contain{
     width: 100vw;
     .inner{
         position: relative;
@@ -98,7 +98,6 @@ export default {
             position: absolute;
             right: 0;
             width: 40%;
-            // div{
              .title{
                 margin-top: 80%;
                 font-size: 50px;
@@ -135,7 +134,32 @@ export default {
             margin-top: 20%;
         }
     }
-        
-    
+    @media screen and (max-width: 768px){
+        .inner{
+            .text{
+                padding-top: 80%;
+                width: 80vw;
+                .title{
+                    font-size: 30px;
+                }
+                .textInner{
+                    font-size: 20px;
+                }
+            }
+            .img{
+                height: 40vh;
+            }
+        }
+    }   
+    @media screen and (max-width: 565px){
+        .inner{
+            .text{
+                padding-top: 110%;
+            }
+            .img{
+                width: 80vw;
+            }
+        }
+    }
 }
 </style>
