@@ -55,17 +55,17 @@ const routes = [
       component: Community
     },
     {
-      path: "/post/:id/:id",
+      path: "/:id/:id",
       name: "PostDetail",
       component: PostDetail
     },
     {
-      path: "/writeBoard",
+      path: "/write",
       name: "Write",
       component: Write
     },
     {
-      path: "/myPage",
+      path: "/myPage/:id",
       name: "MyPage",
       component: MyPage
     },

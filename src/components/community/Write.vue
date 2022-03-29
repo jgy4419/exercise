@@ -12,8 +12,10 @@
                 <div>
                     <textarea name="content" placeholder="글 내용을 입력하세요." id="content" cols="50" rows="20"></textarea>
                 </div>
+                <div @click="thickness()">B</div>
                 <div class="btnBox">
-                    <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">{{btns}}</button>
+                    <!-- <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">{{btns}}</button> -->
+                    <button type="submit">올리기</button>
                 </div>
             </form>
         </div>
@@ -29,6 +31,14 @@ export default {
                 btnType: ['', 'submit'],
             },
             textTool: ['B', 'I', '사진', '링크', '"']
+        }
+    },
+    methods:{
+        // input에 style을 enter 누르면 원래대로 되돌리기..
+        // text 두께
+        thickness(){
+            let content = document.getElementById('content');
+            content.classList.toggle('thickness');
         }
     }
 }
@@ -70,6 +80,11 @@ input, textarea{
         #content{
             margin-top: 2%;
             font-size: 15px;
+        }
+        #content.thickness{
+            content: "aa";
+            font-size: 30px !important; 
+            color: green;
         }
         .line{
             width: 20%;

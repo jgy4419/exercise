@@ -9,6 +9,7 @@
                     <h2 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h2>
                     <p>닉네임 / 아이디 : {{post.id[i]}}</p>
                     <p>날짜: 3월 25일</p>
+                    <!-- <p>{{$store.state.Search.test}}</p> -->
                 </div>
             </div>
         </div>
@@ -31,8 +32,14 @@ export default {
             }
         }
     },
+    props:{
+        searchRes: String,
+    },
     mounted(){
         this.getPost();
+        setTimeout(() => {
+            console.log('props', this.searchRes);
+        }, 5000);
     },
     methods: {
         getPost(){
@@ -48,7 +55,13 @@ export default {
             .catch(err => {console.log(err)})
         },
         urlChange(id, postName){
-            location.replace(`/post/${id}/${postName}`);
+            location.replace(`/${id}/${postName}`);
+        }
+    },
+    watch: {
+        // searchResult의 값이 바뀌면 props로 보낼 값을 변경.. 시키고 싶은데
+        searchResult(res){
+            console.log('a', res);
         }
     },
 

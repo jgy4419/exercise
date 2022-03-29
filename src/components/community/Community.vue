@@ -5,26 +5,29 @@
                 <div class="several">
                     <div class="searchBox">
                         <label><i @click="searchInput" class="fa fa-search search"></i></label>
-                        <input class="searchInput" type="text"/>
+                        <input v-model="searchValue" class="searchInput" @keyup.enter="searchRes" type="text"/>
                     </div>
                     <router-link class="url" v-for="url, i in headerUrl" :key="i" :to="url">
                         <button :class="btnClass[i]">
                             {{header[i]}}
                         </button>
+                        <!-- <p>{{message}}</p> -->
                     </router-link>
                 </div>
             </header>
             <br><hr><br>
             <section>
                 <button class="list" v-for="sort in sort" :key="sort">{{sort}}</button>
-                <Post/>
+                <Post :searchValue="searchResult"/>
             </section>
         </div>
     </div>    
 </template>
 
 <script>
-import Post from './Post.vue'
+import axios from 'axios';
+// import axios from 'axios';
+import Post from './Post.vue';
 export default {
     components: {
         Post,
@@ -34,15 +37,42 @@ export default {
             header: ['새 글 작성', ''],
             btnClass: ['btn1 btn', 'btn2 btn'],
             sort: ['전체', '인기순', '최신순', '댓글순'],
-            headerUrl: ['/writeBoard', '/myPage'],
+            // myPage/여기에 임시로 jgy4419 넣음.
+            headerUrl: ['/write', '/myPage/jgy4419'],
+            searchValue: '', // searchInput에 입력하고 enter 누르면 값 변경
+            searchResult: '',
         }
+    },
+    mounted(){
+        // 로그인한 유저 id를 가져와서 그 값을 url에 넣기. (url은 /myPage/유저이름 이렇게 넣을 예정.)
+        // axios.get('http://localhost:8800/post')
+        // .then(res => {
+
+        // })
+        
+        // 검색기능 개발 : 검색 input에 text를 입력하면 input 값과, 서버의 title 값과 비교해서 같은 것만 보여줌.
     },
     methods:{
         searchInput(){
             let searchInput = document.querySelector('.searchInput');
             searchInput.classList.toggle('event');
+        },
+        searchRes(){
+            console.log(this.searchValue);
+            axios.get('http://localhost:8800/post')
+            .then(res => {
+                // console.log(res.data.title);
+                let datas = res.data;
+                for(let i = 0; i < datas.length; i++){
+                    // console.log(datas[i].title);
+                    if(this.searchValue === datas[i].title){
+                        this.searchResult = datas[i].title;
+                        console.log('??', this.searchResult);
+                    }
+                }
+            })
         }
-    }
+    },
 }
 </script>
 
