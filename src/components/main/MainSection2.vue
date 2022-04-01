@@ -90,7 +90,7 @@ export default {
         position: relative;
         color: #333;
         width: 80vw;
-        height: 330vh;
+        height: 380vh;
         margin: auto;
         display: flex;
         .text{
@@ -109,6 +109,7 @@ export default {
                 font-weight: 500;
                 line-height: 180%;
                 transition: .5s;
+                // margin-top: 10%;
             }
             .title:nth-child(3), .textInner:nth-child(4),
             .title:nth-child(5), .textInner:nth-child(6){
@@ -134,6 +135,23 @@ export default {
             margin-top: 20%;
         }
     }
+    @media screen and (max-width: 1050px){
+        .inner{
+            .text{
+                padding-top: 40%;
+                .title{
+                    font-size: 40px;
+                }
+                .textInner{
+                    font-size: 20px;
+                }
+            }
+            .img{
+                width: 40vw;
+                height: 50vh;
+            }
+        }
+    }
     @media screen and (max-width: 768px){
         .inner{
             .text{
@@ -147,6 +165,7 @@ export default {
                 }
             }
             .img{
+                width: 80vw;
                 height: 40vh;
             }
         }
@@ -154,7 +173,7 @@ export default {
     @media screen and (max-width: 565px){
         .inner{
             .text{
-                padding-top: 110%;
+                padding-top: 130%;
             }
             .img{
                 width: 80vw;

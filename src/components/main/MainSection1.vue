@@ -40,6 +40,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/*
+text 그라데이션
+color: transparent;
+background: linear-gradient(to right top, #861657, #ffa69e);
+-webkit-background-clip: text;
+ */
 .contain{
     position: relative;
     height: 100vh;

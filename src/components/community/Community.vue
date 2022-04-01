@@ -17,8 +17,23 @@
             </header>
             <br><hr><br>
             <section>
-                <button class="list" v-for="sort in sort" :key="sort">{{sort}}</button>
-                <Post :searchValue="searchResult"/>
+                <div class="listBox">
+                    <button class="list" v-for="sort in sort" :key="sort">{{sort}}</button>
+                </div>
+                <div class="section">
+                    <aside class="category">
+                        <ul>
+                            <li class="liCategory">카테고리</li>
+                            <hr>
+                            <li class="categoryList" v-for="category in category" :key="category">
+                                {{category}}
+                            </li>
+                        </ul>
+                    </aside>
+                    <div class="post">
+                        <Post :searchValue="searchResult"/>
+                    </div>
+                </div>
             </section>
         </div>
     </div>    
@@ -40,6 +55,7 @@ export default {
             headerUrl: ['/write', '/myPage/jgy4419'],
             searchValue: '', // searchInput에 입력하고 enter 누르면 값 변경
             searchResult: '',
+            category: ['전체', '카테고리1', '카테고리2', '카테고리3'],
         }
     },
     mounted(){
@@ -134,6 +150,7 @@ export default {
                     height: 40px;
                     font-size: 14px;
                     font-weight: 500;
+                    font-weight: 700;
                     background-color: transparent;
                     border: 2px solid #333;
                     border-radius: 30px;
@@ -155,7 +172,7 @@ export default {
     }
     .inner{
         position: relative;
-        width: 80%;
+        width: 85%;
         height: 100vh;
         margin: auto;
         .write{
@@ -163,24 +180,90 @@ export default {
             bottom: 20%;
         }
         section{
-            position: absolute;
-            left: 0;
-            .list{
-            margin: 20px 10px;
-            width: 100px;
-            height: 40px;
-            font-size: 15px;
-            border-radius: 30px;
-            border: 0;
-            background-color: #93B5C6;
-            color: #fcf3f3;
-            transition: .5s;
-            cursor: pointer;
+            // position: absolute;
+            // margin: auto;
+            // right: 0;
+            // left: 0;
+            .listBox{
+                position: relative;
+                width: 45%;
+                margin: auto;
+                .list{
+                    margin: 20px 10px;
+                    width: 100px;
+                    height: 40px;
+                    font-size: 15px;
+                    border-radius: 30px;
+                    border: 0;
+                    background-color: #93B5C6;
+                    color: #fcf3f3;
+                    transition: .5s;
+                    cursor: pointer;
+                }
+            }
+            .list:hover{
+                background-color: #6d84c9;
+                color:#fff;
+            }
+            .section{
+                position: absolute;
+                // left: -5%;
+                display: flex;
+                left: 0;
+                .category{
+                    width: 10vw;
+                    .liCategory{
+                        font-size: 18px;
+                        font-weight: 700;
+                    }
+                    .categoryList{
+                        cursor: pointer;
+                        font-size: 15px;
+                        font-weight: 500;
+                        margin-top: 10px;
+                    }
+                    .categoryList:hover{
+                        color: rgb(185, 185, 185);
+                    }
+                }
+                .post{
+                    margin-left: 100px;
+                    // width: 20vw;
+                }
+            }
         }
-        .list:hover{
-            background-color: #6d84c9;
-            color:#fff;
+    }
+}
+@media screen and (max-width: 1000px){
+    .contain{
+        padding-top: 12%;
+        header{
+            .several{
+                .searchBox{
+                    .search{
+                        width: 35px;
+                        height: 35px;
+                        font-size: 16px;
+                    }
+                }
+                .url{
+                    .btn1{
+                        width: 80px;
+                        font-size: 12px;
+                    }
+                }
+            }
         }
+        .inner{
+            .write{
+                bottom: 10%;
+            }
+            section{
+                .list{
+                    width: 80px;
+                    font-size: 13px;
+                }
+            }
         }
     }
 }

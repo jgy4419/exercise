@@ -76,20 +76,22 @@ export default {
 .contain{
     position: relative;
     // width: 100vw;
-    width: 25vw;
+    // width: 25vw;
     height: 300px;
     .inner{
         position: absolute;
         display: flex;
-        justify-content: space-between;
-        width: 80vw;
+        flex-wrap: wrap;
+        // justify-content: space-between;
+        width: 70vw;
         height: 100%;
         top: 0;
         .post{
-            width: 100%;
+            width: 300px;
             height: 100%;
-            border: 3px solid rgb(154, 154, 154);
-            margin-right: 10px;
+            border: 3px solid rgb(203, 203, 203);
+            margin-right: 20px;
+            margin-top: 10px;
             border-radius: 10px;
             cursor: pointer;
             .titleImg{
@@ -108,6 +110,29 @@ export default {
             .bottom{
                 width: 90%;
                 margin: auto;
+            }
+        }
+    }
+    @media screen and (max-width: 1000px){
+        .inner{
+            .post{
+                width: 300px;
+                height: 250px;
+                .title{
+                    font-size: 20px;
+                }
+                p{
+                    font-size: 13px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    @media screen and (max-width: 768px){
+        .inner{
+            display: block;
+            .post{
+                width: 90%;
             }
         }
     }
