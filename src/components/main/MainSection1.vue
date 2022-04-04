@@ -87,7 +87,7 @@ background: linear-gradient(to right top, #861657, #ffa69e);
             font-weight: 700;
             width: 150px;
             height: 60px;
-            border: 2px solid #333;
+            box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
             border-radius: 30px;
             transition: .5s;
             cursor: pointer;

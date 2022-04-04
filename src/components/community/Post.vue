@@ -6,14 +6,18 @@
                 <div class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
                 <div class="bottom">
                     <span style="display: none">글 번호 :</span>
-                    <h2 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h2>
+                    <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
                     <p>닉네임 / 아이디 : {{post.id[i]}}</p>
                     <p>날짜: 3월 25일</p>
                     {{searchRes}}
                     <p>{{$store.state.Search.searchValue}}</p>
                 </div>
             </div>
+            <div class="btnBox">
+                <button @click="moreData" class="moreBtn">더 보기</button>
+            </div>
         </div>
+        
     </div>
 </template>
 
@@ -32,6 +36,7 @@ export default {
                 postWrite: [],
             },
             searchRes: this.$store.state.Search.searchValue,
+            postCount: 0,
         }
     },
     props:{
@@ -39,28 +44,59 @@ export default {
     },
     mounted(){
         this.getPost();
-        // setTimeout(() => {
-            console.log('props', this.$store.state.Search.searchValue);
-        // }, 5000);
+        console.log(this.postCount);
     },
     methods: {
         getPost(){
             // $store.state.Search.searchValue 이 값이 검색창에 검색어를 입력하면 값이 같이 변경됨.
             axios.get('http://localhost:8800/post')
             .then(res => {
-                // console.log('이거볼랭',res.data[0].title);
-                console.log('이거볼랭', this.$store.state.Search.searchValue);
-                for(let i = 0; i < res.data.length; i++){
-                    console.log('??');
-                    this.post.title.push(res.data[i].title);
-                    this.post.id.push(res.data[i].id)
-                    this.post.img.push(res.data[i].titleImg);
+                // 만약 전체 게시물이 10개 이하면 전체 게시물의 총 개수만 불러오기.
+                if(res.data.length < 10){
+                    console.log('10개 이하', res.data.length);
+                    for(let i = 0; i < res.data.length;  i++){
+                        this.post.title.push(res.data[i].title);
+                        this.post.id.push(res.data[i].id)
+                        this.post.img.push(res.data[i].titleImg);
+                        this.postCount += 1;
+                        console.log(this.postCount);
+                    } 
+                }else if(res.data.length > 10){
+                    // 총 게시물이 10개가 넘으면 10개 까지만 불러오기.
+                    console.log('10개 이상', res.data.length);
+                    for(let i = 0; i < 10; i++){
+                        this.post.title.push(res.data[i].title);
+                        this.post.id.push(res.data[i].id)
+                        this.post.img.push(res.data[i].titleImg);
+                        this.postCount += 1;
+                        console.log(this.postCount);
+                    }
                 }
             })
             .catch(err => {console.log(err)})
+            console.log(this.postCount);
         },
         urlChange(id, postName){
             location.replace(`/${id}/${postName}`);
+        },
+        // 데이터 더 보기 버튼 기능.
+        moreData(){
+            console.log('더 보기', this.postCount);
+            // ex) 10개 post를 추가적으로 더 가져오기.
+            axios.get('http://localhost:8800/post')
+            .then(res => {  
+                // 게시물 개수가 postCount개수 + 10개 보다 많으면 
+                for(let i = this.postCount; i < this.postCount + 10; i++){
+                    this.post.title.push(res.data[i].title);
+                    this.post.id.push(res.data[i].id)
+                    this.post.img.push(res.data[i].titleImg);
+                    this.postCount += 1;
+                    console.log(this.postCount);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
         }
     },
     watch: {
@@ -89,9 +125,9 @@ export default {
         .post{
             width: 300px;
             height: 100%;
-            border: 3px solid rgb(203, 203, 203);
+            box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
             margin-right: 20px;
-            margin-top: 10px;
+            margin-top: 50px;
             border-radius: 10px;
             cursor: pointer;
             .titleImg{
@@ -111,13 +147,35 @@ export default {
                 width: 90%;
                 margin: auto;
             }
+            .btnBox{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 40%;
+                .moreBtn{
+                    background-color: transparent;
+                    font-size: 18px;
+                    font-weight: 700;
+                    width: 150px;
+                    height: 60px;
+                    box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
+                    border-radius: 30px;
+                    transition: .5s;
+                    cursor: pointer;
+                }
+            }
+            .moreBtn:hover{
+                background-color: #93B5C6;
+                color: #fff;
+                border: 0;
+            }
         }
     }
     @media screen and (max-width: 1000px){
         .inner{
+            display: block;
             .post{
-                width: 300px;
-                height: 250px;
+                width: 120%;
                 .title{
                     font-size: 20px;
                 }
@@ -128,13 +186,13 @@ export default {
             }
         }
     }
-    @media screen and (max-width: 768px){
-        .inner{
-            display: block;
-            .post{
-                width: 90%;
-            }
-        }
-    }
+    // @media screen and (max-width: 768px){
+    //     .inner{
+    //         display: block;
+    //         .post{
+    //             width: 90%;
+    //         }
+    //     }
+    // }
 }
 </style>

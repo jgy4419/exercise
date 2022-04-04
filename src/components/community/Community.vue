@@ -18,7 +18,7 @@
             <br><hr><br>
             <section>
                 <div class="listBox">
-                    <button class="list" v-for="sort in sort" :key="sort">{{sort}}</button>
+                    <button class="list" v-for="sort in category" :key="sort">{{sort}}</button>
                 </div>
                 <div class="section">
                     <aside class="category">
@@ -36,15 +36,19 @@
                 </div>
             </section>
         </div>
+                <!-- <Footer/> -->
     </div>    
 </template>
 
 <script>
 // import axios from 'axios';
 import Post from './Post.vue';
+// import Footer from '../Footer.vue';
 export default {
     components: {
         Post,
+        // Footer,
+
     },
     data(){
         return{
@@ -59,7 +63,7 @@ export default {
         }
     },
     mounted(){
-        console.log('필요해', this.$store.state.Search.searchValue);
+        // console.log('필요해', this.$store.state.Search.searchValue);
         // 로그인한 유저 id를 가져와서 그 값을 url에 넣기. (url은 /myPage/유저이름 이렇게 넣을 예정.)
         // axios.get('http://localhost:8800/post')
         // .then(res => {
@@ -119,11 +123,9 @@ export default {
                     border: 2px solid #333;
                     cursor: pointer;
                     transition: .3s;
-                    // margin-right: 10px;
                 }
                 .searchInput{
                     margin: 5px 10px;
-                    // display: none;
                     cursor:not-allowed;
                     opacity: 0;
                     width: 100px;
@@ -156,7 +158,6 @@ export default {
                     border-radius: 30px;
                 }
                 .btn1:hover{
-                    // box-sizing: border-box;
                     background-color: #93B5C6;
                     border: 0px #fff;
                     color: #fcf3f3;
@@ -173,26 +174,24 @@ export default {
     .inner{
         position: relative;
         width: 85%;
-        height: 100vh;
+        // 고치기..
+        height: 160vh;
         margin: auto;
         .write{
             position: absolute;
             bottom: 20%;
         }
         section{
-            // position: absolute;
-            // margin: auto;
-            // right: 0;
-            // left: 0;
             .listBox{
                 position: relative;
-                width: 45%;
+                width: 90%;
                 margin: auto;
                 .list{
+                    display: none;
                     margin: 20px 10px;
-                    width: 100px;
-                    height: 40px;
-                    font-size: 15px;
+                    width: 80px;
+                    height: 30px;
+                    font-size: 12px;
                     border-radius: 30px;
                     border: 0;
                     background-color: #93B5C6;
@@ -213,12 +212,12 @@ export default {
                 .category{
                     width: 10vw;
                     .liCategory{
-                        font-size: 18px;
+                        font-size: 15px;
                         font-weight: 700;
                     }
                     .categoryList{
                         cursor: pointer;
-                        font-size: 15px;
+                        font-size: 13px;
                         font-weight: 500;
                         margin-top: 10px;
                     }
@@ -228,6 +227,7 @@ export default {
                 }
                 .post{
                     margin-left: 100px;
+                    // height: 500px;
                     // width: 20vw;
                 }
             }
@@ -259,9 +259,36 @@ export default {
                 bottom: 10%;
             }
             section{
-                .list{
-                    width: 80px;
-                    font-size: 13px;
+                .category{
+                    display: none;
+                }
+                .listBox{
+                    display: flex;
+                    .list{
+                        display: block;
+                        width: 80px;
+                        font-size: 13px;
+                    }
+                }
+                .section{
+                    .post{
+                        margin-left: 0px;
+                        // width: 20vw;
+                    }
+                }
+            }
+        }
+    }
+    @media screen and (max-width: 768px){
+        .contain{
+            .inner{
+                .write{
+                    bottom: 10%;
+                }
+                section{
+                    .category{
+                        display: none;
+                    }
                 }
             }
         }

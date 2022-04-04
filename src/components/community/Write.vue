@@ -2,15 +2,19 @@
     <div class="contain">
         <div class="inner">
             <form action="/writeBoard" method="POST" enctype="multipart/form-data">
-                <div>
+                <div class="writeHeader">
                     <input type="text" class="title" placeholder="제목을 입력하세요">
+                    <div class="category">
+                        <label class="categoryText" for="">카테고리를 선택하세요</label>
+                        <select name="categoryChoice" class="categoryChoice">
+                            <option v-for="category in category" :key="category"
+                             value="카테고리1">{{category}}</option>
+                        </select>
+                    </div>
                 </div>
                 <hr class="line">
-                <div class="toolBox">
-                    <div class="textTool" v-for="tool in textTool" :key="tool">{{tool}}</div>
-                </div>
-                 <div class="editor-page">
-                    <div id="summernote"></div>
+                <div class="editor-page">
+                    <div id="summernote" style="height=300px;"></div>
                 </div>
                 <div class="btnBox">
                     <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">{{btns}}</button>
@@ -28,25 +32,30 @@ export default {
                 btnName: ['<= 나가기', '올리기'],
                 btnType: ['', 'submit'],
             },
+            category: ['카테고리1', '카테고리2', '카테고리3'],
         }
     },
     mounted() {
-    $('#summernote').summernote({
-      height: 800,
-      minHeight: null,
-      maxHeight: null,
-      focus: true,
-      toolbar: [
-        ['style', ['bold', 'italic', 'underline']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['paragraph']],
-        ['height', ['height']],
-        ['Insert', ['picture']],
-        ['Mics',['codeview']]
-      ]
-    });
-  },
+        // 스크린 전체 크기 구하기.
+        let screenHeight = screen.height;
+        console.log(screenHeight);
+
+        $('#summernote').summernote({
+        height: screenHeight / 2,
+        minHeight: null,
+        maxHeight: null,
+        focus: true,
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['paragraph']],
+            ['height', ['height']],
+            ['Insert', ['picture']],
+            ['Mics',['codeview']]
+        ]
+        });
+    },
     methods:{
         // input에 style을 enter 누르면 원래대로 되돌리기..
         // text 두께
@@ -73,8 +82,11 @@ input, textarea{
     .inner{
         width: 70%;
         margin: 2% auto;
+        .writeHeader{
+            display: flex;
+        }
         .title, #content{
-            width: 100%;
+            width: 70%;
             box-sizing: border-box;
             padding: 10px;
             border: 0;
@@ -84,6 +96,23 @@ input, textarea{
             font-size: 20px;
             font-weight: 700;
             border: 0;
+        }
+        .category{
+            position: relative;
+            top: 10px;
+            width: 350px;
+            display: flex;
+            justify-content: space-between;
+            .categoryText{
+                margin-top: 12px;
+            }
+            .categoryChoice{
+                width: 200px;
+                height: 50px;
+                border-radius: 10px;
+                font-size: 14px;
+                font-weight: 700;
+            }
         }
         .toolBox{
             margin-top: 30px;
@@ -116,6 +145,11 @@ input, textarea{
             width: 20%;
             margin-left: 0%;
             border: 3px solid rgb(193, 193, 193);
+        }
+        .editor-page{
+            #summernote{
+                height: 300px;
+            }
         }
         .btnBox{
             position: fixed;

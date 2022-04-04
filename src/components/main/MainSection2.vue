@@ -51,16 +51,23 @@ export default {
     },
     methods: {
         scrollEvent(){
+            // 메인 페이지 전체 height 크기
+            let screenHeight = document.documentElement.scrollHeight;
+            console.log(screenHeight);
+
+
             let img = document.querySelector('.img');
             let title = document.querySelectorAll('.title');
             let textInner = document.querySelectorAll('.textInner');
             document.addEventListener('scroll', function(){
                 let currentScrollValue = document.documentElement.scrollTop;
                 for(let i = 0; i < title.length; i++){
+                    // 1700, 2200
                     if(currentScrollValue > 1700 && currentScrollValue < 2200){
                         img.style.backgroundImage = 'url(https://www.canceranswer.co.kr/news/photo/202109/3045_4820_1253.jpg)';
                         title[2].classList.add('event');
                         textInner[1].classList.add('event');
+                        // 2200
                     }else if(currentScrollValue > 2200){
                         img.style.backgroundImage = 'url(https://www.ftimes.kr/news/photo/202110/13545_15200_4650.jpg)';
                         title[3].classList.add('event');
