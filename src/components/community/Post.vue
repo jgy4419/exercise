@@ -77,7 +77,7 @@ export default {
             console.log(this.postCount);
         },
         urlChange(id, postName){
-            location.replace(`/${id}/${postName}`);
+            location.href = `/${id}/${postName}`;
         },
         // 데이터 더 보기 버튼 기능.
         moreData(){

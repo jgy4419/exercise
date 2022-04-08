@@ -6,7 +6,8 @@
                     <div class="searchBox">
                         <label><i @click="searchInput" class="fa fa-search search"></i></label>
                         <!-- <input v-model="$store.state.Search.searchValue" class="searchInput" @keyup.enter="searchRes" type="text"/> -->
-                        <input @input="searchRes" class="searchInput"  type="text"/>
+                        <input @input="searchRes" class="searchInput" type="text"/>
+                        {{write}}
                     </div>
                     <router-link class="url" v-for="url, i in headerUrl" :key="i" :to="url">
                         <button :class="btnClass[i]">
@@ -88,6 +89,9 @@ export default {
             let searchInput = document.querySelector('.searchInput');
             searchInput.classList.toggle('event');
         },
+        tests(){
+            console.log(this.test.name);
+        }
         // searchRes(){
         //     console.log('event');
         //     get: () => {console.log('!!')}

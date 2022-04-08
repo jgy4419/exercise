@@ -1,7 +1,7 @@
 <template>
     <div class="contain">
         <div class="inner">
-            <form action="/writeBoard" method="POST" enctype="multipart/form-data">
+            <!-- <form action="/writeBoard" method="POST" enctype="multipart/form-data"> -->
                 <div class="writeHeader">
                     <input type="text" class="title" placeholder="제목을 입력하세요">
                     <div class="category">
@@ -17,9 +17,12 @@
                     <div id="summernote" style="height=300px;"></div>
                 </div>
                 <div class="btnBox">
-                    <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">{{btns}}</button>
+                    <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">
+                        <i :class="btn.class[i]" ></i>
+                        {{btns}}
+                    </button>
                 </div>
-            </form>
+            <!-- </form> -->
         </div>
     </div>
 </template>
@@ -29,31 +32,43 @@ export default {
     data(){
         return{
             btn: {
-                btnName: ['<= 나가기', '올리기'],
+                class: ['fa fa-arrow-left', 'submit'],
+                btnName: ['', '올리기'],
                 btnType: ['', 'submit'],
             },
             category: ['카테고리1', '카테고리2', '카테고리3'],
         }
     },
     mounted() {
+        const btnClass = document.querySelectorAll('.btn');
+        for(let i = 0; i < btnClass.length; i++){
+            btnClass[0].addEventListener('click', function(){
+                history.go(-1);
+            });
+            btnClass[1].addEventListener('click', function(){
+                // DB한테 게시글 정보 보내고, url /community로 변경하기.
+                
+                location.href = '/community';
+            })
+        }
         // 스크린 전체 크기 구하기.
         let screenHeight = screen.height;
         console.log(screenHeight);
 
         $('#summernote').summernote({
-        height: screenHeight / 2,
-        minHeight: null,
-        maxHeight: null,
-        focus: true,
-        toolbar: [
-            ['style', ['bold', 'italic', 'underline']],
-            ['fontsize', ['fontsize']],
-            ['color', ['color']],
-            ['para', ['paragraph']],
-            ['height', ['height']],
-            ['Insert', ['picture']],
-            ['Mics',['codeview']]
-        ]
+            height: screenHeight / 2,
+            minHeight: null,
+            maxHeight: null,
+            focus: true,
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['paragraph']],
+                ['height', ['height']],
+                ['Insert', ['picture']],
+                ['Mics',['codeview']]
+            ]
         });
     },
     methods:{
