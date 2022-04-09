@@ -2,7 +2,6 @@
     <div class="contain">
         <p class="categoryName">{{$store.state.Community.categoryName}}</p>
         <div class="inner">
-            <!-- <div v-if="categoryState == 0"> -->
                 <div class="post" v-for="data, i in post.img.length" :key="i"
                 @click="urlChange(post.id[i], post.title[i])">
                     <div class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
@@ -30,16 +29,16 @@ export default {
     // test 서버 불러오기 => npx json-server ./exerciseData.json --watch --port 8800
     data(){
         return{
-            post: {
-                img: [],
-                title: [],
-                id: [],
-                data: [],
-                postWrite: [],
-            },
-            searchRes: this.$store.state.Search.searchValue,
-            postCount: 0,
-            category: ['all', 'category1', 'category2', 'category3'],
+            // post: {
+            //     img: [],
+            //     title: [],
+            //     id: [],
+            //     data: [],
+            //     postWrite: [],
+            // },
+            // searchRes: this.$store.state.Search.searchValue,
+            // postCount: 0,
+            category: ['post', 'category1', 'category2', 'category3'],
 
         }
     },
@@ -47,24 +46,26 @@ export default {
         ...mapState('Community', ['categoryName', 'categoryState', 'post']),
     },
     watch: {
-        // vuex의 categoryName값이 변경되면 getPost(데이터 불러오는 함수)를 호출한다.
+        // vuex의 categoryName값이 변경되면 데이터 변경해서 불러옴.
         categoryName(){
-            this.getPost();
+            this.$store.dispatch('Community/dataGet');
+            // this.dataGet(this.categoryName)
         }
     },
+    props:{
+        // searchRes: String,
+    },
     mounted(){
-        this.getPost();
+        // this.$store.dispatch('Community/categoryChange')
+        // this.getPost();
+        this.apply()
     },
     methods: {
-        /* 
-            getPost()함수가 호출될 때마다. post.title, id, img는 초기값을 빈 배열로 시작.
-            빈 배열로 초기화 시켜주지 않으면 누적돼서 값이 생기는 문제가 생김.
-        */
+        apply(){
+            this.$store.commit('Community/setData');
+        },
         getPost(){
-            this.post.title = [];
-            this.post.id = [];
-            this.post.img = [];
-            // getPost가 실행될 때마다 데이터의 주소가 this.categoryName 즉, 클래스 이름이 categoryName과 동일한 데이터들을 불러옴.
+            // $store.state.Search.searchValue 이 값이 검색창에 검색어를 입력하면 값이 같이 변경됨.
             axios.get(`http://localhost:8800/${this.categoryName}`)
             .then(res => {
                 // 만약 전체 게시물이 10개 이하면 전체 게시물의 총 개수만 불러오기.
@@ -91,7 +92,6 @@ export default {
             })
             .catch(err => {console.log(err)});
             console.log(this.postCount);
-            
         },
         urlChange(id, postName){
             location.href = `/${id}/${postName}`;
@@ -100,7 +100,7 @@ export default {
         moreData(){
             console.log('더 보기', this.postCount);
             // ex) 10개 post를 추가적으로 더 가져오기.
-            axios.get(`http://localhost:8800/${this.categoryName}`)
+            axios.get('http://localhost:8800/post')
             .then(res => {  
                 // 게시물 개수가 postCount개수 + 10개 보다 많으면 
                 for(let i = this.postCount; i < this.postCount + 10; i++){

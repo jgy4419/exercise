@@ -26,13 +26,25 @@
                         <ul>
                             <li class="liCategory">카테고리</li>
                             <hr>
-                            <li class="categoryList" v-for="category in category" :key="category">
-                                {{category}}
+                            <li class="categoryList" @click="$store.dispatch('Community/categoryChange', {
+                                categoryValue: category[i],
+                                count: i
+                            })"
+                             v-for="a, i in categoryCount" :key="i">
+                                {{category[i]}}
                             </li>
                         </ul>
                     </aside>
                     <div class="post">
-                        <Post :searchValue="searchResult"/>
+                        <!-- <div v-if="categoryState == 0"> -->
+                            <Post :searchValue="searchResult"/>
+                        <!-- </div> -->
+                        <!-- <div v-if="categoryState == 1">
+                            <Post2 :searchValue="searchResult"/>
+                        </div>
+                        <div v-if="categoryState == 2">
+                            <Post3 :searchValue="searchResult"/>
+                        </div> -->
                     </div>
                 </div>
             </section>
@@ -44,12 +56,17 @@
 <script>
 // import axios from 'axios';
 import Post from './Post.vue';
+// import Post2 from './Post2.vue';
+// import Post3 from './Post3.vue';
 // import Footer from '../Footer.vue';
+
+import {mapState, mapActions} from 'vuex';
 export default {
     components: {
         Post,
+        // Post2,
+        // Post3
         // Footer,
-
     },
     data(){
         return{
@@ -60,7 +77,8 @@ export default {
             headerUrl: ['/write', '/myPage/jgy4419'],
             searchValue: '', // searchInput에 입력하고 enter 누르면 값 변경
             searchResult: '',
-            category: ['전체', '카테고리1', '카테고리2', '카테고리3'],
+            category: ['post', 'category1', 'category2', 'category3'],
+            categoryCount: 4,
         }
     },
     mounted(){
@@ -74,6 +92,9 @@ export default {
         // 검색기능 개발 : 검색 input에 text를 입력하면 input 값과, 서버의 title 값과 비교해서 같은 것만 보여줌.
     },
     computed:{
+        ...mapState('Community', ['categoryName', 'categoryState']),
+        // ...mapMutations('Community',['categoryNameChange']),
+        ...mapActions('Community', ['categoryChange']),
         searchRes: {
             get: function(){
                 let a = this.$store.state.Search.searchValue;
@@ -81,7 +102,7 @@ export default {
             },
             set: function(data){
                 this.$store.commit('Search/setSearchValue', data);
-            }
+            },
         }
     },
     methods:{
