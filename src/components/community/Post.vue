@@ -1,6 +1,6 @@
 <template>
     <div class="contain">
-        <p class="categoryName">{{$store.state.Community.categoryName}}</p>
+        <div id="categoryName">{{$store.state.Community.categoryName}}</div>
         <div class="inner">
             <!-- <div v-if="categoryState == 0"> -->
                 <div class="post" v-for="data, i in post.img.length" :key="i"
@@ -116,12 +116,6 @@ export default {
             })
         }
     },
-    // watch: {
-    //     // searchResult의 값이 바뀌면 props로 보낼 값을 변경.. 시키고 싶은데
-    //     // searchResult(res){
-    //     //     console.log('a', res);
-    //     // }
-    // },
 
 }
 </script>
@@ -131,7 +125,7 @@ export default {
     // width: 100vw;
     // width: 25vw;
     height: 300px;
-    .categoryName{
+    #categoryName{
         font-size: 30px;
         font-weight: 700;
         margin-top: -20px;
@@ -194,6 +188,10 @@ export default {
         }
     }
     @media screen and (max-width: 1000px){
+        #categoryName{
+            font-size: 25px;
+            font-display: 700;
+        }
         .inner{
             display: block;
             .post{

@@ -19,7 +19,13 @@
             <br><hr><br>
             <section>
                 <div class="listBox">
-                    <button class="list" v-for="sort in category" :key="sort">{{sort}}</button>
+                    <button class="list" v-for="category, i in category" :key="i"
+                        @click="$store.dispatch('Community/categoryChange', {
+                            categoryValue: category,
+                            count: i
+                        })">
+                        {{category}}
+                    </button>
                 </div>
                 <div class="section">
                     <aside class="category">
@@ -36,15 +42,7 @@
                         </ul>
                     </aside>
                     <div class="post">
-                        <!-- <div v-if="categoryState == 0"> -->
-                            <Post :searchValue="searchResult"/>
-                        <!-- </div> -->
-                        <!-- <div v-if="categoryState == 1">
-                            <Post2 :searchValue="searchResult"/>
-                        </div>
-                        <div v-if="categoryState == 2">
-                            <Post3 :searchValue="searchResult"/>
-                        </div> -->
+                        <Post :searchValue="searchResult"/>
                     </div>
                 </div>
             </section>
@@ -56,16 +54,12 @@
 <script>
 // import axios from 'axios';
 import Post from './Post.vue';
-// import Post2 from './Post2.vue';
-// import Post3 from './Post3.vue';
 // import Footer from '../Footer.vue';
 
 import {mapState, mapActions} from 'vuex';
 export default {
     components: {
         Post,
-        // Post2,
-        // Post3
         // Footer,
     },
     data(){
@@ -77,7 +71,7 @@ export default {
             headerUrl: ['/write', '/myPage/jgy4419'],
             searchValue: '', // searchInput에 입력하고 enter 누르면 값 변경
             searchResult: '',
-            category: ['post', 'category1', 'category2', 'category3'],
+            category: ['all', 'category1', 'category2', 'category3'],
             categoryCount: 4,
         }
     },

@@ -4,8 +4,9 @@
             <div class="inner">
                 <form action="/searchid" method="post" class="login"> 
                     <p>아이디 찾기</p>
-                    <div v-for="value, i in value" :key="i">
-                        <input :type = type[i] :placeholder = value>
+                    <div class="inputBox" v-for="value, i in value" :key="i">
+                        <!-- <label for="input">{{label[i]}}</label> -->
+                        <input id="input" :type = type[i] :placeholder = value>
                     </div>
                     <input class="loginBtn" type="submit" value="찾기">
                 </form>
@@ -25,8 +26,9 @@
 export default {
     data(){
         return{
-            value: ['이름을 입력하세요', '전화번호', 'Email'],
-            type: ['text', 'tel', 'email'],
+            label: ['이름', '전화번호'],
+            value: ['이름을 입력하세요', '전화번호'],
+            type: ['text', 'tel'],
             loginList: ['로그인', '회원가입', '비밀번호 찾기'],
             route: ['/login', '/login/Join', '/login/SearchPw']
         }
