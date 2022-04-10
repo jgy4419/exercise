@@ -48,7 +48,8 @@ background: linear-gradient(to right top, #861657, #ffa69e);
  */
 .contain{
     position: relative;
-    height: 100vh;
+    margin-top: 5.5%;
+    height: 100%;
     .inner{
         position: relative;
         top: 10%;
@@ -85,17 +86,20 @@ background: linear-gradient(to right top, #861657, #ffa69e);
             background-color: transparent;
             font-size: 18px;
             font-weight: 700;
+            background-color: #93B5C6;
+            color: #fff;
             width: 150px;
             height: 60px;
-            box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
+            border: 0;
             border-radius: 30px;
             transition: .5s;
             cursor: pointer;
             margin-top: 6%;
         }
         .btn:hover{
-            background-color: #93B5C6;
-            color: #fff;
+            background-color: transparent;
+            color: #333;
+            box-shadow: 4px 12px 30px 6px rgb(163, 163, 163);
             border: 0;
         }
     }

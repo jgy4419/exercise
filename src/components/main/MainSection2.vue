@@ -53,7 +53,7 @@ export default {
         scrollEvent(){
             // 메인 페이지 전체 height 크기
             let screenHeight = document.documentElement.scrollHeight;
-            console.log(screenHeight);
+            console.log('메인 페이지 전체 height는', screenHeight);
 
 
             let img = document.querySelector('.img');
@@ -62,13 +62,13 @@ export default {
             document.addEventListener('scroll', function(){
                 let currentScrollValue = document.documentElement.scrollTop;
                 for(let i = 0; i < title.length; i++){
-                    // 1700, 2200
-                    if(currentScrollValue > 1700 && currentScrollValue < 2200){
+                    // 1700, 2200 // 3 2
+                    if(currentScrollValue > screenHeight / 2.8 && currentScrollValue < screenHeight / 1.9){
                         img.style.backgroundImage = 'url(https://www.canceranswer.co.kr/news/photo/202109/3045_4820_1253.jpg)';
                         title[2].classList.add('event');
                         textInner[1].classList.add('event');
                         // 2200
-                    }else if(currentScrollValue > 2200){
+                    }else if(currentScrollValue > screenHeight / 1.9){
                         img.style.backgroundImage = 'url(https://www.ftimes.kr/news/photo/202110/13545_15200_4650.jpg)';
                         title[3].classList.add('event');
                         textInner[2].classList.add('event');
@@ -97,7 +97,7 @@ export default {
         position: relative;
         color: #333;
         width: 80vw;
-        height: 380vh;
+        height: 3000px;
         margin: auto;
         display: flex;
         .text{
@@ -105,6 +105,7 @@ export default {
             position: absolute;
             right: 0;
             width: 40%;
+            margin-bottom: 20%;
              .title{
                 margin-top: 80%;
                 font-size: 50px;

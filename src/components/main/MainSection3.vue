@@ -59,7 +59,7 @@ export default {
 .contain{
     background-color: #f2f4f6;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     .inner{
         width: 80%;
         height: 40%;
@@ -112,7 +112,10 @@ export default {
             }
         }
         .footer{
-            padding-top: 15%;
+            position: absolute;
+            right: 0;
+            left: 0;
+            padding-top: 5%;
         }
     }
     @media screen and (max-width: 768px){
