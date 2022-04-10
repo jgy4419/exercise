@@ -163,7 +163,7 @@ export default {
     @media screen and (max-width: 768px){
         .inner{
             .text{
-                padding-top: 80%;
+                padding-top: 130%;
                 width: 80vw;
                 .title{
                     font-size: 30px;
@@ -180,8 +180,8 @@ export default {
     }   
     @media screen and (max-width: 565px){
         .inner{
-            .text{
-                padding-top: 130%;
+            .text:nth-child(2){
+                margin-top: 30%;
             }
             .img{
                 width: 80vw;
