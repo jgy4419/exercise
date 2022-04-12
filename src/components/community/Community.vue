@@ -6,8 +6,13 @@
                     <div class="searchBox">
                         <label><i @click="searchInput" class="fa fa-search search"></i></label>
                         <!-- <input v-model="$store.state.Search.searchValue" class="searchInput" @keyup.enter="searchRes" type="text"/> -->
-                        <input @input="searchRes" class="searchInput" type="text"/>
-                        {{write}}
+                        <!-- @click="$store.dispatch('Community/categoryChange', {
+                                categoryValue: category[i],
+                                count: i -->
+                        <input @keyup.enter="$store.dispatch('Search/searchAction', {
+                            inputRes: this.searchResult
+                        })" v-model="searchResult" class="searchInput" type="text"/>
+                        {{searchRest}}
                     </div>
                     <router-link class="url" v-for="url, i in headerUrl" :key="i" :to="url">
                         <button :class="btnClass[i]">
@@ -42,7 +47,8 @@
                         </ul>
                     </aside>
                     <div class="post">
-                        <Post :searchValue="searchResult"/>
+                        <Post 
+                        :propsRes="propsRes"/>
                     </div>
                 </div>
             </section>
@@ -52,11 +58,11 @@
 </template>
 
 <script>
-// import axios from 'axios';
 import Post from './Post.vue';
 // import Footer from '../Footer.vue';
 
 import {mapState, mapActions} from 'vuex';
+// import axios from 'axios';
 export default {
     components: {
         Post,
@@ -70,33 +76,42 @@ export default {
             // myPage/여기에 임시로 jgy4419 넣음.
             headerUrl: ['/write', '/myPage/jgy4419'],
             searchValue: '', // searchInput에 입력하고 enter 누르면 값 변경
-            searchResult: '',
             category: ['all', 'category1', 'category2', 'category3'],
             categoryCount: 4,
+            searchResult: '', // input 창 누르는 중일 때
+            res: '', // input 창 입력 끝났을 때
+            // 검색 결과에 반환된 포스트들 넣어주기.
+            searchs: {
+                searchTitle: [],
+                searchId: [],
+                searchImg: [],
+            },
+            propsRes: '',
         }
     },
     mounted(){
-        // console.log('필요해', this.$store.state.Search.searchValue);
-        // 로그인한 유저 id를 가져와서 그 값을 url에 넣기. (url은 /myPage/유저이름 이렇게 넣을 예정.)
-        // axios.get('http://localhost:8800/post')
-        // .then(res => {
-
-        // })
         
         // 검색기능 개발 : 검색 input에 text를 입력하면 input 값과, 서버의 title 값과 비교해서 같은 것만 보여줌.
     },
     computed:{
         ...mapState('Community', ['categoryName', 'categoryState']),
+        ...mapState('Search', ['searchRes']),
         // ...mapMutations('Community',['categoryNameChange']),
         ...mapActions('Community', ['categoryChange']),
-        searchRes: {
-            get: function(){
-                let a = this.$store.state.Search.searchValue;
-                return a;
-            },
-            set: function(data){
-                this.$store.commit('Search/setSearchValue', data);
-            },
+        // searchRes: {
+        //     get: function(){
+        //         let a = this.$store.state.Search.searchValue;
+        //         return a;
+        //     },
+        //     set: function(data){
+        //         this.$store.commit('Search/setSearchValue', data);
+        //     },
+        // }
+    },
+    watch: {
+        searchRes(res){
+            console.log('vuex input 데이터', res)
+            this.propsRes = res;
         }
     },
     methods:{
@@ -104,16 +119,6 @@ export default {
             let searchInput = document.querySelector('.searchInput');
             searchInput.classList.toggle('event');
         },
-        tests(){
-            console.log(this.test.name);
-        }
-        // searchRes(){
-        //     console.log('event');
-        //     get: () => {console.log('!!')}
-        //     set: function res(){
-        //         console.log('..')
-        //     }
-        // }
     },
 }
 </script>
