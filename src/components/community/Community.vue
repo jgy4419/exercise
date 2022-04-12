@@ -96,17 +96,7 @@ export default {
     computed:{
         ...mapState('Community', ['categoryName', 'categoryState']),
         ...mapState('Search', ['searchRes']),
-        // ...mapMutations('Community',['categoryNameChange']),
         ...mapActions('Community', ['categoryChange']),
-        // searchRes: {
-        //     get: function(){
-        //         let a = this.$store.state.Search.searchValue;
-        //         return a;
-        //     },
-        //     set: function(data){
-        //         this.$store.commit('Search/setSearchValue', data);
-        //     },
-        // }
     },
     watch: {
         searchRes(res){

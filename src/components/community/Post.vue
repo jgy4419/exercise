@@ -61,6 +61,9 @@ export default {
             // search 값이 변경되면, 데이터 들을 불러와서 post img, title, id 등에 각각 넣어주기.
             axios.get('http://localhost:8800/all')
             .then(res => {
+                this.post.title = [];
+                this.post.id = [];
+                this.post.img = [];
                 for(let i = 0; i < res.data.length; i++){
                     // 전체 게시물 중 검색 내용과 일치하는 것이 있으면 그 데이터들을 뽑아와서 넣어줌.
                     if(result === res.data[i].title){
@@ -68,13 +71,9 @@ export default {
                         this.post.id.push(res.data[i].id);
                         this.post.img.push(res.data[i].titleImg);
                         console.log(res.data[i].title);
-                    }else{
-                        // 없으면 그냥 배열의 비워서 삽입 시켜주기..
-                        this.post.title = [];
-                        this.post.id = [];
-                        this.post.img = [];
-                        // 만약 11번 반복 시 맞는 것 아닌 것
-                        console.log('??');
+                    }else if(result === ''){
+                        this.getPost();
+                        break;
                     }
                 }
             })
