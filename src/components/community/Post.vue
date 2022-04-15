@@ -18,7 +18,6 @@
                 <button @click="moreData" class="moreBtn">더 보기</button>
             </div>
         </div>
-        
     </div>
 </template>
 
@@ -197,21 +196,22 @@ export default {
                 align-items: center;
                 margin-top: 40%;
                 .moreBtn{
-                    background-color: transparent;
-                    font-size: 18px;
+                    position: fixed;
+                    bottom: 50px;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    font-size: 16px;
                     font-weight: 700;
-                    width: 150px;
-                    height: 60px;
-                    box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
+                    width: 100px;
+                    height: 40px;
                     border-radius: 30px;
                     transition: .5s;
                     cursor: pointer;
+                    background-color: #93B5C6;
+                    color: #fff;
+                    border: 0;
                 }
-            }
-            .moreBtn:hover{
-                background-color: #93B5C6;
-                color: #fff;
-                border: 0;
             }
         }
     }

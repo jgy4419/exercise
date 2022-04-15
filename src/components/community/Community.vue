@@ -50,20 +50,17 @@
                 </div>
             </section>
         </div>
-                <!-- <Footer/> -->
     </div>    
 </template>
 
 <script>
 import Post from './Post.vue';
-// import Footer from '../Footer.vue';
 
 import {mapState, mapActions} from 'vuex';
 // import axios from 'axios';
 export default {
     components: {
         Post,
-        // Footer,
     },
     data(){
         return{
@@ -193,6 +190,8 @@ export default {
             bottom: 20%;
         }
         section{
+            width: 100%;
+            height: 100%;
             .listBox{
                 position: relative;
                 width: 90%;
@@ -238,8 +237,6 @@ export default {
                 }
                 .post{
                     margin-left: 100px;
-                    // height: 500px;
-                    // width: 20vw;
                 }
             }
         }

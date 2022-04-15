@@ -4,7 +4,7 @@
       <router-link to="/">
         <p class="logo">오 운 완</p>
       </router-link>
-      <div>
+      <div class="webMenu">
         <router-link v-for="url, i in url" :key="i" :to="url">
             <button>{{login[i]}}</button>
         </router-link>
@@ -15,8 +15,12 @@
         <div class="line" v-for="a in 3" :key="a"></div>
     </div>
     <nav class="mobileMenu">
-        <ul v-for="list in login" :key="list">
-          <li>{{list}}</li>
+        <ul v-for="list, i in login" :key="i">
+          <router-link :to="url[i]">
+            <li class="mobileMenuList">
+                {{list}}
+            </li>
+          </router-link>
         </ul>
     </nav>
 
@@ -26,11 +30,14 @@
 
 <script>
 
+
+
+
 export default {
   data(){
     return{
-      url: ['/login', '/login/join'],
-      login: ['login', 'join']
+      url: ['/login', '/login/join' ,`/mypage/1`, '/about'],
+      login: ['login', 'join', 'mypage', 'about']
     }
   },
   methods: {
@@ -58,7 +65,7 @@ export default {
 }
 .header{
   position: relative;
-  z-index: 10;
+  z-index: 100;
   width: 100vw;
   nav{
     padding-top: 10px;
@@ -81,15 +88,15 @@ export default {
       color: #333;
     }
     button{
-      width: 100px;
-      height: 50px;
+      width: 80px;
+      height: 40px;
       background-color: transparent;
       color: rgb(89, 89, 89);
       border-radius: 30px;
       border: 1px solid #333;
       margin-left: 10px;
       transition: .5s;
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
     }
     button:hover{
@@ -103,7 +110,9 @@ export default {
   }
   // 햄버거 아이콘
   .menuListIcon{
-    position: absolute;
+    position: fixed;
+    opacity: 0;
+    transform: translateX(200px);
     top: 0;
     right: 10%;
     cursor: pointer;
@@ -111,7 +120,6 @@ export default {
     padding: 30px;
     width: 75px;
     height: 75px;
-    display: none;
     .line{
       width: 30px;
       cursor: pointer;
@@ -163,19 +171,35 @@ export default {
     }
   }
   .mobileMenu{
-    position: absolute;
+    position: fixed;
+    margin-top: -55px;
     display: none;
-    width: 30vw;
-    height: 100vh;
+    transform: translateX(700px);
+    transition: .5s;
     ul{
-      display: flex;
-      flex-direction: row;
+      margin-top: 5%;
+      .mobileMenuList{
+        font-size: 25px;
+        font-weight: 700;
+        // width: 200px;
+        color: #333;
+        text-align: right;
+        padding: 4% 20%;
+      }
     }
+  }
+  .mobileMenu.event{
+    z-index: 10;
+    opacity: 1;
+    width: 100%;
+    height: 100vh;
+    background: rgba(51, 51, 51, 0.7);
+    transform: translateX(0px);
+    transition: .5s;
   }
    @media screen and (max-width: 768px){
     nav{
-      display: block;
-      button{
+      .webMenu{
           display: none;
           width: 75px;
           height: 40px;
@@ -184,6 +208,8 @@ export default {
     }
     .menuListIcon{
       display: block;
+      transform: translateX(0px);
+      opacity: 1;
     }
     .mobileMenu{
       display: block;
