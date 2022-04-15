@@ -9,7 +9,7 @@
                         <input class="input" :name="name[i]" :type = type[i] :placeholder = value>
                     </div>
                     <div class="sex">
-                        <label class="a">성별을 선택해주세요.</label>
+                        <label>성별을 선택해주세요.</label>
                         <select name="sex">
                             <option value="남">남</option>
                             <option value="여">여</option>

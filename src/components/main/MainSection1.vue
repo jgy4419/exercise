@@ -48,7 +48,7 @@ background: linear-gradient(to right top, #861657, #ffa69e);
  */
 .contain{
     position: relative;
-    margin-top: 5.5%;
+    margin-top: 8.5%;
     height: 100%;
     .inner{
         position: relative;
@@ -101,6 +101,10 @@ background: linear-gradient(to right top, #861657, #ffa69e);
             color: #333;
             box-shadow: 4px 12px 30px 6px rgb(163, 163, 163);
             border: 0;
+        }
+        .btn a{
+            position: relative;
+            z-index: 1;
         }
     }
     .halfBackground{

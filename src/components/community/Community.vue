@@ -5,10 +5,7 @@
                 <div class="several">
                     <div class="searchBox">
                         <label><i @click="searchInput" class="fa fa-search search"></i></label>
-                        <!-- <input v-model="$store.state.Search.searchValue" class="searchInput" @keyup.enter="searchRes" type="text"/> -->
-                        <!-- @click="$store.dispatch('Community/categoryChange', {
-                                categoryValue: category[i],
-                                count: i -->
+                        
                         <input @keyup.enter="$store.dispatch('Search/searchAction', {
                             inputRes: this.searchResult
                         })" v-model="searchResult" class="searchInput" type="text"/>
@@ -53,20 +50,17 @@
                 </div>
             </section>
         </div>
-                <!-- <Footer/> -->
     </div>    
 </template>
 
 <script>
 import Post from './Post.vue';
-// import Footer from '../Footer.vue';
 
 import {mapState, mapActions} from 'vuex';
 // import axios from 'axios';
 export default {
     components: {
         Post,
-        // Footer,
     },
     data(){
         return{
@@ -96,17 +90,7 @@ export default {
     computed:{
         ...mapState('Community', ['categoryName', 'categoryState']),
         ...mapState('Search', ['searchRes']),
-        // ...mapMutations('Community',['categoryNameChange']),
         ...mapActions('Community', ['categoryChange']),
-        // searchRes: {
-        //     get: function(){
-        //         let a = this.$store.state.Search.searchValue;
-        //         return a;
-        //     },
-        //     set: function(data){
-        //         this.$store.commit('Search/setSearchValue', data);
-        //     },
-        // }
     },
     watch: {
         searchRes(res){
@@ -206,6 +190,8 @@ export default {
             bottom: 20%;
         }
         section{
+            width: 100%;
+            height: 100%;
             .listBox{
                 position: relative;
                 width: 90%;
@@ -251,8 +237,6 @@ export default {
                 }
                 .post{
                     margin-left: 100px;
-                    // height: 500px;
-                    // width: 20vw;
                 }
             }
         }

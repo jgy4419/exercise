@@ -1,8 +1,11 @@
 <template>
     <div class="main">
-        <Section1/>
-        <Section2/>
-        <Section3/>
+        <div class="section">
+            <Section1/>
+            <Section2/>
+            <Section3/>
+        </div>
+        <button class="upBtn" @click="scrollUp"><i class='fa fa-arrow-up'></i></button>
     </div>    
 </template>
 
@@ -15,13 +18,41 @@ export default {
         Section1,
         Section2,
         Section3,
+    },
+    methods: {
+        scrollUp(){
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
     .main{
-        width: 100vw;
-        height: 86vh;
+        .section {
+            position: relative;
+            width: 100vw;
+            height: 86vh;
+        }
+        .upBtn{
+            position: fixed;
+            z-index: 10;
+            bottom: 10%;
+            right: 10%;
+            // background-color: #93B5C6;
+            background-color: transparent;
+            color: #333;
+            // color: #fff;
+            width: 50px;
+            height:50px;
+            font-size: 16px;
+            border: 0;
+            // border: 3px solid rgb(220, 220, 220);
+            box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
+            border-radius: 10px;
+        }
     }
 </style>

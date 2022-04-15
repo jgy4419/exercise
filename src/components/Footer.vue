@@ -12,6 +12,8 @@ export default {
 
 <style lang="scss" scoped>
 .footer{
+    width: 100%;
+    height: 50px;
     .text{
         color: #333;
         font-size: 20px;

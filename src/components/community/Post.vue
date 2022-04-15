@@ -18,7 +18,6 @@
                 <button @click="moreData" class="moreBtn">더 보기</button>
             </div>
         </div>
-        
     </div>
 </template>
 
@@ -61,6 +60,9 @@ export default {
             // search 값이 변경되면, 데이터 들을 불러와서 post img, title, id 등에 각각 넣어주기.
             axios.get('http://localhost:8800/all')
             .then(res => {
+                this.post.title = [];
+                this.post.id = [];
+                this.post.img = [];
                 for(let i = 0; i < res.data.length; i++){
                     // 전체 게시물 중 검색 내용과 일치하는 것이 있으면 그 데이터들을 뽑아와서 넣어줌.
                     if(result === res.data[i].title){
@@ -68,13 +70,9 @@ export default {
                         this.post.id.push(res.data[i].id);
                         this.post.img.push(res.data[i].titleImg);
                         console.log(res.data[i].title);
-                    }else{
-                        // 없으면 그냥 배열의 비워서 삽입 시켜주기..
-                        this.post.title = [];
-                        this.post.id = [];
-                        this.post.img = [];
-                        // 만약 11번 반복 시 맞는 것 아닌 것
-                        console.log('??');
+                    }else if(result === ''){
+                        this.getPost();
+                        break;
                     }
                 }
             })
@@ -198,21 +196,22 @@ export default {
                 align-items: center;
                 margin-top: 40%;
                 .moreBtn{
-                    background-color: transparent;
-                    font-size: 18px;
+                    position: fixed;
+                    bottom: 50px;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    font-size: 16px;
                     font-weight: 700;
-                    width: 150px;
-                    height: 60px;
-                    box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
+                    width: 100px;
+                    height: 40px;
                     border-radius: 30px;
                     transition: .5s;
                     cursor: pointer;
+                    background-color: #93B5C6;
+                    color: #fff;
+                    border: 0;
                 }
-            }
-            .moreBtn:hover{
-                background-color: #93B5C6;
-                color: #fff;
-                border: 0;
             }
         }
     }

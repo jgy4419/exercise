@@ -14,6 +14,9 @@ import PostDetail from '../components/community/PostDetail'
 import  Write from '../components/community/Write'
 import MyPage from '../components/community/MyPage'
 
+// about 페이지
+import About from '../components/about/About';
+
 
 const routes = [
     // 메인페이지
@@ -69,6 +72,12 @@ const routes = [
       name: "MyPage",
       component: MyPage
     },
+    // about 페이지
+    {
+      path: "/about",
+      name: "About",
+      component: About
+    }
   ];
   
   const router = createRouter({
