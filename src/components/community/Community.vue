@@ -84,7 +84,6 @@ export default {
         }
     },
     mounted(){
-        
         // 검색기능 개발 : 검색 input에 text를 입력하면 input 값과, 서버의 title 값과 비교해서 같은 것만 보여줌.
     },
     computed:{

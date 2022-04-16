@@ -20,9 +20,9 @@ export default {
     data(){
         return{
             profile: ['https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4'],
-            name: ['박세승', '문정환', '정규영'],
-            dev: ['Backend', 'Backend', 'FrontEnd'],
-            email: ['abc@naver.com', 'def@naver.com', 'jgy_98@naver.com'],
+            name: ['정규영', '박세승', '문정환'],
+            dev: ['FrontEnd', 'Backend', 'Backend'],
+            email: ['jgy_98@naver.com', 'abc@naver.com', 'def@naver.com'],
         }
     },
     components: {

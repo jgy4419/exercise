@@ -2,6 +2,7 @@
     <div class="main">
         <div class="section">
             <Section1/>
+            <button @click="cookie()">testBtn</button>
             <Section2/>
             <Section3/>
         </div>
@@ -25,6 +26,13 @@ export default {
                 top: 0,
                 behavior: 'smooth'
             })
+        },
+        cookie(){
+            // 지금부터 하루 후 까지 쿠키 유지.
+            let date = new Date(Date.now() + 86400e3);
+            date = date.toUTCString();
+            document.cookie = "user=jgy; expires=" + date;
+            location.reload();
         }
     }
 }

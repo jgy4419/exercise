@@ -11,7 +11,7 @@
                         <input type="password" placeholder="비밀번호를 입력하세요!"/>
                     </div>
                     <router-link to="/community">
-                        <input class="loginBtn" type="submit" value="로그인">
+                        <input @click="cookie()" class="loginBtn" type="submit" value="로그인">
                     </router-link>
                 </form>
                 <ul class="loginList">
@@ -33,7 +33,7 @@ export default {
             loginList: ['회원가입', '아이디 찾기', '비밀번호 찾기'],
             route: ['/login/Join', '/login/SearchId', '/login/SearchPw']
         }
-    }
+    },
 }
 </script>
 

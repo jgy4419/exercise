@@ -6,7 +6,7 @@
       </router-link>
       <div class="webMenu">
         <router-link v-for="url, i in url" :key="i" :to="url">
-            <button>{{login[i]}}</button>
+            <button class="menuBtn">{{login[i]}}</button>
         </router-link>
       </div>
     </nav>
@@ -36,8 +36,29 @@
 export default {
   data(){
     return{
-      url: ['/login', '/login/join' ,`/mypage/1`, '/about'],
+      url: ['/login', '/login/join' ,'/login', '/about'],
       login: ['login', 'join', 'mypage', 'about']
+    }
+  },
+  mounted(){
+    // 만약 사이트에 쿠키가 저장되어 있으면 logint -> logout이 있는 메뉴로 변경. 
+    console.log(this.login);
+    let menu = document.querySelectorAll('.menuBtn');
+    if(document.cookie){
+      this.login = [];
+      this.url = [];
+      this.login.push('logout', 'mypage', 'about');
+      this.url.push('/' ,`/mypage/1`, '/about');
+      // 로그인 이후 menu[0]번째 즉, logout 버튼을 누르면 웹에서 쿠키 제거 즉, 로그아웃 시켜줌.
+      menu[0].addEventListener('click', function(){
+        console.log('logout!');
+        document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
+        location.reload();
+      })
+    }else if(!document.cookie){
+      menu[2].addEventListener('click', function(){
+        alert('로그인 후 이용 가능합니다!');
+      })
     }
   },
   methods: {
