@@ -16,6 +16,14 @@
                             {{header[i]}}
                         </button>
                     </router-link>
+                    <div class="menuList">
+                        <ul>
+                            <router-link v-for="url2, i in menuList.url.length" :key="i"
+                            :to="menuList.url[i]">
+                                <li>{{menuList.text[i]}}</li>
+                            </router-link>
+                        </ul>
+                    </div>
                 </div>
             </header>
             <br><hr><br>
@@ -68,7 +76,7 @@ export default {
             btnClass: ['btn1 btn', 'btn2 btn'],
             sort: ['전체', '인기순', '최신순', '댓글순'],
             // myPage/여기에 임시로 jgy4419 넣음.
-            headerUrl: ['/write', '/myPage/jgy4419'],
+            headerUrl: ['/write', ''],
             searchValue: '', // searchInput에 입력하고 enter 누르면 값 변경
             category: ['all', 'category1', 'category2', 'category3'],
             categoryCount: 4,
@@ -81,10 +89,20 @@ export default {
                 searchImg: [],
             },
             propsRes: '',
+            menuList: {
+                text: ['MyPage', '설정'],
+                url: ['/mypage/userId', '/settings/userid'],
+            }
         }
     },
     mounted(){
         // 검색기능 개발 : 검색 input에 text를 입력하면 input 값과, 서버의 title 값과 비교해서 같은 것만 보여줌.
+        let roundProfile = document.querySelector('.btn2');
+        roundProfile.addEventListener('click', function(){
+            // 누르면 리스트 생성.
+            let menuList = document.querySelector('.menuList');
+            menuList.classList.toggle('event');
+        })
     },
     computed:{
         ...mapState('Community', ['categoryName', 'categoryState']),
@@ -175,6 +193,30 @@ export default {
                     border-radius: 50%;
                     border: 2px solid #333;
                 }
+            }
+            .menuList{
+                display: none;
+                background-color: rgb(243, 240, 240);
+                position: absolute;
+                text-align: left;
+                width: 150px;
+                height: 80px;
+                right: 0;
+                top: 50px;
+                // border: 1px solid #333;
+                ul{
+                    position: absolute;
+                    margin-left: -20px;
+                    width: 100%;
+                    li{
+                        margin-top: 8px;
+                        height: 30px;
+                        font-size: 17px;
+                    }
+                }
+            }
+            .menuList.event{
+                display: block;
             }
         }
     }

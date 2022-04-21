@@ -118,7 +118,6 @@ export default {
             })
             .catch(err => {console.log(err)});
             console.log(this.postCount);
-            
         },
         urlChange(id, postName){
             location.href = `/${id}/${postName}`;

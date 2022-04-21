@@ -70,6 +70,7 @@ export default {
             if(inputs[1].value !== inputs[2].value){
                 alert('비밀번호가 다릅니다!');
                 location.reload();
+                // (필수 부분이 비어있으면)
             }else if(inputs[0].value == "" || inputs[1].value == "" || inputs[3].value == "" || inputs[4].value == "" || inputs[5].value == ""){
                 // 필수 input에 빈칸 유무
                 alert('(필수) 부분이 비어있습니다!');
