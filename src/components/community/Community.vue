@@ -5,7 +5,6 @@
                 <div class="several">
                     <div class="searchBox">
                         <label><i @click="searchInput" class="fa fa-search search"></i></label>
-                        
                         <input @keyup.enter="$store.dispatch('Search/searchAction', {
                             inputRes: this.searchResult
                         })" v-model="searchResult" class="searchInput" type="text"/>
