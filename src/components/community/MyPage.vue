@@ -2,10 +2,10 @@
     <div class="myContainer">
         <div class="inner">
             <div class="introduction">
-                <div class="profileImg"/> 
+                <div class="profileImg" :style="{backgroundImage: `url(${information.img})`}"/> 
                 <div class="profileBox">
-                    <p class="name">이름</p>
-                    <p class="myIntroduction">자기소개</p>
+                    <p class="name">{{information.name}}</p>
+                    <p class="myIntroduction">{{information.introduction}}</p>
                 </div>
             </div>
             <hr>
@@ -18,10 +18,32 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Post from './Post.vue'
 export default {
     components: {
         Post,
+    },
+    data(){
+        return{
+            information: {
+                img: '',
+                name: '',
+                introduction: ''
+            }
+        }
+    },
+    mounted(){
+        axios.get('http://localhost:8800/user')
+        .then(res => {
+            console.log(res.data[0]);
+            let data = res.data[0];
+            this.information.img = data.profileImg;
+            this.information.name = data.name;
+            this.information.introduction = data.introduction;
+        }).catch(err => {
+            console.log(err);
+        })
     }
 }
 </script>
@@ -40,9 +62,10 @@ export default {
             .profileImg{
                 width: 120px;
                 height: 120px;
-                border: 1px solid #333;
+                border: 3px solid rgb(224, 224, 224);
                 border-radius: 50%;
                 margin-right: 10%;
+                background-size: cover;
             }
             .profileBox{
                 .name{

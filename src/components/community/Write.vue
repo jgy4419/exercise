@@ -14,7 +14,8 @@
                 </div>
                 <hr class="line">
                 <div class="editor-page">
-                    <div id="summernote" style="height=300px;"></div>
+                    <div id="summernote" style="height=300px;">
+                    </div>
                 </div>
                 <div class="btnBox">
                     <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data(){
         return{
@@ -37,6 +39,7 @@ export default {
                 btnType: ['', 'submit'],
             },
             category: ['카테고리1', '카테고리2', '카테고리3'],
+            
         }
     },
     mounted() {
@@ -44,11 +47,20 @@ export default {
         for(let i = 0; i < btnClass.length; i++){
             btnClass[0].addEventListener('click', function(){
                 history.go(-1);
+                // location.href = '/community';
             });
             btnClass[1].addEventListener('click', function(){
+                let title = document.querySelector('.title');
+                let category = document.querySelector('.categoryChoice');
+                let content = document.querySelector('.note-editable');
+                console.log(title.value, category.value, content.value);
+                // write에 적힌 값들
+                // let writeData = {
+
+                // };
                 // DB한테 게시글 정보 보내고, url /community로 변경하기.
-                
-                location.href = '/community';
+                axios.post('db경로')
+                // location.href = '/community';
             })
         }
         // 스크린 전체 크기 구하기.

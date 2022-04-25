@@ -7,9 +7,7 @@
                     <br/>
                 </span>
             </p>
-            <router-link to="/login">
-                <button class="btn">시작하기</button>
-            </router-link>
+            <button @click="loginOrCommunity()" class="btn">시작하기</button>
         </div>
         <div class="halfBackground"/>
     </div>    
@@ -35,11 +33,13 @@ export default {
                 }, 300);
             }
         },
-        // loginOrCommunity(){
-        //     if(){
-                
-        //     }
-        // }
+        loginOrCommunity(){
+            if(document.cookie){
+                location.href = '/community'
+            }else if(!document.cookie){
+                location.href = '/login'
+            }
+        }
     }   
 }
 </script>

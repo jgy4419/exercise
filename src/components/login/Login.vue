@@ -5,13 +5,13 @@
                 <form action="/login" method="post" class="login"> 
                     <p>로그인</p>
                     <div>
-                        <input type="text" placeholder="아이디를 입력하세요!"/>
+                        <input type="text" name="id" placeholder="아이디를 입력하세요!"/>
                     </div>
                     <div>
-                        <input type="password" placeholder="비밀번호를 입력하세요!"/>
+                        <input type="password" name="pw" placeholder="비밀번호를 입력하세요!"/>
                     </div>
                     <router-link to="/community">
-                        <input @click="cookie()" class="loginBtn" type="submit" value="로그인">
+                        <input @click="login()" class="loginBtn" type="submit" value="로그인">
                     </router-link>
                 </form>
                 <ul class="loginList">
@@ -34,6 +34,16 @@ export default {
             route: ['/login/Join', '/login/SearchId', '/login/SearchPw']
         }
     },
+    methods: {
+        login(){
+            if(document.cookie){
+                location.href = '/community';
+            }else if(!document.cookie){
+                alert('아이디나 비밀번호가 잘 못 되었습니다.');
+                location.href = '/login';
+            }
+        }
+    }
 }
 </script>
 

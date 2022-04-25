@@ -6,9 +6,9 @@
                     <p>아이디 찾기</p>
                     <div class="inputBox" v-for="value, i in value" :key="i">
                         <!-- <label for="input">{{label[i]}}</label> -->
-                        <input id="input" :type = type[i] :placeholder = value>
+                        <input id="input" :name = name[i] :type = type[i] :placeholder = value>
                     </div>
-                    <input class="loginBtn" type="submit" value="찾기">
+                    <input @onClick="searchId()" class="loginBtn" type="submit" value="찾기">
                 </form>
                 <ul class="loginList">
                         <li v-for="loginList, i in loginList" :key="i">
@@ -26,12 +26,17 @@
 export default {
     data(){
         return{
+            name: ['name', 'tel'],
             label: ['이름', '전화번호'],
             value: ['이름을 입력하세요', '전화번호'],
             type: ['text', 'tel'],
             loginList: ['로그인', '회원가입', '비밀번호 찾기'],
             route: ['/login', '/login/Join', '/login/SearchPw']
         }
+    },
+    searchId(){
+        // DB에서 던져준 값이 true(1)이면 이름을 가지고 와서 넣어줌. 아니면 잘 못 입력했다고 오류 메시지 넘기기.
+
     }
 }
 </script>

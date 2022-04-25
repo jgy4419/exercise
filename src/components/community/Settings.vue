@@ -88,13 +88,26 @@ export default {
                 this.set.intro[1]은 변경된 유저의 자기소개.
                 this.changeImg은 변경된 이미지.
             */
-            axios.patch('')
+            axios.patch('db url', {
+                profileImage: this.changeImg,
+                name: this.set.intro[0],
+                introduction: this.set.intro[1]
+            }).then(res => {
+                console.log('성겅!', res)
+            }).catch(err => {
+                console.log(err);
+            })
         },
         userDelete(){
              if (confirm("정말로 회원을 탈퇴하시겠습니까?")) {
                 // 확인 버튼 클릭 시 동작
                 alert("탈퇴되었습니다.");
-                axios.delete('')
+                axios.delete('db url')
+                .then(res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.log(err);
+                })
             } else {
                 // 취소 버튼 클릭 시 동작
                 alert("탈퇴하기를 취소하였습니다.");
