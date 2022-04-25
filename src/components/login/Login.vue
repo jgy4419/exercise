@@ -40,7 +40,7 @@ export default {
                 location.href = '/community';
             }else if(!document.cookie){
                 alert('아이디나 비밀번호가 잘 못 되었습니다.');
-                location.href = '/login';
+                // location.href = '/login';
             }
         }
     }

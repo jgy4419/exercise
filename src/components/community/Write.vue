@@ -14,8 +14,7 @@
                 </div>
                 <hr class="line">
                 <div class="editor-page">
-                    <div id="summernote" style="height=300px;">
-                    </div>
+                    <div id="summernote">오늘 한 운동에 대해서 말씀해주세요!</div>
                 </div>
                 <div class="btnBox">
                     <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">
@@ -47,13 +46,18 @@ export default {
         for(let i = 0; i < btnClass.length; i++){
             btnClass[0].addEventListener('click', function(){
                 history.go(-1);
-                // location.href = '/community';
+                location.href = '/community';
             });
             btnClass[1].addEventListener('click', function(){
                 let title = document.querySelector('.title');
                 let category = document.querySelector('.categoryChoice');
-                let content = document.querySelector('.note-editable');
-                console.log(title.value, category.value, content.value);
+                // let content = document.querySelector('.note-editable');
+                let content = document.getElementById('summernote');
+
+                let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
+                console.log(summernoteContent);
+                console.log(content.value);
+                console.log(title.value, category.value);
                 // write에 적힌 값들
                 // let writeData = {
 
@@ -63,12 +67,8 @@ export default {
                 // location.href = '/community';
             })
         }
-        // 스크린 전체 크기 구하기.
-        let screenHeight = screen.height;
-        console.log(screenHeight);
-
         $('#summernote').summernote({
-            height: screenHeight / 2,
+            height: 450,
             minHeight: null,
             maxHeight: null,
             focus: true,
@@ -175,7 +175,7 @@ input, textarea{
         }
         .editor-page{
             #summernote{
-                height: 300px;
+                height: 500px;
             }
         }
         .btnBox{
