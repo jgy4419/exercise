@@ -34,7 +34,12 @@ export default {
                     console.log(text[i]);
                 }, 300);
             }
-        }
+        },
+        // loginOrCommunity(){
+        //     if(){
+                
+        //     }
+        // }
     }   
 }
 </script>
