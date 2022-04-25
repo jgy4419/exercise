@@ -2,7 +2,6 @@
     <div class="contain">
         <div id="categoryName">{{$store.state.Community.categoryName}}</div>
         <div class="inner">
-            <!-- <div v-if="categoryState == 0"> -->
                 <div class="post" v-for="data, i in post.img.length" :key="i"
                 @click="urlChange(post.id[i], post.title[i])">
                     <div class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
