@@ -220,6 +220,18 @@ export default {
     transform: translateX(0px);
     transition: .5s;
   }
+  @media screen and (max-width: 1000px){
+    .webMenu{
+      .menuBtn{
+        font-size: 12px;
+        width: 60px;
+        height: 30px;
+      }
+    }
+    // .menuBtn{
+    //   width: 100px;
+    // }
+  }
    @media screen and (max-width: 768px){
     nav{
       .webMenu{

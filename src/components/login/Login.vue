@@ -60,6 +60,7 @@ export default {
     .inner{
         color: #636363;
         p{
+            margin: auto;
             font-size: 20px;
             font-weight: 700;
         }
@@ -76,6 +77,7 @@ export default {
                 padding-left: 10px;
             }
             .loginBtn{
+                width: 280px;
                 background-color: #93B5C6;
                 color: #fcf3f3;
                 font-weight: 900;
@@ -92,14 +94,57 @@ export default {
             }
         }
         .loginList{
+            margin: auto;
             margin-top: 30px;
             display: flex;
             justify-content: space-between;
             cursor: pointer;
         }
     }
-    @media screen and (max-width: 768px){
-        
+    @media screen and (max-width: 750px){
+        .container{
+            width: 10vw;
+            .inner{
+                p{
+                    margin: auto;
+                    font-size: 18px;
+                }
+                .login{
+                    input{
+                        font-size: 12px;
+                        width: 300px;
+                        height: 50px;
+                    }
+                    // .loginBtn{
+                    //     width: 100%;
+                    // }
+                }
+            }
+        }
+        .loginList{
+            margin-right: -40px;
+            font-size: 12px;
+        }
+    }
+    @media screen and (max-width: 500px){
+        .inner{
+            p{
+                font-size: 15px;
+            }
+            .login{
+                input{
+                    font-size: 12px;
+                    width: 200px;
+                    height: 40px;
+                }
+                .loginBtn{
+                    width: 185px;
+                }
+            }
+            .loginList{
+                font-size: 8px;
+            }
+        }
     }
 }
 </style>
