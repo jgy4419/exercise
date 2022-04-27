@@ -2,7 +2,7 @@
     <div>
         <div class="container">
             <div class="inner">
-                <form action="/api/join" method="post" class="login"> 
+                <form action="/api/join" method="post" class="login" target="iframe1"> 
                     <p>회원가입</p>
                     <div>
                         <label for="input" class="labelName">이메일</label>
@@ -22,6 +22,7 @@
                         </select>
                     </div>
                     <input @click="loginCondition()" class="loginBtn" type="submit" value="회원가입">
+                    <iframe id="iframe1" name="iframe1" style="display:none"></iframe>
                 </form>
             </div>
         </div>
@@ -37,15 +38,9 @@ export default {
             label: ['비밀번호', '비밀번호 재확인', '이름', '전화번호', '주소', '자기소개', '닉네임'],
             value: ['비밀번호를 입력하세요 (필수)', '비밀번호를 한번 더 입력해주세요', '이름 (필수)', '전화번호 (필수)', '주소 (필수)', '자기소개', '닉네임'],
             type: ['password','password','text', 'tel', 'text', 'text', 'text'],
-            check: '',
+            check: false,
             idInput: '',
         }
-    },
-    mounted(){
-        // const inputImage = document.querySelector('.file');
-        // inputImage.addEventListener('change', e => {
-        //     this.profileImg(e.target)
-        // })
     },
     methods: {
         // profileImg(input){
@@ -58,20 +53,17 @@ export default {
             const inputs = document.querySelectorAll('.input');
             if(inputs[1].value !== inputs[2].value){
                 alert('비밀번호가 다릅니다!');
-                location.reload();
                 // (필수 부분이 비어있으면)
             }else if(this.check === false){
                 // id 유효성 검사가 되지 않으면
                 alert('id 중복 검사를 다시 해주세요.');
-                location.reload();
             }else if(inputs[0].value == "" || inputs[1].value == "" || inputs[3].value == "" || inputs[4].value == "" || inputs[5].value == ""){
                 // 필수 input에 빈칸 유무
                 alert('(필수) 부분이 비어있습니다!');
-                location.reload();
             }else{
                 // 회원 가입을 성공하면, 입력된 정보들을 DB에 저장시켜주기.
                 alert('환영합니다 오운완 입니다!');
-                location.replace('/');
+                location.href = '/';
             }
         },
         idOverlap(){
