@@ -182,7 +182,7 @@ export default {
             .introSet{
                 margin-left: 100px;
                 .beforeText{
-                    font-size: 25px;
+                    font-size: 20px;
                     font-weight: 700;
                     color: #333;
                 }
@@ -235,6 +235,51 @@ export default {
                 padding-top: 20px;
                 font-size: 12px;
                 color: rgb(215, 215, 215);
+            }
+        }
+    }
+    .btn{
+        font-weight: 900;
+    }
+}
+@media screen and (max-width: 900px){
+    .contain{
+        .inner{
+            padding: 10%;
+            width: 500px;
+            .set{
+                .imgSet{
+                    img{
+                        width: 100px;
+                        height: 100px;
+                    }   
+                    .imgDeleteBtn, .changeImg{
+                        width: 100px;
+                        font-size: 12px;
+                    }
+                }
+                .rightLine{
+                    height: 200px;
+                }
+                .introSet{
+                    margin-left: 20px;
+                    .beforeText{
+                        font-size: 18px;
+                    }
+                }
+            }
+            .secessionBtn{
+                font-size: 12px;
+                width: 80px;
+                height: 40px;
+            }
+            .userSecession{
+                span{
+                    font-size: 15px;
+                }
+                p{
+                    font-size: 10px;
+                }
             }
         }
     }

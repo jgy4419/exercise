@@ -1,9 +1,10 @@
 <template>
     <div class="contain">
         <div class="inner">
-            <!-- <form action="/writeBoard" method="POST" enctype="multipart/form-data"> -->
+            <form action="/writeBoard" method="POST" enctype="multipart/form-data">
                 <div class="writeHeader">
                     <input type="text" class="title" placeholder="제목을 입력하세요">
+                    <hr/>
                     <div class="category">
                         <label class="categoryText" for="">카테고리를 선택하세요</label>
                         <select name="categoryChoice" class="categoryChoice">
@@ -22,7 +23,7 @@
                         {{btns}}
                     </button>
                 </div>
-            <!-- </form> -->
+            </form>
         </div>
     </div>
 </template>
@@ -35,7 +36,7 @@ export default {
             btn: {
                 class: ['fa fa-arrow-left', 'submit'],
                 btnName: ['', '올리기'],
-                btnType: ['', 'submit'],
+                btnType: ['button', 'submit'],
             },
             category: ['카테고리1', '카테고리2', '카테고리3'],
             
@@ -49,15 +50,12 @@ export default {
                 location.href = '/community';
             });
             btnClass[1].addEventListener('click', function(){
-                let title = document.querySelector('.title');
-                let category = document.querySelector('.categoryChoice');
-                // let content = document.querySelector('.note-editable');
-                let content = document.getElementById('summernote');
+                // let title = document.querySelector('.title');
+                // let category = document.querySelector('.categoryChoice');
+                // // let content = document.querySelector('.note-editable');
+                // let content = document.getElementById('summernote');
 
-                let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
-                console.log(summernoteContent);
-                console.log(content.value);
-                console.log(title.value, category.value);
+                // let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
                 // write에 적힌 값들
                 // let writeData = {
 
@@ -132,6 +130,8 @@ input, textarea{
             justify-content: space-between;
             .categoryText{
                 margin-top: 12px;
+                font-size: 14px;
+                width: 130px;
             }
             .categoryChoice{
                 width: 200px;
@@ -206,6 +206,22 @@ input, textarea{
                 background-color: #fff;
                 color: #333;
                 border: 0;
+            }
+        }
+    }
+}
+@media screen and (max-width: 900px){
+    .contain{
+        .inner{
+            .writeHeader{
+                padding-top: 10px;
+                display: block;
+                .title{
+                    font-size: 18px;
+                }
+            }
+            .editor-page{
+                font-size: 12px;
             }
         }
     }
