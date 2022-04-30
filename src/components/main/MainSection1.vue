@@ -54,7 +54,7 @@ background: linear-gradient(to right top, #861657, #ffa69e);
 .contain{
     position: relative;
     margin-top: 8.5%;
-    height: 100%;
+    // height: 100%;
     .inner{
         position: relative;
         top: 10%;
@@ -115,9 +115,10 @@ background: linear-gradient(to right top, #861657, #ffa69e);
     .halfBackground{
         position: absolute;
         z-index: 1;
-        bottom: 5%;
+        top: -30%;
+        // bottom: -60%;
         width: 100vw;
-        height: 90vh;
+        height: 100vh;
         box-shadow:  inset 10px 150px 300px #fff;
         background-image: url('https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg');
         background-repeat: no-repeat;
@@ -167,5 +168,15 @@ background: linear-gradient(to right top, #861657, #ffa69e);
             width: 100%;
         }
     }
+}
+@media screen and (max-height: 500px){
+    .contain{
+        height: 500px;
+        .halfBackground{
+            height: 600px;
+            background-size: cover;
+            // bottom: 0;
+        }
+    }   
 }
 </style>

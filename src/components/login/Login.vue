@@ -2,24 +2,24 @@
     <div>
         <div class="container">
             <div class="inner">
-                <form action="/login" method="post" class="login"> 
+                <!-- <form action="/api/login" method="post" class="login">  -->
                     <p>로그인</p>
                     <div>
-                        <input type="text" name="id" placeholder="아이디를 입력하세요!"/>
+                        <input type="text" v-model="logins.mail" name="mail" placeholder="아이디를 입력하세요!"/>
                     </div>
                     <div>
-                        <input type="password" name="pw" placeholder="비밀번호를 입력하세요!"/>
+                        <input type="password" v-model="logins.password" name="password" placeholder="비밀번호를 입력하세요!"/>
                     </div>
                     <router-link to="/community">
                         <input @click="login()" class="loginBtn" type="submit" value="로그인">
                     </router-link>
-                </form>
+                <!-- </form> -->
                 <ul class="loginList">
-                        <li v-for="loginList, i in loginList" :key="i">
-                            <router-link :to = route[i]>
-                                {{loginList}}
-                            </router-link>
-                        </li>
+                    <li v-for="loginList, i in loginList" :key="i">
+                        <router-link :to = route[i]>
+                            {{loginList}}
+                        </router-link>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -27,15 +27,35 @@
 </template>
 
 <script>
+// import axios from 'axios';
 export default {
     data(){
         return{
             loginList: ['회원가입', '아이디 찾기', '비밀번호 찾기'],
-            route: ['/login/Join', '/login/SearchId', '/login/SearchPw']
+            route: ['/login/Join', '/login/SearchId', '/login/SearchPw'],
+            logins: {
+                mail: '',
+                password: ''
+            }
         }
     },
     methods: {
         login(){
+            // /api/login으로 값을 아이디, 비밀번호를 보냄 -> 백엔드는 DB에서 아이디, 비밀번호가 일치한게 있으면 가져와서 보내줌.(토큰) => 둥일한게 없으면 boolean 값이 false인 것을 넣어줌.
+            // axios.post('/api/login', {mail: this.logins.mail, password: this.logins.password})
+            // .then(res => {
+            //     let date = new Date(Date.now() + 86400e3);
+            //     date = date.toUTCString();
+            //     document.cookie = `user=${res.data.token}; expires=` + date;
+            //     location.href = '/community';
+            //     console.log(res);
+            //     if(!document.cookie){
+            //         alert('아이디나 비밀번호가 잘 못 되었습니다.');
+            //         location.href = '/login';
+            //     }
+            // })
+            // .catch(err => {console.log(err)})
+
             if(document.cookie){
                 location.href = '/community';
             }else if(!document.cookie){

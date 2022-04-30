@@ -3,7 +3,7 @@
         <div class="section">
             <Section1/>
             <button @click="cookie()">testBtn</button>
-            <Section2/>
+            <Section2 class="section2"/>
             <Section3/>
         </div>
         <button class="upBtn" @click="scrollUp"><i class='fa fa-arrow-up'></i></button>
@@ -44,6 +44,9 @@ export default {
             position: relative;
             width: 100vw;
             height: 86vh;
+        }
+        .section2{
+            margin-top: 15%;
         }
         .upBtn{
             position: fixed;

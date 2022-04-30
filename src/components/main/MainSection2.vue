@@ -63,12 +63,12 @@ export default {
                 let currentScrollValue = document.documentElement.scrollTop;
                 for(let i = 0; i < title.length; i++){
                     // 1700, 2200 // 3 2
-                    if(currentScrollValue > screenHeight / 2.8 && currentScrollValue < screenHeight / 1.9){
+                    if(currentScrollValue > screenHeight / 3.0 && currentScrollValue < screenHeight / 2.2){
                         img.style.backgroundImage = 'url(https://www.canceranswer.co.kr/news/photo/202109/3045_4820_1253.jpg)';
                         title[2].classList.add('event');
                         textInner[1].classList.add('event');
                         // 2200
-                    }else if(currentScrollValue > screenHeight / 1.9){
+                    }else if(currentScrollValue > screenHeight / 2.2){
                         img.style.backgroundImage = 'url(https://www.ftimes.kr/news/photo/202110/13545_15200_4650.jpg)';
                         title[3].classList.add('event');
                         textInner[2].classList.add('event');

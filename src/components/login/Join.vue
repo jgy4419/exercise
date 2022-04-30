@@ -92,7 +92,7 @@ export default {
     top: 10%;
     left: 0;
     right: 0;
-    width: 40vw;
+    width: 30vw;
     // border: 2px solid #333;
     border-radius: 10px;
     padding-bottom: 3%;

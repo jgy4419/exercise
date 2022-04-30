@@ -1,7 +1,7 @@
 <template>
     <div class="contain">
         <div class="detail">
-            <div class="postImg">
+            <div class="postImg" :style="{backgroundImage: `url(${post.titleImg}`}">
                 <div class="user">
                     <p class="title">{{post.title}}</p>
                     <br/>
@@ -25,7 +25,10 @@
             <hr/>
             <div class="comment">
                 <label for="commentInput">댓글 쓰기</label><br/>
-                <textarea type="text" placeholder = "댓글을 입력해주세요." id="commentInput"/>
+                <div class="commentBox">
+                    <textarea type="text" v-model="commentInput" placeholder="댓글을 입력해주세요." id="commentInput"/> <br/>
+                    <button class="btn" @click="commentUpdate()">게시</button>
+                </div>
             </div>
         </div>
     </div> 
@@ -46,7 +49,8 @@ export default {
             comment: {
                 userId: [],
                 commentDetail: []
-            }
+            },
+            commentInput: '',
         }
     },
     mounted(){
@@ -61,6 +65,7 @@ export default {
                     this.post.title = res.data[i].title;
                     this.post.userId = res.data[i].id;
                     this.post.postDetail = res.data[i].postWrite;
+                    this.post.titleImg = res.data[i].titleImg;
                 }
             }
         })
@@ -79,7 +84,21 @@ export default {
         .catch(err => {console.log(err);})
     },
     methods: {
+        commentUpdate(){
+            // 현재 날짜, 시간 가져오기
+            let today = new Date();   
 
+            let year = today.getFullYear(); // 년도
+            let month = today.getMonth() + 1;  // 월
+            let date = today.getDate();  // 날짜
+            let day = today.getDay();  // 요일
+            let hours = today.getHours(); // 시
+            let minutes = today.getMinutes();  // 분
+            let seconds = today.getSeconds();  // 초
+            console.log(`${year}년 ${month}월 ${date}일 ${day} ${hours}시 ${minutes}분 ${seconds}초`);
+            // this.commentInput 값을 넣어주기. (유저아이디, 게시글 제목)
+            // axios.post('')
+        }
     }
 }
 </script>
@@ -92,7 +111,10 @@ export default {
         .postImg{
             width: 100%;
             height: 300px;
-            background-color: rgb(227, 227, 227);
+            background: rgb(227, 227, 227);
+            background-repeat: no-repeat;
+            background-size: cover;
+            filter: brightness(0.70);
         }
         .user{
             position: absolute;
@@ -102,10 +124,12 @@ export default {
             right: 0;
             color: #333;
             .title{
+                color: #fff;
                 font-size: 50px;
                 font-weight: 700;
             }
             .information{
+                color: #fff;
                 display: flex;
                 .id{
                     margin-right: 20px;
@@ -141,14 +165,15 @@ export default {
             // display: flex;
             justify-content:space-between;
             margin-bottom: 100px;
-            #commentInput{
+            .commentBox{
+                #commentInput{
+                    width: 100%;
+                    height: 50px;
+                }
+            }
+            .btn{
                 position: absolute;
-                left: 0;
-                right: 0;
-                margin: 15px auto;
-                padding: 10px;
-                width: 80%;
-                height: 50px;
+                right: 10%;
             }
         }
     }

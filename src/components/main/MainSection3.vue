@@ -59,7 +59,7 @@ export default {
 .contain{
     background-color: #f2f4f6;
     width: 100vw;
-    height: 100%;
+    height: 800px;
     .inner{
         width: 80%;
         height: 40%;
@@ -168,6 +168,9 @@ export default {
                 }
             }
         }
+    }
+    @media screen and (max-height: 500px){
+
     }
 }
 </style>

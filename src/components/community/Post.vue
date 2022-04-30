@@ -2,13 +2,13 @@
     <div class="contain">
         <div id="categoryName">{{$store.state.Community.categoryName}}</div>
         <div class="inner">
-                <div class="post" v-for="data, i in post.img.length" :key="i"
+                <div class="post" v-for="data, i in post.title.length" :key="i"
                 @click="urlChange(post.id[i], post.title[i])">
                     <div class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
                     <div class="bottom">
                         <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
                         <p>닉네임 / 아이디 : {{post.id[i]}}</p>
-                        <p>날짜: 3월 25일</p>
+                        <p>날짜: {{post.date[i]}}</p>
                         {{searchRes}}
                         <p>{{$store.state.Search.searchValue}}</p>
                     </div>
@@ -32,7 +32,7 @@ export default {
                 img: [],
                 title: [],
                 id: [],
-                data: [],
+                date: [],
                 postWrite: [],
             },
             searchRes: this.$store.state.Search.searchValue,
@@ -57,24 +57,49 @@ export default {
         // 검색창이 변경될 때마다 
         propsRes(result){
             // search 값이 변경되면, 데이터 들을 불러와서 post img, title, id 등에 각각 넣어주기.
-            axios.get('http://localhost:8800/all')
+            console.log(result);
+            axios.get('/api/searchtitle', {
+                // 이거.. 추가해야됨
+                params: {title: result}}, 
+                {withCredentials: true})
             .then(res => {
                 this.post.title = [];
                 this.post.id = [];
                 this.post.img = [];
+                this.post.date = [];
+                console.log('결과는', res.data);
+
                 for(let i = 0; i < res.data.length; i++){
-                    // 전체 게시물 중 검색 내용과 일치하는 것이 있으면 그 데이터들을 뽑아와서 넣어줌.
-                    if(result === res.data[i].title){
-                        this.post.title.push(res.data[i].title);
-                        this.post.id.push(res.data[i].id);
-                        this.post.img.push(res.data[i].titleImg);
-                        console.log(res.data[i].title);
-                    }else if(result === ''){
+                    console.log('결과로 나온 제목', res.data[i].title);
+                    this.post.title.push(res.data[i].title);
+                    this.post.id.push(res.data[i].nickname);
+                    this.post.date.push(res.data[i].creation_datetime)
+                    // this.post.img.push(res.data[i].titleImg);
+                    if(result === ''){
                         this.getPost();
                         break;
                     }
                 }
-            })
+            }).catch(err => console.log(err));
+            // 테스트 데이터
+            // axios.get('http://localhost:8800/all')
+            // .then(res => {
+            //     this.post.title = [];
+            //     this.post.id = [];
+            //     this.post.img = [];
+            //     for(let i = 0; i < res.data.length; i++){
+            //         // 전체 게시물 중 검색 내용과 일치하는 것이 있으면 그 데이터들을 뽑아와서 넣어줌.
+            //         if(result === res.data[i].title){
+            //             this.post.title.push(res.data[i].title);
+            //             this.post.id.push(res.data[i].id);
+            //             this.post.img.push(res.data[i].titleImg);
+            //             console.log(res.data[i].title);
+            //         }else if(result === ''){
+            //             this.getPost();
+            //             break;
+            //         }
+            //     }
+            // })
         }
 
     },
