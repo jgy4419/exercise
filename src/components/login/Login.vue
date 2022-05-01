@@ -3,6 +3,7 @@
         <div class="container">
             <div class="inner">
                 <!-- <form action="/api/login" method="post" class="login">  -->
+                <div class="login">
                     <p>로그인</p>
                     <div>
                         <input type="text" v-model="logins.mail" name="mail" placeholder="아이디를 입력하세요!"/>
@@ -10,10 +11,11 @@
                     <div>
                         <input type="password" v-model="logins.password" name="password" placeholder="비밀번호를 입력하세요!"/>
                     </div>
-                    <router-link to="/community">
-                        <input @click="login()" class="loginBtn" type="submit" value="로그인">
-                    </router-link>
+                    <!-- <router-link to="/community"> -->
+                        <button @click="login()" class="loginBtn">로그인</button>
+                    <!-- </router-link> -->
                 <!-- </form> -->
+                </div>
                 <ul class="loginList">
                     <li v-for="loginList, i in loginList" :key="i">
                         <router-link :to = route[i]>
@@ -27,7 +29,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 export default {
     data(){
         return{
@@ -42,26 +44,25 @@ export default {
     methods: {
         login(){
             // /api/login으로 값을 아이디, 비밀번호를 보냄 -> 백엔드는 DB에서 아이디, 비밀번호가 일치한게 있으면 가져와서 보내줌.(토큰) => 둥일한게 없으면 boolean 값이 false인 것을 넣어줌.
-            // axios.post('/api/login', {mail: this.logins.mail, password: this.logins.password})
-            // .then(res => {
-            //     let date = new Date(Date.now() + 86400e3);
-            //     date = date.toUTCString();
-            //     document.cookie = `user=${res.data.token}; expires=` + date;
-            //     location.href = '/community';
-            //     console.log(res);
-            //     if(!document.cookie){
-            //         alert('아이디나 비밀번호가 잘 못 되었습니다.');
-            //         location.href = '/login';
-            //     }
-            // })
-            // .catch(err => {console.log(err)})
-
-            if(document.cookie){
-                location.href = '/community';
-            }else if(!document.cookie){
-                alert('아이디나 비밀번호가 잘 못 되었습니다.');
-                // location.href = '/login';
-            }
+            axios.post('/api/login', {mail: this.logins.mail, password: this.logins.password})
+            .then(res => {
+                console.log('토큰 값 : ', res.data.token);
+                console.log('result 값 : ', res.data.result);
+                // 로그인 창에 id/pw가 DB에 있으면 result 안에 회원 정보를 담은 배열 반환
+                // 결과로 받아온 result 배열의 길이가 0이면 로그인 안 된 걸로.
+                if(res.data.result.length === 0){
+                    alert('아이디나 비밀번호가 잘 못 되었습니다.');
+                    location.href = '/login';
+                    // 결과로 받아온 result 배열의 길이가 0이 아니면 로그인 성공.
+                }else if(res.data.result.length !== 0){
+                    // DB에서 찾으면 cookie에 값을 넣어줌.
+                    let date = new Date(Date.now() + 86400e3);
+                    date = date.toUTCString();
+                    document.cookie = `user=${res.data.token}; expires=` + date;
+                    location.href = '/';
+                }
+            })
+            .catch(err => {console.log(err)})
         }
     }
 }
@@ -78,9 +79,9 @@ export default {
     height: 50vh;
     border-radius: 10px;
     .inner{
+        margin: auto;
         color: #636363;
         p{
-            margin: auto;
             font-size: 20px;
             font-weight: 700;
         }
@@ -88,6 +89,7 @@ export default {
             text-align: center;
             padding-top: 20%;
             input{
+                margin: auto;
                 font-size: 15px;
                 width: 300px;
                 height: 50px;
@@ -97,12 +99,15 @@ export default {
                 padding-left: 10px;
             }
             .loginBtn{
+                margin-top: 20px;
                 width: 280px;
+                height: 50px;
                 background-color: #93B5C6;
                 color: #fcf3f3;
                 font-weight: 900;
                 box-sizing:content-box;
                 border: 0px;
+                border-radius: 10px;
                 transition: .3s;
                 cursor: pointer;
             }
