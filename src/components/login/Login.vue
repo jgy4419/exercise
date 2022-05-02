@@ -30,6 +30,7 @@
 
 <script>
 import axios from 'axios';
+// import {mapState} from 'vuex';
 export default {
     data(){
         return{
@@ -41,13 +42,16 @@ export default {
             }
         }
     },
+    computed: {
+        // ...mapState('User', [''])
+    },
     methods: {
         login(){
             // /api/login으로 값을 아이디, 비밀번호를 보냄 -> 백엔드는 DB에서 아이디, 비밀번호가 일치한게 있으면 가져와서 보내줌.(토큰) => 둥일한게 없으면 boolean 값이 false인 것을 넣어줌.
             axios.post('/api/login', {mail: this.logins.mail, password: this.logins.password})
             .then(res => {
                 console.log('토큰 값 : ', res.data.token);
-                console.log('result 값 : ', res.data.result);
+                console.log('result 값 : ', res.data.result[0].mail);
                 // 로그인 창에 id/pw가 DB에 있으면 result 안에 회원 정보를 담은 배열 반환
                 // 결과로 받아온 result 배열의 길이가 0이면 로그인 안 된 걸로.
                 if(res.data.result.length === 0){
@@ -57,9 +61,18 @@ export default {
                 }else if(res.data.result.length !== 0){
                     // DB에서 찾으면 cookie에 값을 넣어줌.
                     let date = new Date(Date.now() + 86400e3);
+
+                    let userInformation = {
+                        mail: res.data.result[0].mail,
+                        grant: Number(res.data.result[0].grantion_level)
+                    } 
+                    
+                    localStorage.setItem('userInformation', JSON.stringify(userInformation));
+
+                    console.log('', res.data);
                     date = date.toUTCString();
                     document.cookie = `user=${res.data.token}; expires=` + date;
-                    location.href = '/';
+                    location.replace('/');
                 }
             })
             .catch(err => {console.log(err)})

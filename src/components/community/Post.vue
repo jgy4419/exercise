@@ -2,6 +2,7 @@
     <div class="contain">
         <div id="categoryName">{{$store.state.Community.categoryName}}</div>
         <div class="inner">
+            <router-link class="postUrl" :to="postUrl">
                 <div class="post" v-for="data, i in post.title.length" :key="i"
                 @click="urlChange(post.id[i], post.title[i])">
                     <div class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
@@ -13,6 +14,7 @@
                         <p>{{$store.state.Search.searchValue}}</p>
                     </div>
                 </div>
+            </router-link>
             <div class="btnBox">
                 <button @click="moreData" class="moreBtn">더 보기</button>
             </div>
@@ -38,6 +40,7 @@ export default {
             searchRes: this.$store.state.Search.searchValue,
             postCount: 0,
             category: ['all', 'category1', 'category2', 'category3'],
+            postUrl: '/login',
             // test: this.$store.state.Search.searchRes,
         }
     },
@@ -105,6 +108,7 @@ export default {
     },
     mounted(){
         this.getPost();
+        this.urlChange();
     },
     methods: {
         /* 
@@ -144,7 +148,12 @@ export default {
             console.log(this.postCount);
         },
         urlChange(id, postName){
-            location.href = `/${id}/${postName}`;
+            if(document.cookie){
+                this.postUrl = `/${id}/${postName}`;
+            }else if(!document.cookie){
+                alert("로그인 후 이용 가능합니다.")
+                this.postUrl = '/login';
+            }
         },
         // 데이터 더 보기 버튼 기능.
         moreData(){
@@ -182,59 +191,62 @@ export default {
     }
     .inner{
         position: absolute;
-        display: flex;
-        flex-wrap: wrap;
-        // justify-content: space-between;
-        width: 70vw;
-        height: 100%;
         top: 0;
-        .post{
-            width: 300px;
+        .postUrl{
+            display: flex;
+            flex-wrap: wrap;
+            // justify-content: space-between;
+            width: 70vw;
             height: 100%;
-            box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
-            margin-right: 20px;
-            margin-top: 50px;
-            border-radius: 10px;
-            cursor: pointer;
-            .titleImg{
-                border-radius: 5px;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: 100%;
-                width: 100%;
-                height: 50%;
-                background-color: rgb(184, 184, 184);
-                transition: .3s;
-            }
-            .titleImg:hover{
-                background-size: 120%;
-            }
-            .bottom{
-                width: 90%;
-                margin: auto;
-            }
-            .btnBox{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-top: 40%;
-                .moreBtn{
-                    position: fixed;
-                    bottom: 50px;
-                    left: 0;
-                    right: 0;
-                    margin: auto;
-                    font-size: 16px;
-                    font-weight: 700;
-                    width: 100px;
-                    height: 40px;
-                    border-radius: 30px;
-                    transition: .5s;
-                    cursor: pointer;
-                    background-color: #93B5C6;
-                    color: #fff;
-                    border: 0;
+            .post{
+                width: 300px;
+                height: 300px;
+                box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
+                margin-right: 20px;
+                margin-top: 50px;
+                border-radius: 10px;
+                cursor: pointer;
+                .titleImg{
+                    border-radius: 5px;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: 100%;
+                    width: 100%;
+                    height: 50%;
+                    background-color: rgb(184, 184, 184);
+                    transition: .3s;
                 }
+                .titleImg:hover{
+                    background-size: 120%;
+                }
+                .bottom{
+                    width: 90%;
+                    margin: auto;
+                }
+            }
+        }
+
+        .btnBox{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40%;
+            .moreBtn{
+                position: fixed;
+                bottom: 50px;
+                left: 0;
+                right: 0;
+                margin: auto;
+                font-size: 16px;
+                font-weight: 700;
+                width: 100px;
+                height: 40px;
+                border-radius: 30px;
+                transition: .5s;
+                cursor: pointer;
+                background-color: #93B5C6;
+                color: #fff;
+                border: 0;
             }
         }
     }
@@ -244,15 +256,17 @@ export default {
             font-display: 700;
         }
         .inner{
-            display: block;
-            .post{
-                width: 120%;
-                .title{
-                    font-size: 20px;
-                }
-                p{
-                    font-size: 13px;
-                    font-weight: 500;
+            .postUrl{
+                display: block;
+                .post{
+                    width: 120%;
+                    .title{
+                        font-size: 20px;
+                    }
+                    p{
+                        font-size: 13px;
+                        font-weight: 500;
+                    }
                 }
             }
         }

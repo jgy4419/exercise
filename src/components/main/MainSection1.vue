@@ -7,7 +7,9 @@
                     <br/>
                 </span>
             </p>
-            <button @click="loginOrCommunity()" class="btn">시작하기</button>
+            <router-link :to="startBtn">
+                            <button @click="loginOrCommunity()" class="btn">시작하기</button>
+            </router-link>
         </div>
         <div class="halfBackground"/>
     </div>    
@@ -18,6 +20,7 @@ export default {
     data(){
         return{
             textLine: ['운동을', '과학적으로', '효율적으로'],
+            startBtn: '/community'
         }
     },
     mounted(){
@@ -34,10 +37,8 @@ export default {
             }
         },
         loginOrCommunity(){
-            if(document.cookie){
-                location.href = '/community'
-            }else if(!document.cookie){
-                location.href = '/login'
+            if(!document.cookie){
+                this.startBtn = '/login'
             }
         }
     }   

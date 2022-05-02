@@ -1,30 +1,29 @@
 <template>
-  <header class="header">
-    <nav class="web">
-      <router-link to="/">
-        <p class="logo">오 운 완</p>
-      </router-link>
-      <div class="webMenu">
-        <router-link v-for="url, i in url" :key="i" :to="url">
-            <button class="menuBtn">{{login[i]}}</button>
+    <header class="header">
+      <nav class="web">
+        <router-link to="/">
+          <p class="logo">오 운 완</p>
         </router-link>
-      </div>
-    </nav>
-    <div class="menuListIcon"
-    @click="hamburger()">
-        <div class="line" v-for="a in 3" :key="a"></div>
-    </div>
-    <nav class="mobileMenu">
-        <ul v-for="list, i in login" :key="i">
-          <router-link :to="url[i]">
-            <li class="mobileMenuList">
-                {{list}}
-            </li>
+        <div class="webMenu">
+          <router-link v-for="url, i in url" :key="i" :to="url">
+              <button class="menuBtn">{{login[i]}}</button>
           </router-link>
-        </ul>
-    </nav>
-
-  </header>
+        </div>
+      </nav>
+      <div class="menuListIcon"
+      @click="hamburger()">
+          <div class="line" v-for="a in 3" :key="a"></div>
+      </div>
+      <nav class="mobileMenu">
+          <ul v-for="list, i in login" :key="i">
+            <router-link :to="url[i]">
+              <li class="mobileMenuList">
+                  {{list}}
+              </li>
+            </router-link>
+          </ul>
+      </nav>
+    </header>
   <router-view/>
 </template>
 
@@ -36,8 +35,8 @@
 export default {
   data(){
     return{
-      url: ['/login', '/login/join' ,'/login', '/about'],
-      login: ['login', 'join', 'mypage', 'about']
+      url: ['/login', '/login/join', '/community', '/login', '/about'],
+      login: ['login', 'join', 'community', 'mypage', 'about']
     }
   },
   mounted(){
@@ -48,18 +47,15 @@ export default {
       this.login = [];
       this.url = [];
       // 로그인 유무에 따라 header 메뉴 구성 변경.
-      this.login.push('logout', 'mypage', 'about');
-      this.url.push('/' ,`/mypage/1`, '/about');
+      this.login.push('logout', 'community', 'mypage', 'about');
+      this.url.push('/', '/community', `/mypage/1`, '/about');
       // 로그인 이후 menu[0]번째 즉, logout 버튼을 누르면 웹에서 쿠키 제거 즉, 로그아웃 시켜줌.
       menu[0].addEventListener('click', function(){
         console.log('logout!');
+        localStorage.removeItem('userInformation');
         // 쿠키를 전 시간으로 돌려서 로그아웃 시켜줌.
         document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
-        location.reload();
-      })
-    }else if(!document.cookie){
-      menu[2].addEventListener('click', function(){
-        alert('로그인 후 이용 가능합니다!');
+        location.replace('/');
       })
     }
   },
@@ -110,6 +106,11 @@ export default {
     .logo:hover{
       color: #333;
     }
+    // .webMenu{
+      .menuBtn{
+        font-size: 14px;
+      }
+    // }
     button{
       width: 80px;
       height: 40px;
@@ -224,13 +225,10 @@ export default {
     .webMenu{
       .menuBtn{
         font-size: 12px;
-        width: 60px;
+        width: 80px;
         height: 30px;
       }
     }
-    // .menuBtn{
-    //   width: 100px;
-    // }
   }
    @media screen and (max-width: 768px){
     nav{

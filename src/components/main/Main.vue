@@ -20,6 +20,15 @@ export default {
         Section2,
         Section3,
     },
+    mounted(){
+        if(document.cookie){
+            let getUserInformation = JSON.parse(localStorage.getItem('userInformation'));
+            this.$store.dispatch('User/loginUserAction', {
+                mail: getUserInformation.mail,
+                grant: getUserInformation.grant
+            })
+        }
+    },
     methods: {
         scrollUp(){
             window.scrollTo({

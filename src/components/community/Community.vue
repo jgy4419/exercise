@@ -49,6 +49,12 @@
                                 {{category[i]}}
                             </li>
                         </ul>
+                        <!-- 관리자 카테고리 수정 -->
+                        <div class="setCategory" v-if="manager">
+                            <div v-for="managerInput, i in managerInput" :key="i">
+                                <label for="addCategory">{{managerInput}}</label><input @keyup.enter="categoryAdd()" v-model="categoryVal[i]" id="addCategory"/>
+                            </div>
+                        </div>
                     </aside>
                     <div class="post">
                         <Post 
@@ -62,12 +68,18 @@
 
 <script>
 import Post from './Post.vue';
-
 import {mapState, mapActions} from 'vuex';
+import axios from 'axios';
 // import axios from 'axios';
 export default {
     components: {
         Post,
+    },
+    computed:{
+        ...mapState('Community', ['categoryName', 'categoryState']),
+        ...mapState('Search', ['searchRes']),
+        ...mapState('User', ['storeGrantion_level']),
+        ...mapActions('Community', ['categoryChange']),
     },
     data(){
         return{
@@ -91,10 +103,23 @@ export default {
             menuList: {
                 text: ['MyPage', '설정'],
                 url: ['/mypage/userId', '/settings/userid'],
-            }
+            },
+            manager: false,
+            managerInput: ['카테고리 추가', 'code', 'availability'],
+            categoryVal: ['', '', ''], 
         }
     },
     mounted(){
+        console.log(this.storeGrantion_level);
+        // 로컬스토리지의 유저 정보를 가져옴.
+        // let userInformation = JSON.parse(localStorage.getItem('userInformation'));
+        // 유저 정보 중 grant가 1이면 관리자
+        if(this.storeGrantion_level === 1){ 
+            this.manager = true;
+        }else{
+            this.manager = false;
+        }
+
         // 검색기능 개발 : 검색 input에 text를 입력하면 input 값과, 서버의 title 값과 비교해서 같은 것만 보여줌.
         let roundProfile = document.querySelector('.btn2');
         roundProfile.addEventListener('click', function(){
@@ -102,11 +127,6 @@ export default {
             let menuList = document.querySelector('.menuList');
             menuList.classList.toggle('event');
         })
-    },
-    computed:{
-        ...mapState('Community', ['categoryName', 'categoryState']),
-        ...mapState('Search', ['searchRes']),
-        ...mapActions('Community', ['categoryChange']),
     },
     watch: {
         searchRes(res){
@@ -119,6 +139,17 @@ export default {
             let searchInput = document.querySelector('.searchInput');
             searchInput.classList.toggle('event');
         },
+        categoryAdd(){
+            console.log('category추가 user는', this.$store.state.User.storeMail);
+            axios.post('/api/createBoard', {
+                member_id: this.$store.state.User.storeMail, 
+                board_name: this.categoryVal[0],
+                code: this.categoryVal[1],
+                availability: this.categoryVal[2]
+            })
+            .then(res => {console.log(res)})
+            .catch(err => console.log(err))
+        }
     },
 }
 </script>
@@ -259,6 +290,9 @@ export default {
                 // left: -5%;
                 display: flex;
                 left: 0;
+                .setCategory{
+                    margin-top: 50px;
+                }
                 .category{
                     width: 10vw;
                     .liCategory{

@@ -1,7 +1,7 @@
 <template>
     <div class="contain">
         <div class="inner">
-            <form action="/writeBoard" method="POST" enctype="multipart/form-data">
+            <!-- <form action="/writeBoard" method="POST" enctype="multipart/form-data"> -->
                 <div class="writeHeader">
                     <input type="text" class="title" placeholder="제목을 입력하세요">
                     <hr/>
@@ -23,7 +23,7 @@
                         {{btns}}
                     </button>
                 </div>
-            </form>
+            <!-- </form> -->
         </div>
     </div>
 </template>
@@ -36,13 +36,20 @@ export default {
             btn: {
                 class: ['fa fa-arrow-left', 'submit'],
                 btnName: ['', '올리기'],
-                btnType: ['button', 'submit'],
+                btnType: ['button', 'button'],
             },
             category: ['카테고리1', '카테고리2', '카테고리3'],
             
         }
     },
     mounted() {
+        // 어떤 유저가 들어왔는지 확인.
+        console.log('inUser', this.$store.state.User.storeMail);
+
+        // 글 적은 user
+        let writeUser = this.$store.state.User.storeMail;
+        console.log(writeUser);
+
         const btnClass = document.querySelectorAll('.btn');
         for(let i = 0; i < btnClass.length; i++){
             btnClass[0].addEventListener('click', function(){
@@ -50,18 +57,19 @@ export default {
                 location.href = '/community';
             });
             btnClass[1].addEventListener('click', function(){
-                // let title = document.querySelector('.title');
-                // let category = document.querySelector('.categoryChoice');
-                // // let content = document.querySelector('.note-editable');
-                // let content = document.getElementById('summernote');
+                // 글 제목
+                let title = document.querySelector('.title');
+                let category = document.querySelector('.categoryChoice');
+                // let content = document.querySelector('.note-editable');
+                let content = document.getElementById('summernote');
 
-                // let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
+                let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
                 // write에 적힌 값들
-                // let writeData = {
-
-                // };
-                // DB한테 게시글 정보 보내고, url /community로 변경하기.
-                axios.post('db경로')
+                let writeData = {
+                   writeUser, title, category, content, summernoteContent, 
+                };
+                console.log(writeData);
+                axios.post('/api/createPost', {writeData})
                 // location.href = '/community';
             })
         }
@@ -91,9 +99,6 @@ export default {
             addSpan.setAttribute('class', 'size');
             addSpan.innerHTML('안녕');
             content.appendChild(addSpan);
-        },
-        enterEvent(){
-            
         },
     }
 }
