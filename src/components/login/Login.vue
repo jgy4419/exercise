@@ -30,7 +30,6 @@
 
 <script>
 import axios from 'axios';
-// import {mapState} from 'vuex';
 export default {
     data(){
         return{
@@ -41,9 +40,6 @@ export default {
                 password: ''
             }
         }
-    },
-    computed: {
-        // ...mapState('User', [''])
     },
     methods: {
         login(){
@@ -61,10 +57,17 @@ export default {
                 }else if(res.data.result.length !== 0){
                     // DB에서 찾으면 cookie에 값을 넣어줌.
                     let date = new Date(Date.now() + 86400e3);
-
+                    // 로그인 시 회원 정보 로컬스토리지에 저장.  
                     let userInformation = {
                         mail: res.data.result[0].mail,
-                        grant: Number(res.data.result[0].grantion_level)
+                        grant: Number(res.data.result[0].grantion_level),
+                        user_name: res.data.result[0].user_name,
+                        introduction: res.data.result[0].introduction,
+                        phonenumber: res.data.result[0].phonenumber,
+                        address: res.data.result[0].address,
+                        sex: res.data.result[0].sex,
+                        nickname: res.data.result[0].nickname,
+                        profile_img_path: res.data.result[0].profile_img_path,
                     } 
                     
                     localStorage.setItem('userInformation', JSON.stringify(userInformation));
