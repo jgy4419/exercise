@@ -1,7 +1,8 @@
 <template>
     <div class="contain">
         <div class="detail">
-            <div class="postImg" :style="{backgroundImage: `url(${post.titleImg}`}">
+            <div class="postHeader">
+                <div class="postImg" :style="{backgroundImage: `url(${post.titleImg}`}"/>
                 <div class="user">
                     <p class="title">{{post.title}}</p>
                     <br/>
@@ -24,9 +25,9 @@
             </div>
             <hr/>
             <div class="comment">
-                <label for="commentInput">댓글 쓰기</label><br/>
+                <label for="commentInput">댓글 쓰기</label><br/><br/>
                 <div class="commentBox">
-                    <textarea type="text" v-model="commentInput" placeholder="댓글을 입력해주세요." id="commentInput"/> <br/>
+                    <textarea type="text" v-model="commentInput" placeholder="댓글을 입력해주세요." id="commentInput"/> <br/><br/>
                     <button class="btn" @click="commentUpdate()">게시</button>
                 </div>
             </div>
@@ -108,33 +109,38 @@ export default {
     .detail{
         position: relative;
         margin-top: 3%;
-        .postImg{
+        .postHeader{
             width: 100%;
             height: 300px;
-            background: rgb(227, 227, 227);
-            background-repeat: no-repeat;
-            background-size: cover;
-            filter: brightness(0.70);
-        }
-        .user{
-            position: absolute;
-            width: 80%;
-            margin: auto;
-            left: 0;
-            right: 0;
-            color: #333;
-            .title{
-                color: #fff;
-                font-size: 50px;
-                font-weight: 700;
+            .postImg{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: rgb(227, 227, 227);
+                background-repeat: no-repeat;
+                background-size: cover;
+                filter: brightness(0.70);
             }
-            .information{
-                color: #fff;
-                display: flex;
-                .id{
-                    margin-right: 20px;
+            .user{
+                position: absolute;
+                width: 80%;
+                margin: auto;
+                left: 0;
+                right: 0;
+                color: #333;
+                .title{
+                    color: rgb(239, 239, 239);
+                    font-size: 50px;
+                    font-weight: 700;
                 }
-            }
+                .information{
+                    color: rgb(214, 214, 214);
+                    display: flex;
+                    .id{
+                        margin-right: 20px;
+                    }
+                }
+            }   
         }
     }
     .inner{
@@ -164,7 +170,8 @@ export default {
             height: 30px;
             // display: flex;
             justify-content:space-between;
-            margin-bottom: 100px;
+            margin-bottom: 120px;
+            padding-bottom: 5%;
             .commentBox{
                 #commentInput{
                     width: 100%;

@@ -46,23 +46,15 @@ export default {
         }
     },
     mounted(){
-        // 회원 정보를 불러오기.
-        axios.get('http://localhost:8800/user')
-        .then(res => {
-            console.log(res.data[0]);
-            let getData = res.data[0];
-            this.set.intro[0] = getData.name;
-            this.set.intro[1] = getData.introduction;
-            this.changeData.intro[0] = getData.name;
-            this.changeData.intro[1] = getData.introduction;
-        })
-        .catch(err => {console.log(err)});
+        let userInformation = JSON.parse(localStorage.getItem("userInformation"));
 
-        // input의 img가 변경되면(파일을 업로드 하면) 이미지가 파일에 맞는 이미지로 변경됨.
-        const changeImg = document.getElementById('changeImg');
-        changeImg.addEventListener('change', e => {
-            this.uploadImg(e.target);
-        })
+        if(document.cookie){
+            this.changeImg = userInformation.profile_img_path;
+            this.set.intro[0] = userInformation.nickname;
+            this.set.intro[1] = userInformation.introduction;
+            this.changeData.intro[0] = userInformation.nickname;
+            this.changeData.intro[1] = userInformation.introduction;
+        }
     },
     methods: {
         uploadImg(input){

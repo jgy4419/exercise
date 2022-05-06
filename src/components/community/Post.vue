@@ -2,7 +2,7 @@
     <div class="contain">
         <div id="categoryName">{{$store.state.Community.categoryName}}</div>
         <div class="inner">
-            <router-link class="postUrl" :to="postUrl">
+            <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
                 <div class="post" v-for="data, i in post.title.length" :key="i"
                 @click="urlChange(post.id[i], post.title[i])">
                     <div class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
@@ -84,25 +84,6 @@ export default {
                     }
                 }
             }).catch(err => console.log(err));
-            // 테스트 데이터
-            // axios.get('http://localhost:8800/all')
-            // .then(res => {
-            //     this.post.title = [];
-            //     this.post.id = [];
-            //     this.post.img = [];
-            //     for(let i = 0; i < res.data.length; i++){
-            //         // 전체 게시물 중 검색 내용과 일치하는 것이 있으면 그 데이터들을 뽑아와서 넣어줌.
-            //         if(result === res.data[i].title){
-            //             this.post.title.push(res.data[i].title);
-            //             this.post.id.push(res.data[i].id);
-            //             this.post.img.push(res.data[i].titleImg);
-            //             console.log(res.data[i].title);
-            //         }else if(result === ''){
-            //             this.getPost();
-            //             break;
-            //         }
-            //     }
-            // })
         }
 
     },
@@ -150,9 +131,6 @@ export default {
         urlChange(id, postName){
             if(document.cookie){
                 this.postUrl = `/${id}/${postName}`;
-            }else if(!document.cookie){
-                alert("로그인 후 이용 가능합니다.")
-                this.postUrl = '/login';
             }
         },
         // 데이터 더 보기 버튼 기능.

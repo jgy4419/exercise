@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import Post from './Post.vue'
 export default {
     components: {
@@ -34,16 +33,14 @@ export default {
         }
     },
     mounted(){
-        axios.get('http://localhost:8800/user')
-        .then(res => {
-            console.log(res.data[0]);
-            let data = res.data[0];
-            this.information.img = data.profileImg;
-            this.information.name = data.name;
-            this.information.introduction = data.introduction;
-        }).catch(err => {
-            console.log(err);
-        })
+        // 만약 쿠키가 있으면
+        let userInformation = JSON.parse(localStorage.getItem("userInformation"));
+
+        if(document.cookie){
+            this.information.img = userInformation.profile_img_path;
+            this.information.name = userInformation.nickname;
+            this.information.introduction = userInformation.introduction;
+        }
     }
 }
 </script>

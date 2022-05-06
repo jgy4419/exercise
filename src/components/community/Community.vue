@@ -11,7 +11,7 @@
                         {{searchRest}}
                     </div>
                     <router-link class="url" v-for="url, i in headerUrl" :key="i" :to="url">
-                        <button :class="btnClass[i]">
+                        <button @click="informationUrl()" :class="btnClass[i]">
                             {{header[i]}}
                         </button>
                     </router-link>
@@ -19,7 +19,7 @@
                         <ul>
                             <router-link v-for="url2, i in menuList.url.length" :key="i"
                             :to="menuList.url[i]">
-                                <li>{{menuList.text[i]}}</li>
+                                <li @click="informationUrl()">{{menuList.text[i]}}</li>
                             </router-link>
                         </ul>
                     </div>
@@ -102,7 +102,7 @@ export default {
             propsRes: '',
             menuList: {
                 text: ['MyPage', '설정'],
-                url: ['/mypage/userId', '/settings/userid'],
+                url: ['', ''],
             },
             manager: false,
             managerInput: ['카테고리 추가', 'code', 'availability'],
@@ -127,6 +127,8 @@ export default {
             let menuList = document.querySelector('.menuList');
             menuList.classList.toggle('event');
         })
+
+
     },
     watch: {
         searchRes(res){
@@ -149,6 +151,16 @@ export default {
             })
             .then(res => {console.log(res)})
             .catch(err => console.log(err))
+        },
+        informationUrl(){
+            if(!document.cookie){
+                alert('로그인 후 이용해주세요!')
+                this.headerUrl = ['/login', ''];
+                this.menuList.url = ['/login', '/login'];
+            }else{
+                this.headerUrl = ['/write', ''];
+                this.menuList.url = ['/mypage/userId', '/settings/userid'];
+            }
         }
     },
 }

@@ -23,6 +23,9 @@
                     </div>
                     <input @click="loginCondition()" class="loginBtn" type="submit" value="회원가입">
                     <iframe id="iframe1" name="iframe1" style="display:none"></iframe>
+                    <!-- grant 값 타입변경 부탁하기. -->
+                    <input type="number" class="grant" @click="test" :value="grant" name="grant1" style="display: none"/>
+                    <!-- <input type="number" class="test" @click="test()" name="grant" value = 0 /> -->
                 </form>
             </div>
         </div>
@@ -32,6 +35,10 @@
 <script>
 import axios from 'axios';
 export default {
+    mounted(){
+        // this.grant = Number(this.grant);
+        // console.log(typeof this.grant);
+    },
     data(){
         return{
             name: ['password', 'rePassword', 'name', 'phonenumber', 'address', 'introduction', 'nickname'],
@@ -40,6 +47,8 @@ export default {
             type: ['password','password','text', 'tel', 'text', 'text', 'text'],
             check: false,
             idInput: '',
+            grant: 0,
+
         }
     },
     methods: {
@@ -72,7 +81,7 @@ export default {
                 console.log(res.data.checkid);
                 this.check = res.data.checkid; // true / false 유무
                 if(this.check === false){
-                    alert('중복체크 하세요~!');
+                    alert('아이디 비밀번호가 겹칩니다.');
                     this.check = false;
                 }else if(this.check === true){
                     console.log("aa", this.check);
