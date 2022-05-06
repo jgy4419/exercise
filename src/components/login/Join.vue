@@ -23,9 +23,6 @@
                     </div>
                     <input @click="loginCondition()" class="loginBtn" type="submit" value="회원가입">
                     <iframe id="iframe1" name="iframe1" style="display:none"></iframe>
-                    <!-- grant 값 타입변경 부탁하기. -->
-                    <input type="number" class="grant" @click="test" :value="grant" name="grant1" style="display: none"/>
-                    <!-- <input type="number" class="test" @click="test()" name="grant" value = 0 /> -->
                 </form>
             </div>
         </div>
@@ -43,7 +40,7 @@ export default {
         return{
             name: ['password', 'rePassword', 'name', 'phonenumber', 'address', 'introduction', 'nickname'],
             label: ['비밀번호', '비밀번호 재확인', '이름', '전화번호', '주소', '자기소개', '닉네임'],
-            value: ['비밀번호를 입력하세요 (필수)', '비밀번호를 한번 더 입력해주세요', '이름 (필수)', '전화번호 (필수)', '주소 (필수)', '자기소개', '닉네임'],
+            value: ['비밀번호를 입력하세요 (필수)', '비밀번호를 한번 더 입력해주세요', '이름 (필수)', '전화번호 (필수)', '주소 (필수)', '자기소개', '닉네임(필수)'],
             type: ['password','password','text', 'tel', 'text', 'text', 'text'],
             check: false,
             idInput: '',
@@ -66,7 +63,7 @@ export default {
             }else if(this.check === false){
                 // id 유효성 검사가 되지 않으면
                 alert('id 중복 검사를 다시 해주세요.');
-            }else if(inputs[0].value == "" || inputs[1].value == "" || inputs[3].value == "" || inputs[4].value == "" || inputs[5].value == ""){
+            }else if(inputs[0].value == "" || inputs[1].value == "" || inputs[3].value == "" || inputs[4].value == "" || inputs[5].value == "" || inputs[7].value == ""){
                 // 필수 input에 빈칸 유무
                 alert('(필수) 부분이 비어있습니다!');
             }else{
