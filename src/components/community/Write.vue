@@ -33,6 +33,7 @@
 
 <script>
 import axios from 'axios';
+// import {uploadImg} from '../../../repeatFunc/loadImage';
 export default {
     data(){
         return{
@@ -46,8 +47,10 @@ export default {
         }
     },
     mounted() {
+        let userInformation = JSON.parse(localStorage.getItem("userInformation"));
         // 어떤 유저가 들어왔는지 확인.
-        console.log('inUser', this.$store.state.User.storeMail);
+        // console.log('inUser', this.$store.state.User.storeMail);
+        // console.log('들어온 닉네임', userInformation.nickname);
         // 글 적은 user
         let writeUser = this.$store.state.User.storeMail;
         console.log(writeUser);
@@ -60,21 +63,37 @@ export default {
             });
             btnClass[1].addEventListener('click', function(){
                 // let board_id = this.$store.state.User.storeMail; // user id
-                // let nickName = '닉네임';
+                let nickName = userInformation.nickname;
                 // 글 제목
                 let title = document.querySelector('.title');
-                let category = document.querySelector('.categoryChoice');
+                // let category = document.querySelector('.categoryChoice');
                 let photographic_path = document.querySelector('.writeImage').src;
                 // let content = document.querySelector('.note-editable');
-                let content = document.getElementById('summernote');
+                // let content = document.getElementById('summernote');
 
                 let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
-                // write에 적힌 값들
-                let writeData = {
-                   writeUser, title, category, content, summernoteContent, photographic_path
-                };
-                console.log(writeData);
-                axios.post('/api/createPost', {writeData: writeData});
+                console.log(summernoteContent);
+
+                let frm = new FormData();
+                // form.append({
+                //     'nickname': nickName,
+                //     'title': title,
+                //     'photographic_path': photographic_path,
+                //     'content': summernoteContent
+                // });
+                frm.append('board_id', Number(1));
+                frm.append('nickname', nickName);
+                frm.append('title', title);
+                frm.append('photographic_path', photographic_path);
+                frm.append('content', summernoteContent);
+
+                console.log(frm);
+                axios.post('/api/createPost', frm,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(res => console.log(res))
+                .catch(err => console.log(err))
                 // location.href = '/community';
             });
         }
@@ -111,6 +130,10 @@ export default {
             content.appendChild(addSpan);
         },
         uploadImg(input){
+            // 내일 시간날 때 수정시켜주기.
+            // const changeImage = document.querySelector('.writeImage');
+            // uploadImg(input, changeImage, this.changeImg);
+
             if(input.files && input.files[0]){
                 const reader = new FileReader();
                 reader.onload = e => {

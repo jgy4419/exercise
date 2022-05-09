@@ -21,7 +21,7 @@
                             <option value="여">여</option>
                         </select>
                     </div>
-                    <input @click="loginCondition()" class="loginBtn" type="submit" value="회원가입">
+                    <input @click="loginCondition()" class="loginBtn" type="submit" value="회원가입"/>
                     <iframe id="iframe1" name="iframe1" style="display:none"></iframe>
                 </form>
             </div>

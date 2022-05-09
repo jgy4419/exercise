@@ -57,6 +57,20 @@ export default {
     mounted(){
         // console.log($route.params.id);
         // url의 값을 가져와서 해당 게시글의 글 내용 넣어주기.
+        // axios.get('/api/getPost')
+        // .then(res => {
+        //     console.log(res);
+        //     for(let i = 0; i < res.data.length; i++){
+        //         if(res.data[i].title === this.$route.params.post && res.data[i].nickname === this.$route.params.id){
+        //             this.post.title = res.data[i].title;
+        //             this.post.userId = res.data[i].nickname;
+        //             this.post.postDetail = res.data[i].content;
+        //             this.post.titleImg = res.data[i].photographic_path;
+        //         }
+        //     }
+        // }).catch(err => console.log(err))
+
+        // test 데이터
         axios.get('http://localhost:8800/all')
         .then(res => {
             for(let i = 0; i < res.data.length; i++){
@@ -96,9 +110,24 @@ export default {
             let hours = today.getHours(); // 시
             let minutes = today.getMinutes();  // 분
             let seconds = today.getSeconds();  // 초
-            console.log(`${year}년 ${month}월 ${date}일 ${day} ${hours}시 ${minutes}분 ${seconds}초`);
+
+            let commentDate = `${year}년 ${month}월 ${date}일 ${day} ${hours}시 ${minutes}분 ${seconds}초`;
+            console.log(commentDate);
+
+            // 닉네임
+            let userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            // userInformation.nickname; 유저 닉네임
+            console.log('유저 이름', userInformation.nickname);
+            console.log('댓글 내용', this.commentInput);
+
             // this.commentInput 값을 넣어주기. (유저아이디, 게시글 제목)
-            // axios.post('')
+            // req.body.post_id, req.body.nickname, parent_comments_id, req.ip, req.body.content
+            axios.post('/api/comments', {
+                // post_id: post_id,
+                nickname: userInformation.nickname,
+                content: this.commentInput,
+                date: commentDate
+            })
         }
     }
 }

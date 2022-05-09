@@ -114,7 +114,7 @@ export default {
         // 로컬스토리지의 유저 정보를 가져옴.
         // let userInformation = JSON.parse(localStorage.getItem('userInformation'));
         // 유저 정보 중 grant가 1이면 관리자
-        if(this.storeGrantion_level === 1){ 
+        if(this.storeGrantion_level === 0){ 
             this.manager = true;
         }else{
             this.manager = false;
@@ -142,7 +142,7 @@ export default {
             searchInput.classList.toggle('event');
         },
         categoryAdd(){
-            console.log('category추가 user는', this.$store.state.User.storeMail);
+            // console.log('category추가 user는', this.$store.state.User.storeMail);
             axios.post('/api/createBoard', {
                 member_id: this.$store.state.User.storeMail, 
                 board_name: this.categoryVal[0],
