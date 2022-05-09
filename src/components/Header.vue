@@ -57,6 +57,13 @@ export default {
         document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
         location.replace('/');
       })
+    }else if(!document.cookie){
+      this.login = [];
+      this.url = [];
+      // 로그인 유무에 따라 header 메뉴 구성 변경.
+      this.login.push('login', 'join', 'community', 'mypage', 'about');
+      this.url.push('/login', '/login/join', '/community', '/login', '/about');
+        // localStorage.removeItem('userInformation');
     }
   },
   methods: {

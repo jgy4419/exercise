@@ -35,7 +35,6 @@
                         <label>{{password.label[i]}}</label><input class="passwordInput" :type="password.type[i]"/><br/>
                         <button class="passwordCheck btn" :style="{display: `${password.display[i]}`}">{{password.checkBtn[i]}}</button>
                     </div>
-                    <!-- <button class="btn">저장하기</button> -->
                 </div>
             </div>
         </div>
@@ -57,7 +56,7 @@ export default {
             },
             changeImg: '',
             password: {
-                checkBtn: ['확인하기', '', '저장하기'],
+                checkBtn: ['확인하기', '', '변경하기'],
                 label: ['기존 비밀번호를 입력해주세요', '새로운 비밀번호를 입력해주세요', '비밀번호를 한 번 더 입력해주세요'],
                 display:['block', 'none', 'block'],
                 type: ['password', 'password', 'password'],
@@ -99,6 +98,10 @@ export default {
                     console.log(res)
                 })
                 .catch(err => console.log(err));
+                localStorage.removeItem('userInformation');
+                document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
+                location.replace('/');
+                // location.reload();
             }else{
                 alert('비밀번호가 다릅니다!');
             }
@@ -179,12 +182,7 @@ export default {
     text-decoration: underline;
 }
 .contain {
-    // background: linear-gradient(
-    //     to bottom right,
-    //     #FFDEF2, #E6F0FF
-    // );
     width: 100vw;
-    // height: 900px;
     .inner{
         margin: auto;
         width: 700px;
@@ -313,9 +311,11 @@ export default {
                     display: flex;
                     justify-content: space-between;
                     margin-top: 20px;
-                    input{
+                    .passwordInput{
                         position: absolute;
+                        // width: 150px;
                         right: 8%;
+                        border-radius: 5px;
                     }
                     .btn{
                         margin-top: 8%;
