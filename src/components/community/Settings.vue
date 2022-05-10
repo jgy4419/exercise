@@ -84,7 +84,7 @@ export default {
         passwordCheckBtn[0].addEventListener('click', function(){
             console.log(passwordInput[0].value)
             if(passwordInput[0].value === '123'){
-                alert('비밀번호가 일치합니다.')
+                alert('비밀번호가 일치합니다!')
                 state = true;
             }else{
                 alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
