@@ -159,7 +159,7 @@ export default {
                 this.menuList.url = ['/login', '/login'];
             }else{
                 this.headerUrl = ['/write', ''];
-                this.menuList.url = ['/mypage/userId', '/settings/userid'];
+                this.menuList.url = ['/mypage', '/settings'];
             }
         }
     },

@@ -14,11 +14,16 @@
                 </div>
             </div>
         </div>
+        <Footer/>
     </div>    
 </template>
 
 <script>
+import Footer from '../Footer.vue';
 export default {
+    components: {
+        Footer,
+    },
     data(){
         return{
             profile: ['https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4'],
@@ -33,23 +38,29 @@ export default {
 <style lang="scss" scoped>
 .contain{
     width: 100vw;
+    height: 500px;
     .inner{
         position: relative;
         z-index: 10;
         padding-top: 5%;
-        width: 700px;
+        width: 800px;
         margin: auto;
         p{
-            font-size: 30px;
+            font-size: 25px;
             font-weight: 700;
         }
+        p:nth-child(2){
+            color: rgb(168, 168, 168);
+        }
         .line{
-            width: 120px;
+            width: 90px;
+            margin-left: 2px;
             height: 3px;
             background-color: #333;
         }
         .users{
             width: 100%;
+            right: 0;
             display: flex;
             justify-content: space-between;
             .devUser{
@@ -58,13 +69,11 @@ export default {
                 width: 100%;
                 height: 300px;
                 .profileImg{
-                    text-align: center;
                     width: 150px;
                     border-radius: 10px;
-                    // border: 3px solid rgb(227, 227, 227);
                 }
                 p{
-                    font-size: 20px;
+                    font-size: 15px;
                     font-weight: 700;
                     margin-top: 20px;
                 }
@@ -73,6 +82,35 @@ export default {
     }
     .footer{
         margin-top: 50px;
+    }
+    @media screen and (max-width: 800px){
+        .inner{
+            width: 400px;
+            .users{
+                display: block;
+            }
+        }
+    }
+    @media screen and (max-width: 400px){
+        .inner{
+            width: 200px;
+            p{
+                text-align: center;
+                font-size: 20px;
+            }
+            .line{
+                margin: auto;
+            }
+            .users{
+                .devUser{
+                    .textIntroduction{
+                        p{
+                            font-size: 15px;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 </style>

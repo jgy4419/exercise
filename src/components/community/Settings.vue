@@ -87,11 +87,11 @@ export default {
 
             axios.post("/api/checkPassword", {password: passwordInput[0].value, mail: userInformation.mail})
             .then(res => {
-                console.log(res.data);
+                console.log(res.data.checkid);
 
-                if(res.data.checkPassword){
+                if(res.data.checkid === true){
                     alert('비밀번호가 일치합니다.')
-                    state = true;
+                    state = res.data.checkid;
                 }else{
                     alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
                 }

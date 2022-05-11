@@ -2,7 +2,7 @@
     <div>
         <div class="container">
             <div class="inner">
-                <form action="/searchid" method="post" class="login"> 
+                <form action="/api/findId" method="post" class="login"> 
                     <p>아이디 찾기</p>
                     <div class="inputBox" v-for="value, i in value" :key="i">
                         <!-- <label for="input">{{label[i]}}</label> -->
@@ -11,11 +11,11 @@
                     <input @onClick="searchId()" class="loginBtn" type="submit" value="찾기">
                 </form>
                 <ul class="loginList">
-                        <li v-for="loginList, i in loginList" :key="i">
-                            <router-link :to = route[i]>
-                                {{loginList}}
-                            </router-link>
-                        </li>
+                    <li v-for="loginList, i in loginList" :key="i">
+                        <router-link :to = route[i]>
+                            {{loginList}}
+                        </router-link>
+                    </li>
                 </ul>
             </div>
         </div>

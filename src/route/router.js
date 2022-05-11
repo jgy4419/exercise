@@ -69,12 +69,12 @@ const routes = [
       component: Write
     },
     {
-      path: "/myPage/:id",
+      path: "/myPage",
       name: "MyPage",
       component: MyPage
     },
     {
-      path: "/settings/:id",
+      path: "/settings",
       name: "Settings",
       component: Settings
     },

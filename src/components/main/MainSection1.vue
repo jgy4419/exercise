@@ -8,7 +8,7 @@
                 </span>
             </p>
             <router-link :to="startBtn">
-                <button @click="loginOrCommunity()" class="btn">시작하기</button>
+                <button @click="loginOrCommunity()" class="btn">페이지 소개</button>
             </router-link>
         </div>
         <div class="halfBackground"/>
@@ -20,7 +20,7 @@ export default {
     data(){
         return{
             textLine: ['운동을', '과학적으로', '효율적으로'],
-            startBtn: '/community'
+            startBtn: '/about'
         }
     },
     mounted(){
@@ -36,11 +36,11 @@ export default {
                 }, 300);
             }
         },
-        loginOrCommunity(){
-            if(!document.cookie){
-                this.startBtn = '/login'
-            }
-        }
+        // loginOrCommunity(){
+        //     if(!document.cookie){
+        //         this.startBtn = '/login'
+        //     }
+        // }
     }   
 }
 </script>
