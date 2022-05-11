@@ -8,7 +8,7 @@
                 </span>
             </p>
             <router-link :to="startBtn">
-                            <button @click="loginOrCommunity()" class="btn">시작하기</button>
+                <button @click="loginOrCommunity()" class="btn">시작하기</button>
             </router-link>
         </div>
         <div class="halfBackground"/>

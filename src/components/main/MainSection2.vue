@@ -2,8 +2,9 @@
     <div class="contain">
         <div class="inner">
             <div class="text">
-                <p class="title">혼자가기 무서울 때.</p>
+                <p class="title"><span class="importantText">오</span>늘 <span class="importantText">운</span>동 <span class="importantText">완</span>료했니?</p>
                 <span class="textInner">
+                    <!-- 저희 '오늘 운동 완료했니'는 하루동안  -->
                     혼자 운동하기 무섭거나 어려운 사람들은 같이 운동할 사람들을 
                     구할 수 있고,  <br/><br/>운동하는 방법이나, 노하우를 
                     다른 사람들이 작성한 것들을 참고해서 효과적인 운동이 가능합니다.

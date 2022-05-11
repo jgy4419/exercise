@@ -35,6 +35,7 @@
                         <label>{{password.label[i]}}</label><input class="passwordInput" :type="password.type[i]"/><br/>
                         <button class="passwordCheck btn" :style="{display: `${password.display[i]}`}">{{password.checkBtn[i]}}</button>
                     </div>
+                    <!-- <button class="btn">저장하기</button> -->
                 </div>
             </div>
         </div>
@@ -56,7 +57,7 @@ export default {
             },
             changeImg: '',
             password: {
-                checkBtn: ['확인하기', '', '변경하기'],
+                checkBtn: ['확인하기', '', '저장하기'],
                 label: ['기존 비밀번호를 입력해주세요', '새로운 비밀번호를 입력해주세요', '비밀번호를 한 번 더 입력해주세요'],
                 display:['block', 'none', 'block'],
                 type: ['password', 'password', 'password'],
@@ -83,25 +84,28 @@ export default {
         console.log(state);
         passwordCheckBtn[0].addEventListener('click', function(){
             console.log(passwordInput[0].value)
-            if(passwordInput[0].value === '123'){
-                alert('비밀번호가 일치합니다!')
-                state = true;
-            }else{
-                alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
-            }
+
+            axios.post("/api/checkPassword", {password: passwordInput[0].value, mail: userInformation.mail})
+            .then(res => {
+                console.log(res.data);
+
+                if(res.data.checkPassword){
+                    alert('비밀번호가 일치합니다.')
+                    state = true;
+                }else{
+                    alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+                }
+            })
+            .catch(err => console.log(err));
         });
         passwordCheckBtn[2].addEventListener('click', function(){
             if(passwordInput[1].value === passwordInput[2].value && state === true){
                 alert('수정되었습니다! 재 로그인 해주세요.');
-                axios.patch('/api/updateMyInfo', {password: passwordInput[2].value})
+                axios.patch('/api/updatePassword', {password: passwordInput[2].value, mail: userInformation.mail})
                 .then(res => {
                     console.log(res)
                 })
                 .catch(err => console.log(err));
-                localStorage.removeItem('userInformation');
-                document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
-                location.replace('/');
-                // location.reload();
             }else{
                 alert('비밀번호가 다릅니다!');
             }
@@ -182,7 +186,12 @@ export default {
     text-decoration: underline;
 }
 .contain {
+    // background: linear-gradient(
+    //     to bottom right,
+    //     #FFDEF2, #E6F0FF
+    // );
     width: 100vw;
+    // height: 900px;
     .inner{
         margin: auto;
         width: 700px;
@@ -311,11 +320,9 @@ export default {
                     display: flex;
                     justify-content: space-between;
                     margin-top: 20px;
-                    .passwordInput{
+                    input{
                         position: absolute;
-                        // width: 150px;
                         right: 8%;
-                        border-radius: 5px;
                     }
                     .btn{
                         margin-top: 8%;

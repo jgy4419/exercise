@@ -35,8 +35,8 @@
 export default {
   data(){
     return{
-      url: ['/login', '/login/join', '/community', '/login', '/about'],
-      login: ['login', 'join', 'community', 'mypage', 'about']
+      url: ['/community', '/login', '/about', '/login', '/login/join'],
+      login: ['community', 'mypage', 'about', 'login', 'join']
     }
   },
   mounted(){
@@ -47,10 +47,10 @@ export default {
       this.login = [];
       this.url = [];
       // 로그인 유무에 따라 header 메뉴 구성 변경.
-      this.login.push('logout', 'community', 'mypage', 'about');
-      this.url.push('/', '/community', `/mypage/1`, '/about');
+      this.login.push('community', 'mypage', 'about', 'logout');
+      this.url.push('/community', `/mypage/1`, '/about', '/');
       // 로그인 이후 menu[0]번째 즉, logout 버튼을 누르면 웹에서 쿠키 제거 즉, 로그아웃 시켜줌.
-      menu[0].addEventListener('click', function(){
+      menu[3].addEventListener('click', function(){
         console.log('logout!');
         localStorage.removeItem('userInformation');
         // 쿠키를 전 시간으로 돌려서 로그아웃 시켜줌.
@@ -61,8 +61,8 @@ export default {
       this.login = [];
       this.url = [];
       // 로그인 유무에 따라 header 메뉴 구성 변경.
-      this.login.push('login', 'join', 'community', 'mypage', 'about');
-      this.url.push('/login', '/login/join', '/community', '/login', '/about');
+      this.login.push('community', 'mypage', 'about', 'login', 'join');
+      this.url.push('/community', '/login', '/about', '/login', '/login/join');
         // localStorage.removeItem('userInformation');
     }
   },
@@ -124,9 +124,10 @@ export default {
       background-color: transparent;
       color: rgb(89, 89, 89);
       border-radius: 30px;
-      border: 1px solid #333;
+      // border: 1px solid #333;
+      border: 0;
       margin-left: 10px;
-      transition: .5s;
+      transition: .2s;
       font-size: 16px;
       cursor: pointer;
     }

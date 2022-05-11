@@ -1,31 +1,20 @@
 <template>
+<!-- 개발 이미지 https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgqMWlHPNXtvmxdsi92K0UkXS9UYMFlPatJA&usqp=CAU -->
     <div class="contain">
-        <div class="inner">
-            <div class="devUser" v-for="name, i in name" :key="i">
-                <img class="profileImg" :src="profile[i]"/>
-                <div class="textIntroduction">
-                    <p>Name : {{name}}</p>
-                    <p>Dev : {{dev[i]}}</p>
-                    <p>Email : {{email[i]}}</p>
-                </div>
-            </div>
-        </div>
+        <AboutSection1 class="aboutSection1" />
+        <AboutSection2 class="aboutSection2" />
         <Footer class="footer"/>
     </div>
 </template>
 
 <script>
+import AboutSection1 from './AboutSection1.vue';
+import AboutSection2 from './AboutSection2.vue';
 import Footer from '../Footer.vue';
 export default {
-    data(){
-        return{
-            profile: ['https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4'],
-            name: ['정규영', '박세승', '문정환'],
-            dev: ['FrontEnd', 'Backend', 'Backend'],
-            email: ['jgy_98@naver.com', 'abc@naver.com', 'def@naver.com'],
-        }
-    },
     components: {
+        AboutSection1,
+        AboutSection2,
         Footer,
     }
 }
@@ -34,29 +23,12 @@ export default {
 <style lang="scss" scoped>
 .contain{
     width: 100vw;
-    .inner{
-        padding-top: 5%;
-        width: 700px;
-        margin: auto;
-        .devUser{
-            text-align: center;
-            margin-top: 30px;
-            width: 100%;
-            height: 300px;
-            .profileImg{
-                width: 150px;
-                border-radius: 50%;
-                border: 3px solid rgb(227, 227, 227);
-            }
-            p{
-                font-size: 20px;
-                font-weight: 700;
-                margin-top: 20px;
-            }
-        }
+    // height: 700;
+    .aboutSection1{
+        height: 70vh;
     }
-    .footer{
-        margin-top: 50px;
+    .abountSection2{
+        height: 50vh;
     }
 }
 </style>
