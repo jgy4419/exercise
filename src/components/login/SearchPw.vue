@@ -25,8 +25,8 @@
 export default {
     data(){
         return{
-            value: ['아이디를 입력하세요', '이름', 'Email', '휴대폰 번호'],
-            type: ['text', 'text', 'email', 'tel'],
+            value: ['email', '이름', '휴대폰 번호'],
+            type: ['email', 'text', 'tel'],
             loginList: ['로그인', '회원가입', '아이디 찾기'],
             route: ['/login', '/login/Join', '/login/SearchId']
         }

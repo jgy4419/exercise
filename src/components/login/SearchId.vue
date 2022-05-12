@@ -2,14 +2,16 @@
     <div>
         <div class="container">
             <div class="inner">
-                <form action="/api/findId" method="post" class="login"> 
+                <!-- <form action="/api/findId" method="post" class="login">  -->
+                <div class="login">
                     <p>아이디 찾기</p>
                     <div class="inputBox" v-for="value, i in value" :key="i">
                         <!-- <label for="input">{{label[i]}}</label> -->
-                        <input id="input" :name = name[i] :type = type[i] :placeholder = value>
+                        <input class="input" :name = name[i] :type = type[i] :placeholder = value>
                     </div>
-                    <input @onClick="searchId()" class="loginBtn" type="submit" value="찾기">
-                </form>
+                    <button @click="searchId()" class="loginBtn">찾기</button>
+                </div>
+                <!-- </form> -->
                 <ul class="loginList">
                     <li v-for="loginList, i in loginList" :key="i">
                         <router-link :to = route[i]>
@@ -23,10 +25,11 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data(){
         return{
-            name: ['name', 'tel'],
+            name: ['user_name', 'phonenumber'],
             label: ['이름', '전화번호'],
             value: ['이름을 입력하세요', '전화번호'],
             type: ['text', 'tel'],
@@ -34,9 +37,18 @@ export default {
             route: ['/login', '/login/Join', '/login/SearchPw']
         }
     },
-    searchId(){
-        // DB에서 던져준 값이 true(1)이면 이름을 가지고 와서 넣어줌. 아니면 잘 못 입력했다고 오류 메시지 넘기기.
-
+    methods: {
+        searchId(){
+            const input = document.querySelectorAll('.input');
+            axios.post('/api/findId', {
+                user_name: input[0].value,
+                phonenumber: input[1].value
+            }).then(res => {
+                console.log(res);
+            }).catch(err => {
+                console.log(err);
+            })
+        }
     }
 }
 </script>
@@ -60,7 +72,7 @@ export default {
         }
         .login{
             text-align: center;
-            input{
+            input, .loginBtn{
                 font-size: 15px;
                 width: 300px;
                 height: 50px;

@@ -12,7 +12,7 @@
                         <input type="password" v-model="logins.password" name="password" placeholder="비밀번호를 입력하세요!"/>
                     </div>
                     <!-- <router-link to="/community"> -->
-                        <button @click="login()" class="loginBtn">로그인</button>
+                    <button @click="login()" class="loginBtn">로그인</button>
                     <!-- </router-link> -->
                 <!-- </form> -->
                 </div>
