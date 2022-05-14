@@ -103,6 +103,10 @@ export default {
                 alert('수정되었습니다! 재 로그인 해주세요.');
                 axios.patch('/api/updatePassword', {password: passwordInput[2].value, mail: userInformation.mail})
                 .then(res => {
+                    localStorage.removeItem('userInformation');
+                    // 쿠키를 전 시간으로 돌려서 로그아웃 시켜줌.
+                    document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
+                    location.replace('/');
                     console.log(res)
                 })
                 .catch(err => console.log(err));

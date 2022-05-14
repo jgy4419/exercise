@@ -15,7 +15,7 @@
                 <p class="introductionTitle">페이지 소개</p>
                 <hr/>
                 <div class="introduction1">
-                    저희 <span class="importantText">오운완</span>은 사용자들이 오늘은 어떤 운동을 했는지 기록하고 공유하는 사이트입니다. <br/><br/>
+                    저희 <span class="importantText">오운완</span>은 <b>오늘 운동 완료했니?</b>의 줄임말로, 사용자들이 오늘은 어떤 운동을 했는지 기록하고 공유하는 사이트입니다. <br/><br/>
                     처음에 운동하기 어려워하는 사람들은 회원들이 어떻게 운동을 했는지나 노하우 등을 서로 공유하면서 <b>모든 사람들이 운동을 쉽게 접근 가능</b>하도록 하는 것이 목표입니다. <br/>
                 </div>
             </div>

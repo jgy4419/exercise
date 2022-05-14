@@ -167,8 +167,8 @@ input, textarea{
             display: flex;
         }
         .writeImage{
-            width: 50vw;
-            // height: 50px;
+            width: 300px;
+            aspect-ratio: 16 / 9;
         }
         .title, #content{
             width: 70%;

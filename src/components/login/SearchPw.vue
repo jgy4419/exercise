@@ -2,13 +2,15 @@
     <div>
         <div class="container">
             <div class="inner">
-                <form action="/searchid" method="post" class="login"> 
+                <!-- <form action="/searchid" method="post" class="login">  -->
+                <div class="login">
                     <p>비밀번호 찾기</p>
                     <div v-for="value, i in value" :key="i">
-                        <input :type = type[i] :placeholder = value>
+                        <input class="inputValue" :type = type[i] :placeholder = value>
                     </div>
-                    <input class="loginBtn" type="submit" value="찾기">
-                </form>
+                    <button class="searchPwBtn" @click="searchPw()">찾기</button>
+                </div>
+                <!-- </form> -->
                 <ul class="loginList">
                         <li v-for="loginList, i in loginList" :key="i">
                             <router-link :to = route[i]>
@@ -22,6 +24,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data(){
         return{
@@ -29,6 +32,26 @@ export default {
             type: ['email', 'text', 'tel'],
             loginList: ['로그인', '회원가입', '아이디 찾기'],
             route: ['/login', '/login/Join', '/login/SearchId']
+        }
+    },
+    methods: {
+        searchPw(){
+            const input = document.querySelectorAll('.inputValue');
+            console.log(input[0].value);
+            console.log(input[1].value);
+            console.log(input[2].value);
+            axios.get('/api/findPassword', {
+                params: {
+                    mail: input[0].value,
+                    uesr_name: input[1].value,
+                    phonenumber: input[2].value
+                }}, {withCredentials: true}
+            ).then(res => {
+                alert('비밀번호는' + res.data[0].password + '입니다!');
+            }).catch(err => {
+                alert('정보가 잘 못 되었습니다.');
+                console.log(err);
+            })
         }
     }
 }
@@ -53,7 +76,7 @@ export default {
         }
         .login{
             text-align: center;
-            input{
+            input, .searchPwBtn{
                 font-size: 15px;
                 width: 300px;
                 height: 50px;
@@ -62,7 +85,7 @@ export default {
                 border: 2px solid rgb(181, 181, 181);
                 padding-left: 10px;
             }
-            .loginBtn{
+            .searchPwBtn{
                 background-color: #93B5C6;
                 color: #fcf3f3;
                 font-weight: 900;
@@ -71,7 +94,7 @@ export default {
                 transition: .3s;
                 cursor: pointer;
             }
-            .loginBtn:hover{
+            .searchPwBtn:hover{
                 // box-sizing: border-box;
                 // border: 2px solid #FFE3E3;
                 background-color: #6d84c9;

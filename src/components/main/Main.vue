@@ -71,7 +71,7 @@ export default {
             font-size: 16px;
             border: 0;
             // border: 3px solid rgb(220, 220, 220);
-            box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
+            box-shadow: 0px 2px 10px 0px rgb(231, 231, 231);
             border-radius: 10px;
         }
     }

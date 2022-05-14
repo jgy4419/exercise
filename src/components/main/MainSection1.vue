@@ -8,7 +8,7 @@
                 </span>
             </p>
             <router-link :to="startBtn">
-                <button @click="loginOrCommunity()" class="btn">페이지 소개</button>
+                <button @click="loginOrCommunity()" class="btn">오운완이란?</button>
             </router-link>
         </div>
         <div class="halfBackground"/>

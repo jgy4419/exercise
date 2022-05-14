@@ -36,7 +36,7 @@ export default {
   data(){
     return{
       url: ['/community', '/login', '/about', '/login', '/login/join'],
-      login: ['community', 'mypage', 'about', 'login', 'join']
+      login: ['community', 'mypage', '오운완?', 'login', 'join']
     }
   },
   mounted(){
@@ -47,7 +47,7 @@ export default {
       this.login = [];
       this.url = [];
       // 로그인 유무에 따라 header 메뉴 구성 변경.
-      this.login.push('community', 'mypage', 'setting', 'about', 'logout');
+      this.login.push('community', 'mypage', 'setting', '오운완?', 'logout');
       this.url.push('/community', `/mypage`, '/settings', '/about', '/');
       // 로그인 이후 menu[0]번째 즉, logout 버튼을 누르면 웹에서 쿠키 제거 즉, 로그아웃 시켜줌.
       menu[4].addEventListener('click', function(){
@@ -61,7 +61,7 @@ export default {
       this.login = [];
       this.url = [];
       // 로그인 유무에 따라 header 메뉴 구성 변경.
-      this.login.push('community', 'mypage', 'about', 'login', 'join');
+      this.login.push('community', 'mypage', '오운완?', 'login', 'join');
       this.url.push('/community', '/login', '/about', '/login', '/login/join');
         // localStorage.removeItem('userInformation');
     }
@@ -115,7 +115,9 @@ export default {
     }
     // .webMenu{
       .menuBtn{
+        width: 100px;
         font-size: 14px;
+        font-weight: 700;
       }
     // }
     button{

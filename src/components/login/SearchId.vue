@@ -40,12 +40,17 @@ export default {
     methods: {
         searchId(){
             const input = document.querySelectorAll('.input');
-            axios.post('/api/findId', {
-                user_name: input[0].value,
-                phonenumber: input[1].value
-            }).then(res => {
-                console.log(res);
+            console.log(input[0].value);
+            console.log(input[1].value);
+            axios.get('/api/findId', {
+                params: {
+                    uesr_name: input[0].value,
+                    phonenumber: input[1].value
+                }}, {withCredentials: true}
+            ).then(res => {
+                alert('아이디는' + res.data[0].mail + '입니다!');
             }).catch(err => {
+                alert('정보가 잘 못 되었습니다.');
                 console.log(err);
             })
         }
