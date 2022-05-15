@@ -41,6 +41,7 @@ export default {
     data(){
         return{
             post: {
+                board_id: 0,
                 title: '',
                 titleImg: '',
                 userId: '',
@@ -55,28 +56,30 @@ export default {
         }
     },
     mounted(){
-        // console.log($route.params.id);
-        // url의 값을 가져와서 해당 게시글의 글 내용 넣어주기.
-        // axios.get('/api/getPost')
-        // .then(res => {
-        //     console.log(res);
-        //     for(let i = 0; i < res.data.length; i++){
-        //         if(res.data[i].title === this.$route.params.post && res.data[i].nickname === this.$route.params.id){
-        //             this.post.title = res.data[i].title;
-        //             this.post.userId = res.data[i].nickname;
-        //             this.post.postDetail = res.data[i].content;
-        //             this.post.titleImg = res.data[i].photographic_path;
-        //         }
-        //     }
-        // }).catch(err => console.log(err))
+        // 백엔드에서 직접 게시글 가져오기.
+        axios.get('/api/getPost', {
+            params: {
+                user_id: this.$route.params.id,
+                board_id: this.$route.params.post
+            }}, {withCredentials: true}
+        ).then(res => {
+            console.log(res);
+            console.log(this.$route.params);
+            // if(this.$route.params.id === res.data[i].user_id && this.$route.params.post == res.data[i].board_id){
+            //     this.post.title = res.data[i].title;
+            //     this.post.userId = res.data[i].nickname;
+            //     this.post.postDetail = res.data[i].content;
+            //     this.post.titleImg = res.data[i].photographic_path;
+            // }
+        }).catch(err => console.log(err))
 
         // test 데이터
         axios.get('http://localhost:8800/all')
         .then(res => {
+            console.log(res.data);
             for(let i = 0; i < res.data.length; i++){
-                console.log(res.data[i]);
-                console.log(res.data[i].id);
-                if(this.$route.params.post === res.data[i].title && this.$route.params.id === res.data[i].id){
+                if(this.$route.params.id === res.data[i].id && this.$route.params.post == res.data[i].board_id){
+                    this.post.board_id = res.data[i].board_id;
                     this.post.title = res.data[i].title;
                     this.post.userId = res.data[i].id;
                     this.post.postDetail = res.data[i].postWrite;
@@ -102,7 +105,6 @@ export default {
         commentUpdate(){
             // 현재 날짜, 시간 가져오기
             let today = new Date();   
-
             let year = today.getFullYear(); // 년도
             let month = today.getMonth() + 1;  // 월
             let date = today.getDate();  // 날짜

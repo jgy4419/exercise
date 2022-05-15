@@ -4,11 +4,12 @@
         <div class="inner">
             <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
                 <div class="post" v-for="data, i in post.title.length" :key="i"
-                @click="urlChange(post.id[i], post.title[i])">
+                @click="urlChange(post.user_id[i], post.post_id[i])">
                     <div class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
                     <div class="bottom">
+                        <p>글 ID: {{post.post_id[i]}}</p>
                         <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
-                        <p>닉네임 / 아이디 : {{post.id[i]}}</p>
+                        <p>닉네임 / 아이디 : {{post.user_id[i]}}</p>
                         <p>날짜: {{post.date[i]}}</p>
                         {{searchRes}}
                         <p>{{$store.state.Search.searchValue}}</p>
@@ -33,7 +34,8 @@ export default {
             post: {
                 img: [],
                 title: [],
-                id: [],
+                user_id: [],
+                post_id: [],
                 date: [],
                 postWrite: [],
             },
@@ -74,8 +76,9 @@ export default {
 
                 for(let i = 0; i < res.data.length; i++){
                     console.log('결과로 나온 제목', res.data[i].title);
+                    this.post.post_id.push(res.data[i].board_id);
                     this.post.title.push(res.data[i].title);
-                    this.post.id.push(res.data[i].nickname);
+                    this.post.user_id.push(res.data[i].nickname);
                     this.post.date.push(res.data[i].creation_datetime)
                     // this.post.img.push(res.data[i].titleImg);
                     if(result === ''){
@@ -107,8 +110,9 @@ export default {
                 if(res.data.length < 10){
                     console.log('10개 이하', res.data.length);
                     for(let i = 0; i < res.data.length;  i++){
+                        this.post.post_id.push(res.data[i].board_id);
                         this.post.title.push(res.data[i].title);
-                        this.post.id.push(res.data[i].id)
+                        this.post.user_id.push(res.data[i].id)
                         this.post.img.push(res.data[i].titleImg);
                         this.postCount += 1;
                         console.log(this.postCount);
@@ -117,8 +121,9 @@ export default {
                     // 총 게시물이 10개가 넘으면 10개 까지만 불러오기.
                     console.log('10개 이상', res.data.length);
                     for(let i = 0; i < 10; i++){
+                        this.post.post_id.push(res.data[i].board_id);
                         this.post.title.push(res.data[i].title);
-                        this.post.id.push(res.data[i].id)
+                        this.post.user_id.push(res.data[i].id)
                         this.post.img.push(res.data[i].titleImg);
                         this.postCount += 1;
                         console.log(this.postCount);
@@ -128,9 +133,9 @@ export default {
             .catch(err => {console.log(err)});
             console.log(this.postCount);
         },
-        urlChange(id, postName){
+        urlChange(userId, postId){
             if(document.cookie){
-                this.postUrl = `/${id}/${postName}`;
+                this.postUrl = `/${userId}/${postId}`;
             }
         },
         // 데이터 더 보기 버튼 기능.

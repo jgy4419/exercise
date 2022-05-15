@@ -110,6 +110,11 @@ export default {
         }
     },
     mounted(){
+        // community 페이지에 돌아오거면 검색 창 빈칸으로 변경시켜주기.
+        this.$store.dispatch('Search/searchAction', {
+            inputRes: ''
+        })
+
         console.log(this.storeGrantion_level);
         // 로컬스토리지의 유저 정보를 가져옴.
         // let userInformation = JSON.parse(localStorage.getItem('userInformation'));
