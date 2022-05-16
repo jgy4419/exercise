@@ -57,12 +57,8 @@ export default {
     },
     mounted(){
         // 백엔드에서 직접 게시글 가져오기.
-        axios.get('/api/getPost', {
-            params: {
-                user_id: this.$route.params.id,
-                board_id: this.$route.params.post
-            }}, {withCredentials: true}
-        ).then(res => {
+        axios.get('/api/getPost')
+        .then(res => {
             console.log(res);
             console.log(this.$route.params);
             // if(this.$route.params.id === res.data[i].user_id && this.$route.params.post == res.data[i].board_id){
