@@ -57,33 +57,46 @@ export default {
     },
     mounted(){
         // 백엔드에서 직접 게시글 가져오기.
-        axios.get('/api/getPost')
+        axios.get('/api/getPost', {params: {board_id: 1, limit: 0}})
         .then(res => {
-            console.log(res);
-            console.log(this.$route.params);
-            // if(this.$route.params.id === res.data[i].user_id && this.$route.params.post == res.data[i].board_id){
-            //     this.post.title = res.data[i].title;
-            //     this.post.userId = res.data[i].nickname;
-            //     this.post.postDetail = res.data[i].content;
-            //     this.post.titleImg = res.data[i].photographic_path;
-            // }
-        }).catch(err => console.log(err))
-
-        // test 데이터
-        axios.get('http://localhost:8800/all')
-        .then(res => {
-            console.log(res.data);
+            console.log(res)
             for(let i = 0; i < res.data.length; i++){
-                if(this.$route.params.id === res.data[i].id && this.$route.params.post == res.data[i].board_id){
-                    this.post.board_id = res.data[i].board_id;
+                if(this.$route.params.id === res.data[i].nickname && this.$route.params.board == res.data[i].board_id && this.$route.params.post == res.data[i].post_id){
                     this.post.title = res.data[i].title;
-                    this.post.userId = res.data[i].id;
-                    this.post.postDetail = res.data[i].postWrite;
-                    this.post.titleImg = res.data[i].titleImg;
+                    this.post.userId = res.data[i].nickname;
+                    this.post.postDetail = res.data[i].content;
+                    this.post.titleImg = res.data[i].photographic_path;
                 }
             }
         })
-        .catch(err => {console.log(err)})
+        .catch(err => console.log(err));
+        // axios.get('/api/getPost', {params: {board_id: 1, limit: 0}})
+        // .then(res => {
+        //     console.log(res);
+        //     console.log(this.$route.params);
+        //     // if(this.$route.params.id === res.data[i].user_id && this.$route.params.post == res.data[i].board_id){
+        //     //     this.post.title = res.data[i].title;
+        //     //     this.post.userId = res.data[i].nickname;
+        //     //     this.post.postDetail = res.data[i].content;
+        //     //     this.post.titleImg = res.data[i].photographic_path;
+        //     // }
+        // }).catch(err => console.log(err))
+
+        // test 데이터
+        // axios.get('http://localhost:8800/all')
+        // .then(res => {
+        //     console.log(res.data);
+        //     for(let i = 0; i < res.data.length; i++){
+        //         if(this.$route.params.id === res.data[i].id && this.$route.params.post == res.data[i].board_id){
+        //             this.post.board_id = res.data[i].board_id;
+        //             this.post.title = res.data[i].title;
+        //             this.post.userId = res.data[i].id;
+        //             this.post.postDetail = res.data[i].postWrite;
+        //             this.post.titleImg = res.data[i].titleImg;
+        //         }
+        //     }
+        // })
+        // .catch(err => {console.log(err)})
 
         // 해당 게시글의 댓글 넣어주기.
         axios.get('http://localhost:8800/comment')

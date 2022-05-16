@@ -13,7 +13,7 @@
                         </select>
                     </div>
                 </div>
-                <img class="writeImage" src="https://mblogthumb-phinf.pstatic.net/MjAxNzEyMThfMjQ1/MDAxNTEzNjA3MTcwNTg4.f9D3x971p8iDr_ox3nOQZmp2bHHA3YEtAvWI6-Zq6aAg.1E7HSp02TKDPZwC1wdciQdKiMEEzo0TvuY0ts5OmK4Mg.PNG.ooza-/IMG_9198.PNG?type=w800" style="display:none" alt="프로필">
+                <img class="writeImage" style="display:none" src="https://mblogthumb-phinf.pstatic.net/MjAxNzEyMThfMjQ1/MDAxNTEzNjA3MTcwNTg4.f9D3x971p8iDr_ox3nOQZmp2bHHA3YEtAvWI6-Zq6aAg.1E7HSp02TKDPZwC1wdciQdKiMEEzo0TvuY0ts5OmK4Mg.PNG.ooza-/IMG_9198.PNG?type=w800" alt="프로필">
                 <label class="photographic_path" for="photographic_path">대표 이미지를 선택해주세요.</label><input class="hidden" id="photographic_path" type="file"/>
                 <button class="photographic_path" @click="deleteImg()">배경사진 초기화</button>
                 <hr class="line">
@@ -67,27 +67,19 @@ export default {
                 // 글 제목
                 let title = document.querySelector('.title');
                 // let category = document.querySelector('.categoryChoice');
-                let photographic_path = document.querySelector('.writeImage').src;
-                // let content = document.querySelector('.note-editable');
-                // let content = document.getElementById('summernote');
+                // let photographic_path = document.querySelector('.writeImage');
+                let photographic_path = document.getElementById('photographic_path');
+                console.log(photographic_path.files[0]);
 
                 let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
                 console.log(summernoteContent);
 
                 let frm = new FormData();
-                // form.append({
-                //     'nickname': nickName,
-                //     'title': title,
-                //     'photographic_path': photographic_path,
-                //     'content': summernoteContent
-                // });
                 frm.append('board_id', Number(1));
                 frm.append('nickname', nickName);
                 frm.append('title', title);
-                frm.append('photographic_path', photographic_path);
+                frm.append('photographic_path', photographic_path.files[0]);
                 frm.append('content', summernoteContent);
-
-                console.log(frm);
                 axios.post('/api/createPost', frm,{
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -140,8 +132,9 @@ export default {
                     const changeImage = document.querySelector('.writeImage');
                     changeImage.style.display = "block";
                     changeImage.src = e.target.result;
-                    this.changeImg = e.target.result;
-                    // console.log(this.changeImg);
+
+                    this.changeImg = changeImage.files[0];
+                    console.log(this.changeImg);
                 }
                 reader.readAsDataURL(input.files[0]);
             }

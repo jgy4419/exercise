@@ -59,7 +59,7 @@ const routes = [
       component: Community
     },
     {
-      path: "/:id/:post",
+      path: "/:id/:board/:post",
       name: "PostDetail",
       component: PostDetail
     },

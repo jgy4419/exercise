@@ -4,10 +4,10 @@
         <div class="inner">
             <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
                 <div class="post" v-for="data, i in post.title.length" :key="i"
-                @click="urlChange(post.user_id[i], post.post_id[i])">
+                @click="urlChange(post.user_id[i], post.board_id[i], post.post_id[i])">
                     <div class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
                     <div class="bottom">
-                        <p>글 ID: {{post.post_id[i]}}</p>
+                        <p style="display: none">글 ID: {{post.post_id[i]}}</p>
                         <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
                         <p>닉네임 / 아이디 : {{post.user_id[i]}}</p>
                         <p>날짜: {{post.date[i]}}</p>
@@ -36,6 +36,7 @@ export default {
                 title: [],
                 user_id: [],
                 post_id: [],
+                board_id: [],
                 date: [],
                 postWrite: [],
             },
@@ -76,7 +77,8 @@ export default {
 
                 for(let i = 0; i < res.data.length; i++){
                     console.log('결과로 나온 제목', res.data[i].title);
-                    this.post.post_id.push(res.data[i].board_id);
+                    this.post.board_id.push(res.data[i].board_id);
+                    this.post.post_id.push(res.data[i].post_id);
                     this.post.title.push(res.data[i].title);
                     this.post.user_id.push(res.data[i].nickname);
                     this.post.date.push(res.data[i].creation_datetime)
@@ -91,8 +93,37 @@ export default {
 
     },
     mounted(){
-        this.getPost();
+        let userInformation = JSON.parse(localStorage.getItem("userInformation"));
+        // this.getPost();
+        console.log(this.$route.name);
         this.urlChange();
+        if(this.$route.name === 'MyPage'){
+            console.log('내가 올린 게시물');
+            axios.get('/api/myPagePost', {params: {nickname: userInformation.nickname, limit: 0}})
+            .then(res => {
+                for(let i = 0; i < res.data.length; i++){
+                    this.post.post_id.push(res.data[i].post_id);
+                    this.post.board_id.push(res.data[i].board_id);
+                    this.post.title.push(res.data[i].title);
+                    this.post.user_id.push(res.data[i].nickname);
+                    this.post.img.push(res.data[i].photographic_path);
+                }
+            })
+        }else{
+            console.log('커뮤니티');
+            axios.get('/api/getPost',{params: {board_id: 1, limit: 0}})
+            .then(res => {
+                console.log(res);
+                for(let i = 0; i < res.data.length; i++){
+                    this.post.post_id.push(res.data[i].post_id);
+                    this.post.board_id.push(res.data[i].board_id);
+                    this.post.title.push(res.data[i].title);
+                    this.post.user_id.push(res.data[i].nickname);
+                    this.post.img.push(res.data[i].photographic_path);
+                }
+            })
+            .catch(err => console.log(err));
+        }
     },
     methods: {
         /* 
@@ -104,38 +135,38 @@ export default {
             this.post.id = [];
             this.post.img = [];
             // getPost가 실행될 때마다 데이터의 주소가 this.categoryName 즉, 클래스 이름이 categoryName과 동일한 데이터들을 불러옴.
-            axios.get(`http://localhost:8800/${this.categoryName}`)
-            .then(res => {
-                // 만약 전체 게시물이 10개 이하면 전체 게시물의 총 개수만 불러오기.
-                if(res.data.length < 10){
-                    console.log('10개 이하', res.data.length);
-                    for(let i = 0; i < res.data.length;  i++){
-                        this.post.post_id.push(res.data[i].board_id);
-                        this.post.title.push(res.data[i].title);
-                        this.post.user_id.push(res.data[i].id)
-                        this.post.img.push(res.data[i].titleImg);
-                        this.postCount += 1;
-                        console.log(this.postCount);
-                    } 
-                }else if(res.data.length > 10){
-                    // 총 게시물이 10개가 넘으면 10개 까지만 불러오기.
-                    console.log('10개 이상', res.data.length);
-                    for(let i = 0; i < 10; i++){
-                        this.post.post_id.push(res.data[i].board_id);
-                        this.post.title.push(res.data[i].title);
-                        this.post.user_id.push(res.data[i].id)
-                        this.post.img.push(res.data[i].titleImg);
-                        this.postCount += 1;
-                        console.log(this.postCount);
-                    }
-                }
-            })
-            .catch(err => {console.log(err)});
+            // axios.get(`http://localhost:8800/${this.categoryName}`)
+            // .then(res => {
+            //     // 만약 전체 게시물이 10개 이하면 전체 게시물의 총 개수만 불러오기.
+            //     if(res.data.length < 10){
+            //         console.log('10개 이하', res.data.length);
+            //         for(let i = 0; i < res.data.length;  i++){
+            //             this.post.post_id.push(res.data[i].board_id);
+            //             this.post.title.push(res.data[i].title);
+            //             this.post.user_id.push(res.data[i].id)
+            //             this.post.img.push(res.data[i].titleImg);
+            //             this.postCount += 1;
+            //             console.log(this.postCount);
+            //         } 
+            //     }else if(res.data.length > 10){
+            //         // 총 게시물이 10개가 넘으면 10개 까지만 불러오기.
+            //         console.log('10개 이상', res.data.length);
+            //         for(let i = 0; i < 10; i++){
+            //             this.post.post_id.push(res.data[i].board_id);
+            //             this.post.title.push(res.data[i].title);
+            //             this.post.user_id.push(res.data[i].id)
+            //             this.post.img.push(res.data[i].titleImg);
+            //             this.postCount += 1;
+            //             console.log(this.postCount);
+            //         }
+            //     }
+            // })
+            // .catch(err => {console.log(err)});
             console.log(this.postCount);
         },
-        urlChange(userId, postId){
+        urlChange(userId, boardId, postId){
             if(document.cookie){
-                this.postUrl = `/${userId}/${postId}`;
+                this.postUrl = `/${userId}/${boardId}/${postId}`;
             }
         },
         // 데이터 더 보기 버튼 기능.

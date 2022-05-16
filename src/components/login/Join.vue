@@ -12,8 +12,10 @@
                     </div>
                     <div v-for="value, i in value" :key="i">
                         <label for="input" class="labelName">{{label[i]}}</label>
-                        <input class="input" :name="name[i]" :type = type[i] :placeholder = value>
+                        <input class="input" :v-model="model[i]" :name="name[i]" :type = type[i] :placeholder = value>
                     </div>
+                    <button class="btn nickname" type="button" @click="nicknameOverlap()">닉네임 중복 검사</button>
+                    <br/><br/>
                     <div class="sex">
                         <label>성별을 선택해주세요.</label>
                         <select name="sex">
@@ -42,8 +44,11 @@ export default {
             label: ['비밀번호', '비밀번호 재확인', '이름', '전화번호', '주소', '자기소개', '닉네임'],
             value: ['비밀번호를 입력하세요 (필수)', '비밀번호를 한번 더 입력해주세요', '이름 (필수)', '전화번호 (필수)', '주소 (필수)', '자기소개', '닉네임(필수)'],
             type: ['password','password','text', 'tel', 'text', 'text', 'text'],
-            check: false,
+            checkId: false,
+            checkNickname: false,
             idInput: '',
+            model: ['paddword', 'rePassword', 'name', 'phonename', 'address', 'introduction', 'nicknameInput'],
+            nicknameInput: '',
             grant: 0,
 
         }
@@ -60,9 +65,10 @@ export default {
             if(inputs[1].value !== inputs[2].value){
                 alert('비밀번호가 다릅니다!');
                 // (필수 부분이 비어있으면)
-            }else if(this.check === false){
+            // }else if(this.checkId === false || this.checkNickname === false){
+            }else if(this.checkId === false){
                 // id 유효성 검사가 되지 않으면
-                alert('id 중복 검사를 다시 해주세요.');
+                alert('id나 닉네임 중복 검사를 다시 해주세요.');
             }else if(inputs[0].value == "" || inputs[1].value == "" || inputs[3].value == "" || inputs[4].value == "" || inputs[5].value == "" || inputs[7].value == ""){
                 // 필수 input에 빈칸 유무
                 alert('(필수) 부분이 비어있습니다!');
@@ -76,14 +82,31 @@ export default {
             axios.post('/api/checkid', {mail: this.idInput})
             .then(res => {
                 console.log(res.data.checkid);
-                this.check = res.data.checkid; // true / false 유무
-                if(this.check === false){
+                this.checkId = res.data.checkid; // true / false 유무
+                if(this.checkId === false){
                     alert('아이디 비밀번호가 겹칩니다.');
-                    this.check = false;
-                }else if(this.check === true){
-                    console.log("aa", this.check);
+                    this.checkId = false;
+                }else if(this.checkId === true){
+                    console.log("aa", this.checkId);
                     alert('사용할 수 있는 아이디입니다.');
-                    this.check = true;
+                    this.checkId = true;
+                }
+            }).catch(err => console.log(err));
+        },
+        nicknameOverlap(){
+            let inputValue = document.querySelectorAll('.input');
+            console.log(inputValue[7].value)
+            axios.post('/api/checkNickname', {nickname: inputValue[7].value})
+            .then(res => {
+                console.log(res);
+                this.checkNickname = res.data.checkNickname;
+                if(this.checkNickname === false){
+                    alert('닉네임이 겹칩니다!')
+                    this.checkNickname = false;
+                }else if(this.checkNickname === true){
+                    console.log("aa", this.checkNickname);
+                    alert('사용할 수 있는 닉네임입니다.');
+                    this.checkNickname = true;
                 }
             }).catch(err => console.log(err));
         }
@@ -167,7 +190,7 @@ export default {
                 cursor: pointer;
             }
         // }
-        .btn.id{
+        .btn.id, .btn.nickname{
             margin: 20px 35% 0px 0px;
             font-weight: 700;
         }

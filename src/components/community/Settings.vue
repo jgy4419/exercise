@@ -5,7 +5,7 @@
                 <div class="imgSet">
                     <img class="changeImage" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAIVBMVEXY2Njz8/Pq6urv7+/h4eHb29vo6Oje3t7j4+Pt7e3p6ekmc3lwAAADMElEQVR4nO2bC3KDMAxEMeab+x+4JZQBEkhBlq2NZt8JvGOtPkZUFSGEEEIIIYQQQgghhBBCCCEEnXbo6hjDLzHW3dBan0dEO9ThjfrrxDQHKv60NNZnu0ETz2Q8w+xbpPQfZTyl9NZnvEB7GlS7AIP3SnNFxgR4fHVXdYTQWZ/1A+14XUcII2x4tf+6fE8EVXJXB6qS+zpAldzyx8Jofep3buSrLXC563L9eAWsnrRSHSFg2eRSX3JMbX32Lb1cRwhIHaQg865E69OviJ0+g+P3pAsBupLEC8G5koSUNQOSuBJqyAJGLRnShQzWGp4kRxZKbKXrCMFaw4SCRTBMomARDJMIB5E9CGOJgtcx3J7Yn8wgdCluhGjogMi/FEIhmXBjdjdC3BRENy2Km6bRTRvvZrDyM+q6eXxw8xzk5oHOz5Opm0dsP58V3Hzo8fPpzc3HUD+fp90sDPhZ4fCzVONnzcnN4pmfVUA/y5mVm3XZys8Cs5+V8srNkv+Ek98uJpz8CDPh5NekGRc/ixFCCCHky2mb4TGO8cLkHuM4PoYGsGfph1r0Ih/rAWc2Oexz74DRE59PHre0GE8pvcoiykxnF2O96Ln3nNFGSqMs4ymlfIT9/1Qio/ADS6vojVe6gilMZUXrnFKbKfeeqiWUed5OXti4QgHTZ3THltxv9fnDaiFveOVKukfkTMRJmxr3yaakiM23ZLJ8cR2ZlBjoyKKksD8W1H1ipENdiWQ/QwflrYJidfAd1b2bQn3JMYrdiknCWlFLXSo/VqSgZRNDg8wo2STzPHgFlZnRPLAmNILLNGMtKGQus5K+J73Am5X0PckL9MYlZCW1mJin3oXEFAzikIk0l8BcSOKVAF1I2pVA1JCFlFpiffY9ch0wuXdGnoFVvnPqIf6JCaJd3CJtHQH69z3Sbh4ssuSxZX3ud2Q6oKrhjKwmwllEahI4i0hNAjJSbZGNV9anPkKiA64cTkhKIlijNSNptwCTlixtPawPfcRDIARoyl2RzLtuhACWEVkhcSPE+szHUAgaFIIGhaBBIWhQCBoUggaFoEEhaFAIGhSCBoWgQSFoUAgap8f9Ac1KQOtCVp1TAAAAAElFTkSuQmCC" alt="프로필">
                     <br/>
-                    <input type="file" @change="uploadImg()" id="changeImg"/>
+                    <input type="file" @change="uploadImg()" class="hidden" id="changeImg"/>
                     <label class="changeImg" for="changeImg">이미지 업로드</label>
                     <button @click="deleteImg()" class="imgDeleteBtn">이미지제거</button>
                 </div>
@@ -119,6 +119,7 @@ export default {
         uploadImg(){
             let fileName = document.getElementById('changeImg');
             const changeImage = document.querySelector('.changeImage');
+            // 이미지 파일을 백엔드한테 전송하기 위해서는 .files[0]을 넣어서 보내주기.
             this.changeImg = fileName.files[0];
             // console.log(fileName.files[0]);
             // '../../../repeatFunc/loadImage' 파일의 uploadImg 함수
@@ -139,18 +140,14 @@ export default {
                 this.changeImg은 변경된 이미지.
             */
             let userInformation = JSON.parse(localStorage.getItem("userInformation"));
-            console.log(userInformation.mail);
-            console.log(this.set.intro[0]);
-            console.log(this.changeImg);
-            console.log(this.set.intro[1]);
-           let frm = new FormData();
-           frm.append('mail', userInformation.mail);
-           frm.append('profileImage', this.changeImg);
-           frm.append('name', this.set.intro[0]);
-           frm.append('introduction', this.set.intro[1]);
-            axios.patch('/api/updateMyInfo', frm, {
-                    headers: {'Content-Type': 'multipart/form-data'}
-                }
+            let frm = new FormData();
+            frm.append('mail', userInformation.mail);
+            frm.append('profileImage', this.changeImg);
+            frm.append('name', this.set.intro[0]);
+            frm.append('introduction', this.set.intro[1]);
+            axios.patch('/api/updateMyInxfo', frm, {
+                headers: {'Content-Type': 'multipart/form-data'}
+            }
             ).then(res => {
                 console.log('성공!', res)
             }).catch(err => {
@@ -158,12 +155,18 @@ export default {
             })
         },
         userDelete(){
+            let userInformation = JSON.parse(localStorage.getItem("userInformation"));
              if (confirm("정말로 회원을 탈퇴하시겠습니까?")) {
                 // 확인 버튼 클릭 시 동작
                 alert("탈퇴되었습니다.");
-                axios.delete('db url')
+                alert(userInformation.mail);
+                axios.delete('/api/deleteUserInfo', {params: {mail: userInformation.mail}})
                 .then(res => {
                     console.log(res)
+                    localStorage.removeItem('userInformation');
+                    // 쿠키를 전 시간으로 돌려서 로그아웃 시켜줌.
+                    document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
+                    location.replace('/');
                 }).catch(err => {
                     console.log(err);
                 })
