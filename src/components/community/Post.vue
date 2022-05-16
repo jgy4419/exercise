@@ -5,7 +5,9 @@
             <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
                 <div class="post" v-for="data, i in post.title.length" :key="i"
                 @click="urlChange(post.user_id[i], post.board_id[i], post.post_id[i])">
-                    <div class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
+
+                    <img :src="post.img[i]" class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
+                    <!-- <p>{{post.img[i]}}</p> -->
                     <div class="bottom">
                         <p style="display: none">글 ID: {{post.post_id[i]}}</p>
                         <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
@@ -81,8 +83,8 @@ export default {
                     this.post.post_id.push(res.data[i].post_id);
                     this.post.title.push(res.data[i].title);
                     this.post.user_id.push(res.data[i].nickname);
-                    this.post.date.push(res.data[i].creation_datetime)
-                    // this.post.img.push(res.data[i].titleImg);
+                    this.post.date.push(res.data[i].creation_datetime);
+                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
                     if(result === ''){
                         this.getPost();
                         break;
@@ -93,11 +95,23 @@ export default {
 
     },
     mounted(){
-        let userInformation = JSON.parse(localStorage.getItem("userInformation"));
         // this.getPost();
         console.log(this.$route.name);
+        this.postCount = 0;
         this.urlChange();
-        if(this.$route.name === 'MyPage'){
+        this.getPost();
+    },
+    methods: {
+        /* 
+            getPost()함수가 호출될 때마다. post.title, id, img는 초기값을 빈 배열로 시작.
+            빈 배열로 초기화 시켜주지 않으면 누적돼서 값이 생기는 문제가 생김.
+        */
+        getPost(){
+            let userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            this.post.title = [];
+            this.post.id = [];
+            this.post.img = [];
+            if(this.$route.name === 'MyPage'){
             console.log('내가 올린 게시물');
             axios.get('/api/myPagePost', {params: {nickname: userInformation.nickname, limit: 0}})
             .then(res => {
@@ -106,7 +120,9 @@ export default {
                     this.post.board_id.push(res.data[i].board_id);
                     this.post.title.push(res.data[i].title);
                     this.post.user_id.push(res.data[i].nickname);
-                    this.post.img.push(res.data[i].photographic_path);
+                    this.post.date.push(res.data[i].creation_datetime);
+                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
+                    this.post.postCount = res.data.length;
                 }
             })
         }else{
@@ -119,21 +135,13 @@ export default {
                     this.post.board_id.push(res.data[i].board_id);
                     this.post.title.push(res.data[i].title);
                     this.post.user_id.push(res.data[i].nickname);
-                    this.post.img.push(res.data[i].photographic_path);
+                    this.post.date.push(res.data[i].creation_datetime);
+                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
+                    this.post.postCount = res.data.length;
                 }
             })
             .catch(err => console.log(err));
         }
-    },
-    methods: {
-        /* 
-            getPost()함수가 호출될 때마다. post.title, id, img는 초기값을 빈 배열로 시작.
-            빈 배열로 초기화 시켜주지 않으면 누적돼서 값이 생기는 문제가 생김.
-        */
-        getPost(){
-            this.post.title = [];
-            this.post.id = [];
-            this.post.img = [];
             // getPost가 실행될 때마다 데이터의 주소가 this.categoryName 즉, 클래스 이름이 categoryName과 동일한 데이터들을 불러옴.
             // axios.get(`http://localhost:8800/${this.categoryName}`)
             // .then(res => {
@@ -171,24 +179,38 @@ export default {
         },
         // 데이터 더 보기 버튼 기능.
         moreData(){
+            let userInformation = JSON.parse(localStorage.getItem("userInformation"));
             console.log('더 보기', this.postCount);
             // ex) 10개 post를 추가적으로 더 가져오기.
-            axios.get(`http://localhost:8800/${this.categoryName}`)
-            .then(res => {  
-                // 게시물 개수가 postCount개수 + 10개 보다 많으면 
-                for(let i = this.postCount; i < this.postCount + 10; i++){
+            axios.get('/api/myPagePost', {params: {nickname: userInformation.nickname, limit: 0}})
+            .then(res => {
+                for(let i = this.postCount; i < res.data.length; i++){
+                    console.log(res.data[i].photographic_path);
+                    this.post.post_id.push(res.data[i].post_id);
+                    this.post.board_id.push(res.data[i].board_id);
                     this.post.title.push(res.data[i].title);
-                    this.post.id.push(res.data[i].id)
-                    this.post.img.push(res.data[i].titleImg);
-                    this.postCount += 1;
-                    console.log(this.postCount);
+                    this.post.user_id.push(res.data[i].nickname);
+                    this.post.date.push(res.data[i].creation_datetime);
+                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
                 }
             })
-            .catch(err => {
-                console.log(err);
-            })
         }
-    },
+            // axios.get(`http://localhost:8800/${this.categoryName}`)
+            // .then(res => {  
+            //     // 게시물 개수가 postCount개수 + 10개 보다 많으면 
+            //     for(let i = this.postCount; i < this.postCount + 10; i++){
+            //         this.post.title.push(res.data[i].title);
+            //         this.post.id.push(res.data[i].id)
+            //         this.post.img.push(res.data[i].titleImg);
+            //         this.postCount += 1;
+            //         console.log(this.postCount);
+            //     }
+            // })
+            // .catch(err => {
+            //     console.log(err);
+            // })
+        }
+    // },
 
 }
 </script>

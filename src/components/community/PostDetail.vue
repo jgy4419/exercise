@@ -2,13 +2,13 @@
     <div class="contain">
         <div class="detail">
             <div class="postHeader">
-                <div class="postImg" :style="{backgroundImage: `url(${post.titleImg}`}"/>
+                <img class="postImg" :src="post.titleImg"/>
                 <div class="user">
                     <p class="title">{{post.title}}</p>
                     <br/>
                     <div class="information">
                         <p class="id">{{post.userId}}</p>
-                        <p class="date">게시물 올린 날짜</p>
+                        <p class="date">{{post.date}}}</p>
                     </div>
                 </div>
             </div>
@@ -64,8 +64,9 @@ export default {
                 if(this.$route.params.id === res.data[i].nickname && this.$route.params.board == res.data[i].board_id && this.$route.params.post == res.data[i].post_id){
                     this.post.title = res.data[i].title;
                     this.post.userId = res.data[i].nickname;
-                    this.post.postDetail = res.data[i].content;
-                    this.post.titleImg = res.data[i].photographic_path;
+                    this.post.postDetail = res.data[i].comment;
+                    this.post.date = res.data[i].creation_datetime;
+                    this.post.titleImg = `http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`;
                 }
             }
         })
@@ -151,7 +152,7 @@ export default {
         margin-top: 3%;
         .postHeader{
             width: 100%;
-            height: 300px;
+            height: 500px;
             .postImg{
                 position: absolute;
                 width: 100%;

@@ -21,7 +21,7 @@
                     <div id="summernote">오늘 한 운동에 대해서 말씀해주세요!</div>
                 </div>
                 <div class="btnBox">
-                    <button class="btn" v-for="btns, i in btn.btnName" :key="i" :type="btn.btnType">
+                    <button class="btn" v-for="btns, i in btn.btnName" :key="i">
                         <i :class="btn.class[i]" ></i>
                         {{btns}}
                     </button>
@@ -74,17 +74,22 @@ export default {
                 let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
                 console.log(summernoteContent);
 
+                console.log(title.value);
                 let frm = new FormData();
                 frm.append('board_id', Number(1));
                 frm.append('nickname', nickName);
-                frm.append('title', title);
+                frm.append('title', title.value);
                 frm.append('photographic_path', photographic_path.files[0]);
                 frm.append('content', summernoteContent);
-                axios.post('/api/createPost', frm,{
+                frm.append('availabilty_comments', 1)
+                axios.post('/api/createPost', frm, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
-                }).then(res => console.log(res))
+                }).then(res => {
+                    console.log(res);
+                    location.href = '/community';
+                })
                 .catch(err => console.log(err))
                 // location.href = '/community';
             });
