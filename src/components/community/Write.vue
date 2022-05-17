@@ -13,7 +13,7 @@
                         </select>
                     </div>
                 </div>
-                <img class="writeImage" style="display:none" src="https://mblogthumb-phinf.pstatic.net/MjAxNzEyMThfMjQ1/MDAxNTEzNjA3MTcwNTg4.f9D3x971p8iDr_ox3nOQZmp2bHHA3YEtAvWI6-Zq6aAg.1E7HSp02TKDPZwC1wdciQdKiMEEzo0TvuY0ts5OmK4Mg.PNG.ooza-/IMG_9198.PNG?type=w800" alt="프로필">
+                <img class="writeImage" style="display:none" src='https://mblogthumb-phinf.pstatic.net/MjAxODAzMDNfMTc5/MDAxNTIwMDQxNzQwODYx.qQDg_PbRHclce0n3s-2DRePFQggeU6_0bEnxV8OY1yQg.4EZpKfKEOyW_PXOVvy7wloTrIUzb71HP8N2y-YFsBJcg.PNG.osy2201/1_%2835%ED%8D%BC%EC%84%BC%ED%8A%B8_%ED%9A%8C%EC%83%89%29_%ED%9A%8C%EC%83%89_%EB%8B%A8%EC%83%89_%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4_180303.png?type=w800' alt="프로필">
                 <label class="photographic_path" for="photographic_path">대표 이미지를 선택해주세요.</label><input class="hidden" id="photographic_path" type="file"/>
                 <button class="photographic_path" @click="deleteImg()">배경사진 초기화</button>
                 <hr class="line">
@@ -21,8 +21,8 @@
                     <div id="summernote">오늘 한 운동에 대해서 말씀해주세요!</div>
                 </div>
                 <div class="btnBox">
-                    <button class="btn" v-for="btns, i in btn.btnName" :key="i">
-                        <i :class="btn.class[i]" ></i>
+                    <button :class="btn.class[i]" v-for="btns, i in btn.btnName" :key="i">
+                        <i :class="btn.iClass[i]" ></i>
                         {{btns}}
                     </button>
                 </div>
@@ -33,12 +33,14 @@
 
 <script>
 import axios from 'axios';
+import DOMPurify from 'dompurify';
 // import {uploadImg} from '../../../repeatFunc/loadImage';
 export default {
     data(){
         return{
             btn: {
-                class: ['fa fa-arrow-left', 'submit'],
+                class: ['btn back', 'btn submit'],
+                iClass: ['fa fa-arrow-left', 'button'],
                 btnName: ['', '올리기'],
                 btnType: ['button', 'button'],
             },
@@ -47,67 +49,100 @@ export default {
         }
     },
     mounted() {
+         // test
+        $(document).ready(function summernoteSandbox() {
+            var $editor = $('#summernote');
+            
+            $editor.summernote({
+                disableResizeEditor: false,
+                codeviewFilter: true,
+                codeviewIframeFilter: true,
+                height: 200,
+                maximumImageFileSize: 1048576,
+                callbacks:{
+                        onImageUploadError: function uploadImageError(msg){
+                        alert(msg);
+                    }
+                },
+                toolbar: [
+                ['operation', ['undo', 'redo']],
+                ['style', ['bold', 'italic', 'underline']],
+                ['color', ['color']],       
+                ['font', ['strikethrough', 'superscript', 'subscript', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link','picture', 'hr']],
+                ['view', ['codeview']],
+                ]
+            });
+        });
+        // 여리까지
+
         let userInformation = JSON.parse(localStorage.getItem("userInformation"));
         // 어떤 유저가 들어왔는지 확인.
-        // console.log('inUser', this.$store.state.User.storeMail);
-        // console.log('들어온 닉네임', userInformation.nickname);
-        // 글 적은 user
         let writeUser = this.$store.state.User.storeMail;
         console.log(writeUser);
+        document.querySelector('.back').addEventListener('click', function(){
+            history.go(-1);
+            location.href = '/community';
+        });
+        document.querySelector('.submit').addEventListener('click', function(){
+            var enteredText, decoded, sanitized = null;
+            // let board_id = this.$store.state.User.storeMail; // user id
+            let nickName = userInformation.nickname;
+            // 글 제목
+            let title = document.querySelector('.title');
+            // let category = document.querySelector('.categoryChoice');
+            // let photographic_path = document.querySelector('.writeImage');
+            let photographic_path = document.getElementById('photographic_path');
+            console.log(photographic_path.files[0]);
 
-        const btnClass = document.querySelectorAll('.btn');
-        for(let i = 0; i < btnClass.length; i++){
-            btnClass[0].addEventListener('click', function(){
-                history.go(-1);
+            let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
+            console.log(summernoteContent);
+
+            console.log(title.value);
+            function decode(text) {
+                // https://codepen.io/csmccoy/pen/yLNBpyW?editors=1010
+                return $("<textarea/>").html(text).text();
+            }
+            
+            function encode(text) {
+                var textArea = document.createElement('textarea');
+                textArea.innerText = text;
+                return textArea.innerHTML;
+            }
+            
+            function resetVars(){
+                enteredText = null;
+                decoded = null;
+                sanitized = null;
+            }
+            function getSanitizedText(){
+                resetVars();
+                enteredText = $('#summernote').summernote('code');
+                decoded = decode(enteredText);
+                sanitized = DOMPurify.sanitize(decoded);
+                return encode(sanitized);
+            }
+            let frm = new FormData();
+            var userEntry = getSanitizedText();
+            let comment = '';
+            comment = decode(userEntry);
+            frm.append('board_id', Number(1));
+            frm.append('nickname', nickName);
+            frm.append('title', title.value);
+            frm.append('photographic_path', photographic_path.files[0]);
+            frm.append('content', comment);
+            frm.append('availabilty_comments', 1)
+            axios.post('/api/createPost', frm, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => {
+                console.log(res);
                 location.href = '/community';
-            });
-            btnClass[1].addEventListener('click', function(){
-                // let board_id = this.$store.state.User.storeMail; // user id
-                let nickName = userInformation.nickname;
-                // 글 제목
-                let title = document.querySelector('.title');
-                // let category = document.querySelector('.categoryChoice');
-                // let photographic_path = document.querySelector('.writeImage');
-                let photographic_path = document.getElementById('photographic_path');
-                console.log(photographic_path.files[0]);
-
-                let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
-                console.log(summernoteContent);
-
-                console.log(title.value);
-                let frm = new FormData();
-                frm.append('board_id', Number(1));
-                frm.append('nickname', nickName);
-                frm.append('title', title.value);
-                frm.append('photographic_path', photographic_path.files[0]);
-                frm.append('content', summernoteContent);
-                frm.append('availabilty_comments', 1)
-                axios.post('/api/createPost', frm, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }).then(res => {
-                    console.log(res);
-                    location.href = '/community';
-                })
-                .catch(err => console.log(err))
-                // location.href = '/community';
-            });
-        }
-        $('#summernote').summernote({
-            height: 450,
-            minHeight: null,
-            maxHeight: null,
-            focus: true,
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['paragraph']],
-                ['height', ['height']],
-                ['Insert', ['picture']],
-                ['Mics',['codeview']]
-            ]
+            })
+            .catch(err => console.log(err))
+            // location.href = '/community';
         });
 
         const backImg = document.getElementById('photographic_path');

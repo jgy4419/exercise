@@ -41,9 +41,10 @@ export default {
                 board_id: [],
                 date: [],
                 postWrite: [],
+                count: 9
             },
             searchRes: this.$store.state.Search.searchValue,
-            postCount: 0,
+            // postCount: 9,
             category: ['all', 'category1', 'category2', 'category3'],
             postUrl: '/login',
             // test: this.$store.state.Search.searchRes,
@@ -116,6 +117,7 @@ export default {
             axios.get('/api/myPagePost', {params: {nickname: userInformation.nickname, limit: 0}})
             .then(res => {
                 for(let i = 0; i < res.data.length; i++){
+                    console.log(res);
                     this.post.post_id.push(res.data[i].post_id);
                     this.post.board_id.push(res.data[i].board_id);
                     this.post.title.push(res.data[i].title);
@@ -124,12 +126,13 @@ export default {
                     this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
                     this.post.postCount = res.data.length;
                 }
-            })
+            }).catch(err => console.log(err));
         }else{
             console.log('커뮤니티');
             axios.get('/api/getPost',{params: {board_id: 1, limit: 0}})
             .then(res => {
                 console.log(res);
+                this.postCount = res.data.length;
                 for(let i = 0; i < res.data.length; i++){
                     this.post.post_id.push(res.data[i].post_id);
                     this.post.board_id.push(res.data[i].board_id);
@@ -137,7 +140,6 @@ export default {
                     this.post.user_id.push(res.data[i].nickname);
                     this.post.date.push(res.data[i].creation_datetime);
                     this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
-                    this.post.postCount = res.data.length;
                 }
             })
             .catch(err => console.log(err));
@@ -181,19 +183,44 @@ export default {
         moreData(){
             let userInformation = JSON.parse(localStorage.getItem("userInformation"));
             console.log('더 보기', this.postCount);
-            // ex) 10개 post를 추가적으로 더 가져오기.
-            axios.get('/api/myPagePost', {params: {nickname: userInformation.nickname, limit: 0}})
-            .then(res => {
-                for(let i = this.postCount; i < res.data.length; i++){
-                    console.log(res.data[i].photographic_path);
-                    this.post.post_id.push(res.data[i].post_id);
-                    this.post.board_id.push(res.data[i].board_id);
-                    this.post.title.push(res.data[i].title);
-                    this.post.user_id.push(res.data[i].nickname);
-                    this.post.date.push(res.data[i].creation_datetime);
-                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
-                }
-            })
+            // ex) 9개 post를 추가적으로 더 가져오기.
+            if(this.$route.name === 'MyPage'){
+                console.log('내가 올린 게시물');
+                console.log(this.post.count);
+                axios.get('/api/myPagePost', {params: {nickname: userInformation.nickname, limit: this.post.count}})
+                .then(res => {
+                    for(let i = 0; i < 9; i++){
+                        this.post.post_id.push(res.data[i].post_id);
+                        this.post.board_id.push(res.data[i].board_id);
+                        this.post.title.push(res.data[i].title);
+                        this.post.user_id.push(res.data[i].nickname);
+                        this.post.date.push(res.data[i].creation_datetime);
+                        this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
+                    }
+                    this.post.count = this.post.count + 9;
+                }).catch(err => {
+                    this.post.count = this.post.post_id;
+                    console.log(err)
+                });
+            }else{
+                console.log(this.post.count);
+                axios.get('/api/getPost', {params: {board_id: 1, limit: this.post.count}})
+                .then(res => {
+                    console.log(res);
+                    for(let i = 0; i < 9; i++){
+                        this.post.post_id.push(res.data[i].post_id);
+                        this.post.board_id.push(res.data[i].board_id);
+                        this.post.title.push(res.data[i].title);
+                        this.post.user_id.push(res.data[i].nickname);
+                        this.post.date.push(res.data[i].creation_datetime);
+                        this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
+                    }
+                    this.post.count = this.post.count + 9;
+                }).catch(err => {
+                    this.post.count = this.post.post_id;
+                    console.log(err)
+                })
+            }
         }
             // axios.get(`http://localhost:8800/${this.categoryName}`)
             // .then(res => {  
