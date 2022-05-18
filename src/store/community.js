@@ -3,12 +3,16 @@ export const Community = {
     state: () => ({
         categoryName: 'all',
         categoryState: 0,
+        setPostState: 0, // 글 수정 버튼 누르면 1로 변경.
     }),
     mutations: {
         categoryNameChange(state, {categoryValue, count}){
             // actions에서 가져오면 카테고리 이름, 상태를 각각 지정해준다.
             state.categoryName = categoryValue;
             state.categoryState = count;
+        },
+        postStateChange(state, {value}){
+            state.setPostState = value;
         }
     },
     actions: {

@@ -75,8 +75,6 @@ export default {
                 ]
             });
         });
-        // 여리까지
-
         let userInformation = JSON.parse(localStorage.getItem("userInformation"));
         // 어떤 유저가 들어왔는지 확인.
         let writeUser = this.$store.state.User.storeMail;

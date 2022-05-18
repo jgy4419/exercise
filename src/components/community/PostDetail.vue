@@ -10,6 +10,10 @@
                         <p class="id">{{post.userId}}</p>
                         <p class="date">{{post.date}}}</p>
                     </div>
+                    <div class="setPost">
+                        <p @click="setPost()">수정</p>
+                        <p @click="deletePost()">삭제</p>
+                    </div>
                 </div>
             </div>
         </div>   
@@ -116,7 +120,26 @@ export default {
                 content: this.commentInput,
                 date: commentDate
             })
+        },
+        setPost(){
+            location.replace('/write');
+        },
+        deletePost(){
+            console.log(this.$route.params.post);
+            if(confirm('정말 게시글을 삭제하시겠습니까?')){
+                alert('삭제되었습니다!');
+                console.log(this.$route.params.post);
+                axios.delete('/api/deletePost', {params: {post_id: this.$route.params.post}})
+                .then(res => {
+                    console.log(this.$route.params.post);
+                    console.log(res);
+                    console.log(this.$route.params.post);
+                })
+                .catch(err => console.log(err))
+                location.replace('/community');
+            }
         }
+        
     }
 }
 </script>
@@ -155,6 +178,17 @@ export default {
                     display: flex;
                     .id{
                         margin-right: 20px;
+                    }
+                }
+                .setPost{
+                    display: flex;
+                    p{
+                        color: rgb(216, 216, 216);
+                        margin-right: 10px;
+                        cursor: pointer;
+                    }
+                    p:hover{
+                        color: #fff;
                     }
                 }
             }   
@@ -198,6 +232,15 @@ export default {
             .btn{
                 position: absolute;
                 right: 10%;
+            }
+        }
+    }
+    @media screen and (max-width: 900px){
+        .detail{
+            .postHeader{
+                .postImg{
+                    height: 300px;
+                }
             }
         }
     }

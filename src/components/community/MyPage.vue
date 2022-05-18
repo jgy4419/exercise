@@ -78,5 +78,10 @@ export default {
             }
         }
     }
+    @media screen and (max-width: 1000px){
+        .inner{
+            width: 80vw;
+        }
+    }
 }
 </style>

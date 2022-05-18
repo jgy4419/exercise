@@ -66,7 +66,7 @@ export default {
                 alert('비밀번호가 다릅니다!');
                 // (필수 부분이 비어있으면)
             // }else if(this.checkId === false || this.checkNickname === false){
-            }else if(this.checkId === false){
+            }else if(this.checkId === false || this.checkNickname === false){
                 // id 유효성 검사가 되지 않으면
                 alert('id나 닉네임 중복 검사를 다시 해주세요.');
             }else if(inputs[0].value == "" || inputs[1].value == "" || inputs[3].value == "" || inputs[4].value == "" || inputs[5].value == "" || inputs[7].value == ""){

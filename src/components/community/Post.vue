@@ -114,7 +114,7 @@ export default {
             this.post.img = [];
             if(this.$route.name === 'MyPage'){
             console.log('내가 올린 게시물');
-            axios.get('/api/myPagePost', {params: {nickname: userInformation.nickname, limit: 0}})
+            axios.get('/api/showPostDesc', {params: {nickname: userInformation.nickname, limit: 0}})
             .then(res => {
                 for(let i = 0; i < res.data.length; i++){
                     console.log(res);
@@ -134,6 +134,12 @@ export default {
                 console.log(res);
                 this.postCount = res.data.length;
                 for(let i = 0; i < res.data.length; i++){
+                    // let sortPost = [];
+                    // sortPost.push(res.data[i]);
+                    // console.log(sortPost);
+                    // sortPost = sortPost.post_id.sort();
+                    // console.log(sortPost);
+
                     this.post.post_id.push(res.data[i].post_id);
                     this.post.board_id.push(res.data[i].board_id);
                     this.post.title.push(res.data[i].title);
@@ -258,7 +264,8 @@ export default {
         .postUrl{
             display: flex;
             flex-wrap: wrap;
-            // justify-content: space-between;
+            // align-items: center;
+            justify-content: space-between;
             width: 70vw;
             height: 100%;
             .post{
