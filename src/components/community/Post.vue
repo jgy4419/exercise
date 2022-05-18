@@ -1,6 +1,11 @@
 <template>
     <div class="contain">
-        <div id="categoryName">{{$store.state.Community.categoryName}}</div>
+        <div class="containHead">
+            <div id="categoryName">{{$store.state.Community.categoryName}}</div>
+            <select @change="sortPost()" name="sort" id="sort" class="sort">
+                <option v-for="option in option.value" class="sortPost" :key="option">{{option}}</option>
+            </select>
+        </div>
         <div class="inner">
             <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
                 <div class="post" v-for="data, i in post.title.length" :key="i"
@@ -47,12 +52,14 @@ export default {
             // postCount: 9,
             category: ['all', 'category1', 'category2', 'category3'],
             postUrl: '/login',
-            // test: this.$store.state.Search.searchRes,
+            option: {
+                value: ['최신순', '오래된순'],
+                class: ['up', 'up'],
+            }
         }
     },
     computed: {
         ...mapState('Community', ['categoryName', 'categoryState', 'post']),
-        // ...mapState('Search', ['searchRes']),
         ...mapState('Search', ['searchRes']),
     },
     props:{
@@ -67,28 +74,30 @@ export default {
         propsRes(result){
             // search 값이 변경되면, 데이터 들을 불러와서 post img, title, id 등에 각각 넣어주기.
             console.log(result);
+            this.post.title = [];
+            this.post.img = [];
+            this.post.date = [];
+            this.post.board_id = [];
+            this.post.user_id = [];
+            this.post.post_id = [];
             axios.get('/api/searchtitle', {
                 // 이거.. 추가해야됨
                 params: {title: result}}, 
                 {withCredentials: true})
             .then(res => {
-                this.post.title = [];
-                this.post.id = [];
-                this.post.img = [];
-                this.post.date = [];
                 console.log('결과는', res.data);
-
-                for(let i = 0; i < res.data.length; i++){
-                    console.log('결과로 나온 제목', res.data[i].title);
-                    this.post.board_id.push(res.data[i].board_id);
-                    this.post.post_id.push(res.data[i].post_id);
-                    this.post.title.push(res.data[i].title);
-                    this.post.user_id.push(res.data[i].nickname);
-                    this.post.date.push(res.data[i].creation_datetime);
-                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
-                    if(result === ''){
-                        this.getPost();
-                        break;
+                
+                if(result === ''){
+                    this.getPost();
+                }else{
+                    for(let i = 0; i < res.data.length; i++){
+                        console.log('결과로 나온 제목', res.data[i].title);
+                        this.post.board_id.push(res.data[i].board_id);
+                        this.post.post_id.push(res.data[i].post_id);
+                        this.post.title.push(res.data[i].title);
+                        this.post.user_id.push(res.data[i].nickname);
+                        this.post.date.push(res.data[i].creation_datetime);
+                        this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
                     }
                 }
             }).catch(err => console.log(err));
@@ -96,26 +105,25 @@ export default {
 
     },
     mounted(){
-        // this.getPost();
         console.log(this.$route.name);
         this.postCount = 0;
         this.urlChange();
         this.getPost();
     },
     methods: {
-        /* 
-            getPost()함수가 호출될 때마다. post.title, id, img는 초기값을 빈 배열로 시작.
-            빈 배열로 초기화 시켜주지 않으면 누적돼서 값이 생기는 문제가 생김.
-        */
-        getPost(){
-            let userInformation = JSON.parse(localStorage.getItem("userInformation"));
-            this.post.title = [];
-            this.post.id = [];
-            this.post.img = [];
-            if(this.$route.name === 'MyPage'){
-            console.log('내가 올린 게시물');
-            axios.get('/api/showPostDesc', {params: {nickname: userInformation.nickname, limit: 0}})
-            .then(res => {
+        sortPost(){
+            // let sortPost = document.querySelectorAll('.sortPost');
+            let sort = document.querySelector('.sort');
+            console.log(sort.value);
+            if(sort.value === '오래된순'){
+                axios.get('/api/showPostAsc', {params: {board_id: 1, limit: 0}})
+                .then(res => {
+                this.post.title = [];
+                this.post.id = [];
+                this.post.img = [];
+                this.post.date = [];
+                this.post.board_id = [];
+                this.post_id = [];
                 for(let i = 0; i < res.data.length; i++){
                     console.log(res);
                     this.post.post_id.push(res.data[i].post_id);
@@ -127,58 +135,54 @@ export default {
                     this.post.postCount = res.data.length;
                 }
             }).catch(err => console.log(err));
-        }else{
-            console.log('커뮤니티');
-            axios.get('/api/getPost',{params: {board_id: 1, limit: 0}})
-            .then(res => {
-                console.log(res);
-                this.postCount = res.data.length;
-                for(let i = 0; i < res.data.length; i++){
-                    // let sortPost = [];
-                    // sortPost.push(res.data[i]);
-                    // console.log(sortPost);
-                    // sortPost = sortPost.post_id.sort();
-                    // console.log(sortPost);
-
-                    this.post.post_id.push(res.data[i].post_id);
-                    this.post.board_id.push(res.data[i].board_id);
-                    this.post.title.push(res.data[i].title);
-                    this.post.user_id.push(res.data[i].nickname);
-                    this.post.date.push(res.data[i].creation_datetime);
-                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
-                }
-            })
-            .catch(err => console.log(err));
-        }
-            // getPost가 실행될 때마다 데이터의 주소가 this.categoryName 즉, 클래스 이름이 categoryName과 동일한 데이터들을 불러옴.
-            // axios.get(`http://localhost:8800/${this.categoryName}`)
-            // .then(res => {
-            //     // 만약 전체 게시물이 10개 이하면 전체 게시물의 총 개수만 불러오기.
-            //     if(res.data.length < 10){
-            //         console.log('10개 이하', res.data.length);
-            //         for(let i = 0; i < res.data.length;  i++){
-            //             this.post.post_id.push(res.data[i].board_id);
-            //             this.post.title.push(res.data[i].title);
-            //             this.post.user_id.push(res.data[i].id)
-            //             this.post.img.push(res.data[i].titleImg);
-            //             this.postCount += 1;
-            //             console.log(this.postCount);
-            //         } 
-            //     }else if(res.data.length > 10){
-            //         // 총 게시물이 10개가 넘으면 10개 까지만 불러오기.
-            //         console.log('10개 이상', res.data.length);
-            //         for(let i = 0; i < 10; i++){
-            //             this.post.post_id.push(res.data[i].board_id);
-            //             this.post.title.push(res.data[i].title);
-            //             this.post.user_id.push(res.data[i].id)
-            //             this.post.img.push(res.data[i].titleImg);
-            //             this.postCount += 1;
-            //             console.log(this.postCount);
-            //         }
-            //     }
-            // })
-            // .catch(err => {console.log(err)});
-            console.log(this.postCount);
+            }else{
+                this.getPost();
+            }
+        },
+        /* 
+            getPost()함수가 호출될 때마다. post.title, id, img는 초기값을 빈 배열로 시작.
+            빈 배열로 초기화 시켜주지 않으면 누적돼서 값이 생기는 문제가 생김.
+        */
+        getPost(){
+            let userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            this.post.title = [];
+            this.post.id = [];
+            this.post.img = [];
+            this.post.date = [];
+            this.post.board_id = [];
+            this.post_id = [];
+            if(this.$route.name === 'MyPage'){
+                console.log('내가 올린 게시물');
+                axios.get('/api/myPagePost', {params: {nickname: userInformation.nickname, limit: 0}})
+                .then(res => {
+                    for(let i = 0; i < res.data.length; i++){
+                        console.log(res);
+                        this.post.post_id.push(res.data[i].post_id);
+                        this.post.board_id.push(res.data[i].board_id);
+                        this.post.title.push(res.data[i].title);
+                        this.post.user_id.push(res.data[i].nickname);
+                        this.post.date.push(res.data[i].creation_datetime);
+                        this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
+                        this.post.postCount = res.data.length;
+                    }
+                }).catch(err => console.log(err));
+            }else{
+                console.log('커뮤니티');
+                axios.get('/api/showPostDesc',{params: {board_id: 1, limit: 0}})
+                .then(res => {
+                    console.log(res);
+                    this.postCount = res.data.length;
+                    for(let i = 0; i < res.data.length; i++){
+                        this.post.post_id.push(res.data[i].post_id);
+                        this.post.board_id.push(res.data[i].board_id);
+                        this.post.title.push(res.data[i].title);
+                        this.post.user_id.push(res.data[i].nickname);
+                        this.post.date.push(res.data[i].creation_datetime);
+                        this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
+                    }
+                })
+                .catch(err => console.log(err));
+            }
         },
         urlChange(userId, boardId, postId){
             if(document.cookie){
@@ -210,7 +214,7 @@ export default {
                 });
             }else{
                 console.log(this.post.count);
-                axios.get('/api/getPost', {params: {board_id: 1, limit: this.post.count}})
+                axios.get('/api/showPostDesc', {params: {board_id: 1, limit: this.post.count}})
                 .then(res => {
                     console.log(res);
                     for(let i = 0; i < 9; i++){
@@ -228,22 +232,7 @@ export default {
                 })
             }
         }
-            // axios.get(`http://localhost:8800/${this.categoryName}`)
-            // .then(res => {  
-            //     // 게시물 개수가 postCount개수 + 10개 보다 많으면 
-            //     for(let i = this.postCount; i < this.postCount + 10; i++){
-            //         this.post.title.push(res.data[i].title);
-            //         this.post.id.push(res.data[i].id)
-            //         this.post.img.push(res.data[i].titleImg);
-            //         this.postCount += 1;
-            //         console.log(this.postCount);
-            //     }
-            // })
-            // .catch(err => {
-            //     console.log(err);
-            // })
-        }
-    // },
+    }
 
 }
 </script>
@@ -253,6 +242,18 @@ export default {
     // width: 100vw;
     // width: 25vw;
     height: 300px;
+    .containHead{
+        position: relative;
+        bottom: 50px;
+        z-index: 99;
+        width: 70vw;
+        display: flex;
+        justify-content: space-between;
+        .sort{
+            border: 0;
+            margin-right: 30px;
+        }
+    }
     #categoryName{
         font-size: 30px;
         font-weight: 700;
@@ -321,9 +322,14 @@ export default {
         }
     }
     @media screen and (max-width: 1000px){
-        #categoryName{
-            font-size: 25px;
-            font-display: 700;
+        .containHead{
+            // display: block;
+            // width: 800px;
+            width: 90vw;
+            #categoryName{
+                font-size: 25px;
+                font-display: 700;
+            }
         }
         .inner{
             .postUrl{

@@ -245,6 +245,7 @@ export default {
                 display: none;
                 background-color: rgb(243, 240, 240);
                 position: absolute;
+                z-index: 100;
                 text-align: left;
                 width: 150px;
                 height: 80px;
@@ -282,7 +283,8 @@ export default {
             height: 100%;
             .listBox{
                 position: relative;
-                width: 90%;
+                width: 100%;
+                bottom: 30px;
                 margin: auto;
                 .list{
                     display: none;
