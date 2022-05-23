@@ -10,9 +10,7 @@
             <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
                 <div class="post" v-for="data, i in post.title.length" :key="i"
                 @click="urlChange(post.user_id[i], post.board_id[i], post.post_id[i])">
-
-                    <img :src="post.img[i]" class="titleImg" :style="{backgroundImage: `url(${post.img[i]})`}"/>
-                    <!-- <p>{{post.img[i]}}</p> -->
+                    <div :style="{backgroundImage:`url('${post.img[i]}')`}" class="titleImg"/>
                     <div class="bottom">
                         <p style="display: none">글 ID: {{post.post_id[i]}}</p>
                         <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
@@ -289,6 +287,7 @@ export default {
                 }
                 .titleImg:hover{
                     background-size: 120%;
+                    transition: .3s;
                 }
                 .bottom{
                     width: 90%;

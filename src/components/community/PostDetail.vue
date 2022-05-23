@@ -2,7 +2,7 @@
     <div class="contain">
         <div class="detail">
             <div class="postHeader">
-                <img class="postImg" :src="post.titleImg"/>
+                <div class="postImg" :style="{backgroundImage:`url('${post.titleImg}')`}"/>
                 <div class="user">
                     <p class="title">{{post.title}}</p>
                     <br/>
@@ -151,15 +151,16 @@ export default {
         margin-top: 3%;
         .postHeader{
             width: 100%;
-            height: 500px;
+            height: 300px;
+            
             .postImg{
                 position: absolute;
                 width: 100%;
                 height: 100%;
+                filter: brightness(0.70);
                 background: rgb(227, 227, 227);
                 background-repeat: no-repeat;
                 background-size: cover;
-                filter: brightness(0.70);
             }
             .user{
                 position: absolute;

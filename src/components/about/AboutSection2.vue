@@ -1,10 +1,11 @@
 <template>
     <div class="contain">
         <div class="inner">
-            <p>팀원 소개</p>
+            <p>문의</p>
             <div class="line"/>
             <div class="users">
                 <div class="devUser" v-for="name, i in name" :key="i">
+                    <p>{{inquiry[i]}}</p>
                     <img class="profileImg" :src="profile[i]"/>
                     <div class="textIntroduction">
                         <p>Name : {{name}}</p>
@@ -26,6 +27,7 @@ export default {
     },
     data(){
         return{
+            inquiry: ['페이지 개선사항', '추가기능', '하드웨어기능'],
             profile: ['https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4'],
             name: ['정규영', '박세승', '문정환'],
             dev: ['FrontEnd', 'Backend', 'Backend'],
@@ -53,8 +55,7 @@ export default {
             color: rgb(168, 168, 168);
         }
         .line{
-            width: 90px;
-            margin-left: 2px;
+            width: 45px;
             height: 3px;
             background-color: #333;
         }
