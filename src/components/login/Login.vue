@@ -46,6 +46,7 @@ export default {
             // /api/login으로 값을 아이디, 비밀번호를 보냄 -> 백엔드는 DB에서 아이디, 비밀번호가 일치한게 있으면 가져와서 보내줌.(토큰) => 둥일한게 없으면 boolean 값이 false인 것을 넣어줌.
             axios.post('/api/login', {mail: this.logins.mail, password: this.logins.password})
             .then(res => {
+                console.log(res);
                 // console.log('토큰 값 : ', res.data.token);
                 // console.log('result 값 : ', res.data.result[0].mail);
                 // 로그인 창에 id/pw가 DB에 있으면 result 안에 회원 정보를 담은 배열 반환
@@ -67,7 +68,7 @@ export default {
                         address: res.data.result[0].address,
                         sex: res.data.result[0].sex,
                         nickname: res.data.result[0].nickname,
-                        profile_img_path: res.data.result[0].profile_img_path,
+                        profile_img_path: `http://localhost:3000/img/userProfile/${res.data.result[0].profile_img_path}`,
                     } 
                     
                     localStorage.setItem('userInformation', JSON.stringify(userInformation));

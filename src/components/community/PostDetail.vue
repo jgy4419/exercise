@@ -21,7 +21,7 @@
             <p id="preview-click"></p>
             <hr>
             <div class="commentList">
-                <div class="comments" v-for="data, i in comment.userId.length" :key="i">
+                <div class="comments" v-for="data, i in comment.commentDetail.length" :key="i">
                     <p class="commentUserId">{{comment.userId[i]}}</p>
                     <p class="commentTitle">{{comment.commentDetail[i]}}</p>
                     <div class="line"/>
@@ -59,13 +59,13 @@ export default {
             commentInput: '',
         }
     },
-    mounted(){
+    async mounted(){
         function decode(text) {
             // https://codepen.io/csmccoy/pen/yLNBpyW?editors=1010
             return $("<textarea/>").html(text).text();
         }
         // 백엔드에서 직접 게시글 가져오기.
-        axios.get('/api/getPostAll', {params: {board_id: 1, limit: 0}})
+        await axios.get('/api/getPostAll', {params: {board_id: 1, limit: 0}})
         .then(res => {
             for(let i = 0; i < res.data.length; i++){
                 if(this.$route.params.id === res.data[i].nickname && this.$route.params.board == res.data[i].board_id && this.$route.params.post == res.data[i].post_id){
@@ -78,48 +78,45 @@ export default {
             }
         })
         .catch(err => console.log(err));
-
-        // 해당 게시글의 댓글 넣어주기.
-        // axios.get('http://localhost:8800/comment')
-        // .then(res => {
-        //     console.log(res.data);
-        //     let datas = res.data;
-        //     datas.map(e => {
-        //         this.comment.userId.push(e.userID);
-        //         this.comment.commentDetail.push(e.commentDetail);
-        //     })
-        // })
-        // .catch(err => {console.log(err);})
+        await axios.get('/api/showComments', {params: {post_id: this.$route.params.post}})
+        .then(res => {
+            console.log(res);
+            for(let i = 0; i < res.data.length; i++){
+                console.log(res.data[i].content);
+                this.comment.commentDetail.push(res.data[i].content);
+                this.comment.userId.push(res.data[i].nickname);
+            }
+        }).catch(err => {console.log(err)});
+        console.log('~~');
     },
     methods: {
+        getComment(){
+            console.log("getComment")
+
+        },
         commentUpdate(){
-            // 현재 날짜, 시간 가져오기
-            let today = new Date();   
-            let year = today.getFullYear(); // 년도
-            let month = today.getMonth() + 1;  // 월
-            let date = today.getDate();  // 날짜
-            let day = today.getDay();  // 요일
-            let hours = today.getHours(); // 시
-            let minutes = today.getMinutes();  // 분
-            let seconds = today.getSeconds();  // 초
-
-            let commentDate = `${year}년 ${month}월 ${date}일 ${day} ${hours}시 ${minutes}분 ${seconds}초`;
-            console.log(commentDate);
-
             // 닉네임
             let userInformation = JSON.parse(localStorage.getItem("userInformation"));
             // userInformation.nickname; 유저 닉네임
             console.log('유저 이름', userInformation.nickname);
             console.log('댓글 내용', this.commentInput);
 
+            console.log(this.$route.params.post);
+            console.log(userInformation.nickname);
             // this.commentInput 값을 넣어주기. (유저아이디, 게시글 제목)
             // req.body.post_id, req.body.nickname, parent_comments_id, req.ip, req.body.content
             axios.post('/api/comments', {
-                // post_id: post_id,
+                post_id: this.$route.params.post,
                 nickname: userInformation.nickname,
                 content: this.commentInput,
-                date: commentDate
+                parent_comments_id: 0,
+                // date: commentDate
             })
+            .then(res => {
+                location.reload();  
+                console.log(res);
+            })
+            .catch(err => console.log(err));
         },
         setPost(){
             location.replace('/write');
@@ -157,8 +154,8 @@ export default {
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                filter: brightness(0.70);
-                background: rgb(227, 227, 227);
+                filter: brightness(0.5);
+                background: rgba(0, 0, 0, .7);
                 background-repeat: no-repeat;
                 background-size: cover;
             }
@@ -198,13 +195,24 @@ export default {
     .inner{
         width: 80vw;
         margin: auto;
+        #preview-click{
+            padding: 20px;
+        }
         .commentList{
             margin-top: 50px;
             padding: 20px;
             border-radius: 10px;
             width: 80vw;
-            min-height: 200px;
+            min-height: 80px;
             background-color: rgb(243, 243, 243);
+            .comments{
+                .commentUserId{
+                    font-weight: 900;
+                }
+                .commentTitle{
+                    font-weight: 500;
+                }
+            }
             .commentTitle{
                 font-size: 14px;
                 font-weight: 700;
@@ -228,6 +236,7 @@ export default {
                 #commentInput{
                     width: 100%;
                     height: 50px;
+                    padding: 10px;
                 }
             }
             .btn{

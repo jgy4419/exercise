@@ -1,4 +1,5 @@
 <template>
+  <!-- <router-view> -->
     <header class="header">
       <nav class="web">
         <router-link to="/">
@@ -43,9 +44,10 @@ export default {
     // 만약 사이트에 쿠키가 저장되어 있으면 logint -> logout이 있는 메뉴로 변경. 
     console.log(this.login);
     let menu = document.querySelectorAll('.menuBtn');
-    if(document.cookie){
+    if(localStorage.userInformation){
       this.login = [];
       this.url = [];
+      console.log(document.cookie);
       // 로그인 유무에 따라 header 메뉴 구성 변경.
       this.login.push('오운완?', 'community', 'mypage', 'setting', 'logout');
       this.url.push('/about', '/community', `/mypage`, '/settings', '/');
@@ -57,11 +59,12 @@ export default {
         document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
         location.replace('/');
       })
-    }else if(!document.cookie){
+    }else if(!localStorage.userInformation){
+      console.log('!!!!');
       this.login = [];
       this.url = [];
       // 로그인 유무에 따라 header 메뉴 구성 변경.
-      this.login.push( '오운완?', 'community', 'mypage', 'login', 'join');
+      this.login.push('오운완?', 'community', 'mypage', 'login', 'join');
       this.url.push('/about', '/community', '/login', '/login', '/login/join');
         // localStorage.removeItem('userInformation');
     }

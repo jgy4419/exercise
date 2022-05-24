@@ -124,6 +124,7 @@ export default {
             let frm = new FormData();
             var userEntry = getSanitizedText();
             let comment = '';
+
             comment = decode(userEntry);
             frm.append('board_id', Number(1));
             frm.append('nickname', nickName);
@@ -131,6 +132,7 @@ export default {
             frm.append('photographic_path', photographic_path.files[0]);
             frm.append('content', comment);
             frm.append('availabilty_comments', 1)
+            
             axios.post('/api/createPost', frm, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

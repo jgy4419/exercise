@@ -35,7 +35,6 @@
                         <label>{{password.label[i]}}</label><input class="passwordInput" :type="password.type[i]"/><br/>
                         <button class="passwordCheck btn" :style="{display: `${password.display[i]}`}">{{password.checkBtn[i]}}</button>
                     </div>
-                    <!-- <button class="btn">저장하기</button> -->
                 </div>
             </div>
         </div>
@@ -69,8 +68,10 @@ export default {
     mounted(){
         let userInformation = JSON.parse(localStorage.getItem("userInformation"));
 
+        let changeImage = document.querySelector('.changeImage');
+        console.log(userInformation.profile_img_path)
         if(document.cookie){
-            this.changeImg = userInformation.profile_img_path;
+            changeImage.src = userInformation.profile_img_path;
             this.set.intro[0] = userInformation.nickname;
             this.set.intro[1] = userInformation.introduction;
             this.changeData.intro[0] = userInformation.nickname;
@@ -145,11 +146,16 @@ export default {
             frm.append('profileImage', this.changeImg);
             frm.append('name', this.set.intro[0]);
             frm.append('introduction', this.set.intro[1]);
-            axios.patch('/api/updateMyInxfo', frm, {
+            console.log(this.changeImg);
+            axios.patch('/api/updateMyInfo', frm, {
                 headers: {'Content-Type': 'multipart/form-data'}
-            }
-            ).then(res => {
+            }).then(res => {
                 console.log('성공!', res)
+                alert('변경에 성공했습니다. 재 로그인 해주세요.');
+                localStorage.removeItem('userInformation');
+                // 쿠키를 전 시간으로 돌려서 로그아웃 시켜줌.
+                document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
+                location.replace('/');
             }).catch(err => {
                 console.log(err);
             })
