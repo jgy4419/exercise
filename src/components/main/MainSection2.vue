@@ -32,6 +32,9 @@
 </template>
 
 <script>
+import img1 from '../../image/mainImg/main.jpeg'
+import img2 from '../../image/mainImg/main2.jpeg'
+import img3 from '../../image/mainImg/main3.jpeg'
 export default {
     data(){
         return{
@@ -65,16 +68,16 @@ export default {
                 for(let i = 0; i < title.length; i++){
                     // 1700, 2200 // 3 2
                     if(currentScrollValue > screenHeight / 3.0 && currentScrollValue < screenHeight / 2.2){
-                        img.style.backgroundImage = 'url(https://www.canceranswer.co.kr/news/photo/202109/3045_4820_1253.jpg)';
+                        img.style.backgroundImage = `url(${img2})`;
                         title[2].classList.add('event');
                         textInner[1].classList.add('event');
                         // 2200
                     }else if(currentScrollValue > screenHeight / 2.2){
-                        img.style.backgroundImage = 'url(https://www.ftimes.kr/news/photo/202110/13545_15200_4650.jpg)';
+                        img.style.backgroundImage = `url(${img3})`;
                         title[3].classList.add('event');
                         textInner[2].classList.add('event');
                     }else{
-                        img.style.backgroundImage = 'url(https://www.dementianews.co.kr/news/photo/201902/1501_1270_5524.jpg)';
+                        img.style.backgroundImage = `url(${img1})`;
                         // title[i].classList.remove('event');
                         // textInner[i].classList.remove('event');
                     }

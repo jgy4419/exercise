@@ -148,7 +148,7 @@ export default {
         margin-top: 3%;
         .postHeader{
             width: 100%;
-            height: 300px;
+            height: 250px;
             
             .postImg{
                 position: absolute;
@@ -245,11 +245,33 @@ export default {
             }
         }
     }
-    @media screen and (max-width: 900px){
+    @media screen and (max-width: 700px){
         .detail{
             .postHeader{
                 .postImg{
-                    height: 300px;
+                    // height: 200px;
+                }
+                .user{
+                    .title{
+                        font-size: 40px;
+                    }
+                    .information, .setPost{
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
+    @media screen and (max-width: 400px){
+        .detail{
+            .postHeader{
+                .user{
+                    .title{
+                        font-size: 30px;
+                    }
+                    .information, .setPost{
+                        font-size: 10px;
+                    }
                 }
             }
         }

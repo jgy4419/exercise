@@ -240,8 +240,11 @@ export default {
                     width: 40px;
                     height: 40px;
                     border-radius: 50%;
-                    border: 2px solid #333;
+                    // border: 2px solid #333;
                     background-size: cover;
+                }
+                .btn2:hover{
+                    border: 2px solid #333;
                 }
             }
             .menuList{

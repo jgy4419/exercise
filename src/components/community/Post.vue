@@ -116,12 +116,8 @@ export default {
             if(sort.value === '오래된순'){
                 axios.get('/api/showPostAsc', {params: {board_id: 1, limit: 0}})
                 .then(res => {
-                this.post.title = [];
-                this.post.id = [];
-                this.post.img = [];
-                this.post.date = [];
-                this.post.board_id = [];
-                this.post_id = [];
+                this.post.title = []; this.post.id = []; this.post.img = []; this.post.date = [];
+                this.post.board_id = []; this.post_id = [];
                 for(let i = 0; i < res.data.length; i++){
                     console.log(res);
                     this.post.post_id.push(res.data[i].post_id);
