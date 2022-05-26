@@ -63,8 +63,14 @@ const routes = [
       name: "PostDetail",
       component: PostDetail
     },
+    // 컴포넌트 하나에 url 적용시키기
     {
-      path: "/write",
+      path: "/edit/:edit/:id/:post/:board",
+      name: "edit",
+      component: Write
+    },
+    {
+      path: "/write/:edit",
       name: "Write",
       component: Write
     },

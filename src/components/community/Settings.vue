@@ -131,6 +131,7 @@ export default {
             const changeImage = document.querySelector('.changeImage');
             // '../../../repeatFunc/loadImage' 파일의 deleteImg 함수
             changeImage.src = deleteImg();
+            console.log(this.changeImg);
             console.log(changeImage.src)
         },
         save(){
@@ -144,9 +145,10 @@ export default {
             let frm = new FormData();
             frm.append('mail', userInformation.mail);
             frm.append('profileImage', this.changeImg);
-            frm.append('name', this.set.intro[0]);
+            frm.append('nickname', this.set.intro[0]);
             frm.append('introduction', this.set.intro[1]);
             console.log(this.changeImg);
+
             axios.patch('/api/updateMyInfo', frm, {
                 headers: {'Content-Type': 'multipart/form-data'}
             }).then(res => {

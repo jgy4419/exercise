@@ -2,7 +2,7 @@
     <div class="main">
         <div class="section">
             <Section1/>
-            <button @click="cookie()">testBtn</button>
+            <!-- <MainNotice/> -->
             <Section2 class="section2"/>
             <Section3/>
         </div>
@@ -12,11 +12,13 @@
 
 <script>
 import Section1 from './MainSection1.vue'
+// import MainNotice from './MainNotice.vue';
 import Section2 from './MainSection2.vue'
 import Section3 from './MainSection3.vue'
 export default {
     components: {
         Section1,
+        // MainNotice,
         Section2,
         Section3,
     },

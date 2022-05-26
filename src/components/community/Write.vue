@@ -34,7 +34,6 @@
 <script>
 import axios from 'axios';
 import DOMPurify from 'dompurify';
-// import {uploadImg} from '../../../repeatFunc/loadImage';
 export default {
     data(){
         return{
@@ -49,7 +48,32 @@ export default {
         }
     },
     mounted() {
-         // test
+        let writeState = this.$route.params.edit;
+        console.log(this.$route.params.edit);
+        // 만약 url에서 edit 설정 부분이 1이면 
+        if(writeState == 1){
+            this.btn.btnName[1] = '수정하기';
+            // url의 id, post, board 부분의 동일한 값을 DB에서 가져와서 넣어줌.
+            axios.get('/api/getPostAll', {params: {
+                nickname: this.$route.params.id,
+                post_id: this.$route.params.post,
+                board_id: this.$route.params.board,
+            }}).then(res => {
+                console.log(res);
+            }).catch(err => console.log(err));
+            // axios.get('api/updatePost', {params: {
+            //     nickname: this.$route.params.id,
+            //     post_id: this.$route.params.post,
+            //     board_id: this.$route.params.board,
+            // }}).then(res => {
+            //     this.write.title = res.data.title;
+            //     this.write.titleImg = res.data.titleImg;
+            //     this.write.content = res.data.content;
+            //     console.log(`백엔드에서 가져온 값은 ${res}
+            //     프론트에 넣은 값은 ${this.write.title} ${this.write.titleImg} ${this.write.content}`);
+            // }).catch(err => console.log(err));
+        }
+
         $(document).ready(function summernoteSandbox() {
             var $editor = $('#summernote');
             
@@ -126,22 +150,28 @@ export default {
             let comment = '';
 
             comment = decode(userEntry);
-            frm.append('board_id', Number(1));
-            frm.append('nickname', nickName);
             frm.append('title', title.value);
             frm.append('photographic_path', photographic_path.files[0]);
             frm.append('content', comment);
             frm.append('availabilty_comments', 1)
-            
-            axios.post('/api/createPost', frm, {
+            if(writeState == 1){
+                frm.append('nickname', this.$route.params.id);
+                frm.append('post_id', this.$route.params.post);
+                frm.append('board_id', this.$route.params.board);
+                axios.patch('/api/updatePost', )
+            }else if(writeState == 0){
+                frm.append('board_id', Number(1));
+                frm.append('nickname', nickName);
+                axios.post('/api/createPost', frm, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            }).then(res => {
-                console.log(res);
-                location.href = '/community';
-            })
-            .catch(err => console.log(err))
+                }).then(res => {
+                    console.log(res);
+                    location.href = '/community';
+                })
+                .catch(err => console.log(err))
+            }
             // location.href = '/community';
         });
 

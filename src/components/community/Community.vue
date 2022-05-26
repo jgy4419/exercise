@@ -10,9 +10,9 @@
                         })" v-model="searchResult" class="searchInput" type="text"/>
                         {{searchRest}}
                     </div>
-                    <router-link class="url" v-for="url, i in headerUrl" :key="i" :to="url">
-                        <button @click="informationUrl()" :style="{backgroundImage: `url(${backImg[i]})`}" :class="btnClass[i]">
-                            {{header[i]}}
+                    <router-link class="url" :to="headerUrl">
+                        <button class = "btn btn1" @click="informationUrl()">
+                            새 글 작성
                         </button>
                     </router-link>
                     <div class="menuList">
@@ -83,11 +83,9 @@ export default {
     },
     data(){
         return{
-            header: ['새 글 작성', ''],
-            btnClass: ['btn1 btn', 'btn2 btn'],
             sort: ['전체', '인기순', '최신순', '댓글순'],
             // myPage/여기에 임시로 jgy4419 넣음.
-            headerUrl: ['/write', ''],
+            headerUrl: '/write/0',
             searchValue: '', // searchInput에 입력하고 enter 누르면 값 변경
             category: ['all', 'category1', 'category2', 'category3'],
             categoryCount: 4,
@@ -124,17 +122,6 @@ export default {
         }else{
             this.manager = false;
         }
-        let userInformation = JSON.parse(localStorage.getItem("userInformation"));
-        // 검색기능 개발 : 검색 input에 text를 입력하면 input 값과, 서버의 title 값과 비교해서 같은 것만 보여줌.
-        this.backImg[1] = `${userInformation.profile_img_path}`
-        console.log(this.backImg[1]);
-        const roundProfile = document.querySelector('.btn2');
-        roundProfile.addEventListener('click', function(){
-            // 누르면 리스트 생성.
-            let menuList = document.querySelector('.menuList');
-            menuList.classList.toggle('event');
-        })
-
 
     },
     watch: {
@@ -162,11 +149,9 @@ export default {
         informationUrl(){
             if(!localStorage.userInformation){
                 alert('로그인 후 이용해주세요!')
-                this.headerUrl = ['/login', ''];
-                this.menuList.url = ['/login', '/login'];
+                this.headerUrl = '/login'
             }else{
-                this.headerUrl = ['/write', ''];
-                this.menuList.url = ['/mypage', '/settings'];
+                this.headerUrl = '/write/0';
             }
         }
     },
@@ -213,7 +198,7 @@ export default {
                     transform: translateX(0px);
                 }
             }
-            .url{
+            // .url{
                 .btn{
                     position: relative;
                     margin-left: 30px;
@@ -236,17 +221,7 @@ export default {
                     border: 0px #fff;
                     color: #fcf3f3;
                 }
-                .btn2{
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    // border: 2px solid #333;
-                    background-size: cover;
-                }
-                .btn2:hover{
-                    border: 2px solid #333;
-                }
-            }
+            // }
             .menuList{
                 display: none;
                 background-color: rgb(243, 240, 240);

@@ -19,6 +19,7 @@
         </div>   
         <div class="inner">
             <p id="preview-click"></p>
+            <Chart class="chart"/>
             <hr>
             <div class="commentList">
                 <div class="comments" v-for="data, i in comment.commentDetail.length" :key="i">
@@ -41,7 +42,11 @@
 
 <script>
 import axios from 'axios'
+import Chart from './Chart.vue';
 export default {
+    components: {
+        Chart,
+    },
     data(){
         return{
             post: {
@@ -119,7 +124,7 @@ export default {
             .catch(err => console.log(err));
         },
         setPost(){
-            location.replace('/write');
+            location.replace(`/edit/1/${this.$route.params.id}/${this.$route.params.post}/${this.$route.params.board}`);
         },
         deletePost(){
             console.log(this.$route.params.post);
@@ -197,6 +202,10 @@ export default {
         margin: auto;
         #preview-click{
             padding: 20px;
+        }
+        .chart{
+            position: relative;
+            z-index: 100;
         }
         .commentList{
             margin-top: 50px;

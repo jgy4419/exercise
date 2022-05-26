@@ -7,10 +7,24 @@
         </router-link>
         <div class="webMenu">
           <router-link v-for="url, i in url" :key="i" :to="url">
-              <button class="menuBtn">{{login[i]}}</button>
+              <button class="menuBtn">
+                {{login[i]}}
+              </button>
           </router-link>
+          <button :style="{backgroundImage:`url('${myBtnImg}')`}" @click="myModal()" class="myBtn"/>
         </div>
       </nav>
+      <div class="myInformationBox">  
+        <ul>
+          <li class="myBoxli" v-for="menu, i in menuList.text" :key="i">
+            <router-link :to="menuList.url[i]">
+              <!-- <a :href="menuList.url[i]"> -->
+                {{menuList.text[i]}}
+              <!-- </a> -->
+            </router-link>
+          </li>
+        </ul>
+      </div>
       <div class="menuListIcon"
       @click="hamburger()">
           <div class="line" v-for="a in 3" :key="a"></div>
@@ -36,23 +50,34 @@
 export default {
   data(){
     return{
-      url: ['/about', '/community', '/login', '/login', '/login/join'],
-      login: ['오운완?', 'community', 'mypage', 'login', 'join']
+      url: ['/about', '/community'],
+      login: ['오운완?', 'community'],
+      menuList: {
+          text: ['MyPage', 'settings', 'logout'],
+          url: ['/mypage', '/settings', '/'],
+      },
+      myBtnImg: '',
     }
   },
   mounted(){
+    let userInformation = JSON.parse(localStorage.getItem("userInformation"));
     // 만약 사이트에 쿠키가 저장되어 있으면 logint -> logout이 있는 메뉴로 변경. 
     console.log(this.login);
-    let menu = document.querySelectorAll('.menuBtn');
+    let myBoxli = document.querySelectorAll('.myBoxli');
+
+    let myBtn = document.querySelector('.myBtn');
+
     if(localStorage.userInformation){
       this.login = [];
       this.url = [];
-      console.log(document.cookie);
+      myBtn.style.display = 'inline'
+      this.myBtnImg = `${userInformation.profile_img_path}`;
+      console.log(this.myBtnImg);
       // 로그인 유무에 따라 header 메뉴 구성 변경.
-      this.login.push('오운완?', 'community', 'mypage', 'setting', 'logout');
-      this.url.push('/about', '/community', `/mypage`, '/settings', '/');
-      // 로그인 이후 menu[0]번째 즉, logout 버튼을 누르면 웹에서 쿠키 제거 즉, 로그아웃 시켜줌.
-      menu[4].addEventListener('click', function(){
+      this.login.push('오운완?', 'community');
+      this.url.push('/about', '/community');
+      // 로그인 이후 menu[4]번째 즉, logout 버튼을 누르면 웹에서 쿠키 제거 즉, 로그아웃 시켜줌.
+      myBoxli[2].addEventListener('click', function(){
         console.log('logout!');
         localStorage.removeItem('userInformation');
         // 쿠키를 전 시간으로 돌려서 로그아웃 시켜줌.
@@ -60,16 +85,19 @@ export default {
         location.replace('/');
       })
     }else if(!localStorage.userInformation){
-      console.log('!!!!');
       this.login = [];
       this.url = [];
+      myBtn.style.display = 'none'
       // 로그인 유무에 따라 header 메뉴 구성 변경.
-      this.login.push('오운완?', 'community', 'mypage', 'login', 'join');
-      this.url.push('/about', '/community', '/login', '/login', '/login/join');
-        // localStorage.removeItem('userInformation');
+      this.login.push('오운완?', 'community', 'login', 'join');
+      this.url.push('/about', '/community', '/login', '/login/join');
     }
   },
   methods: {
+    myModal(){
+      const myInformationBox = document.querySelector('.myInformationBox');
+      myInformationBox.classList.toggle('event');
+    },
     hamburger(){
       let line = document.querySelectorAll('.line');
       let mobileMenu = document.querySelector('.mobileMenu');
@@ -122,6 +150,15 @@ export default {
         font-size: 14px;
         font-weight: 700;
       }
+      .myBtn{
+        position: relative;
+        background-size: cover;
+        left: 10px;
+        top: 10px;
+        width: 35px;
+        height: 35px;
+        background-color: rgb(233, 233, 233);
+      }
     // }
     button{
       width: 80px;
@@ -143,6 +180,31 @@ export default {
     }
     .logo{
       cursor: pointer;
+    }
+  }
+  .myInformationBox.event{
+    display: block;
+  }
+  .myInformationBox{
+    display: none;
+    position: absolute;
+    margin-top: 10px;
+    right: 8%;
+    width: 90px;
+    height: 100px;
+    font-size: 12px;
+    background-color: rgb(243, 243, 243);
+    ul{
+      position: absolute;
+      top: 8px;
+      right: 18px;
+      li{
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        font-weight: 500;
+        line-height: 27px;
+      }
     }
   }
   // 햄버거 아이콘
@@ -251,6 +313,9 @@ export default {
           height: 40px;
           font-size: 15px;
       }
+    }
+    .myBtn{
+      display: none;
     }
     .menuListIcon{
       display: block;

@@ -4,6 +4,7 @@
 </template>
 
 <script>
+// import Chart from 'chart.js';
 import Header from './components/Header.vue'
 export default {
   components: {
