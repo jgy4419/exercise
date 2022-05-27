@@ -23,6 +23,7 @@
     "vue-chartjs": "4.1.0",
     "vue-chartkick": "1.1.0",
     "vue-router": "4.0.14",
+    "vueperslides": "3.3.2",
     "vuex": "4.0.2"
   },
   "devDependencies": {
@@ -33,7 +34,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
-    "swiper": "8.1.6",
+    "swiper": "6.8.4",
     "vue-awesome-swiper": "5.0.1"
   },
   "eslintConfig": {

@@ -57,9 +57,20 @@ export default {
           url: ['/mypage', '/settings', '/'],
       },
       myBtnImg: '',
+      modalState: 0,
+    }
+  },
+  watch: {
+    // url 변경이 감지되면 myInformationBox 없애주기.
+    '$route' (){
+      let myInformationBox = document.querySelector('.myInformationBox');
+      myInformationBox.classList.remove('event');
     }
   },
   mounted(){
+    // if(this.$route)
+    console.log(this.$route.path)
+
     let userInformation = JSON.parse(localStorage.getItem("userInformation"));
     // 만약 사이트에 쿠키가 저장되어 있으면 logint -> logout이 있는 메뉴로 변경. 
     console.log(this.login);
@@ -95,7 +106,7 @@ export default {
   },
   methods: {
     myModal(){
-      const myInformationBox = document.querySelector('.myInformationBox');
+      let myInformationBox = document.querySelector('.myInformationBox');
       myInformationBox.classList.toggle('event');
     },
     hamburger(){

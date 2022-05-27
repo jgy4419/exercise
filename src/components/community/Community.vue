@@ -10,7 +10,7 @@
                         })" v-model="searchResult" class="searchInput" type="text"/>
                         {{searchRest}}
                     </div>
-                    <router-link class="url" :to="headerUrl">
+                    <router-link class="url" :to="headerUrl ">
                         <button class = "btn btn1" @click="informationUrl()">
                             새 글 작성
                         </button>

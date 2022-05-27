@@ -19,10 +19,14 @@
         </div>   
         <div class="inner">
             <p id="preview-click"></p>
-            <Chart class="chart"/>
+            <Chart v-if="chartState === 1" class="chart"/>
             <hr>
             <div class="commentList">
                 <div class="comments" v-for="data, i in comment.commentDetail.length" :key="i">
+                    <div class="commentSetBox">
+                        <p @click="commentEdit()">수정</p>
+                        <p @click="commentDelete()">삭제</p>
+                    </div>
                     <p class="commentUserId">{{comment.userId[i]}}</p>
                     <p class="commentTitle">{{comment.commentDetail[i]}}</p>
                     <div class="line"/>
@@ -42,7 +46,7 @@
 
 <script>
 import axios from 'axios'
-import Chart from './Chart.vue';
+import Chart from '../Chart.vue';
 export default {
     components: {
         Chart,
@@ -62,9 +66,21 @@ export default {
                 commentDetail: []
             },
             commentInput: '',
+            // 사용자가 차트 데이터를 올렸는지 안 올렸는지 상태. (일단 임시로 1 적용.)
+            chartState: 1, 
         }
     },
     async mounted(){
+        // 자신이 올린 게시물만 수정/삭제 가능.
+        let userInformation = JSON.parse(localStorage.getItem("userInformation"));
+        const setPost = document.querySelector('.setPost');
+        if(userInformation.nickname === this.$route.params.id){
+            setPost.style.display = 'flex';
+        }else if(userInformation.nickname !== this.$route.params.id){
+            setPost.style.display = 'none';
+        }
+        
+
         function decode(text) {
             // https://codepen.io/csmccoy/pen/yLNBpyW?editors=1010
             return $("<textarea/>").html(text).text();
@@ -132,14 +148,15 @@ export default {
                 alert('삭제되었습니다!');
                 console.log(this.$route.params.post);
                 axios.delete('/api/deletePost', {params: {post_id: this.$route.params.post}})
-                .then(res => {
-                    console.log(this.$route.params.post);
-                    console.log(res);
-                    console.log(this.$route.params.post);
-                })
                 .catch(err => console.log(err))
                 location.replace('/community');
             }
+        },
+        commentEdit(){
+            console.log('댓글 수정');
+        },
+        commentDelete(){
+            console.log('댓글 삭제');
         }
         
     }
@@ -220,6 +237,16 @@ export default {
                 }
                 .commentTitle{
                     font-weight: 500;
+                }
+                .commentSetBox{
+                    position: absolute;
+                    right: 12%;
+                    display: flex;
+                    p{
+                        margin-left: 10px;
+                        font-weight: 700;
+                        cursor: pointer;
+                    }
                 }
             }
             .commentTitle{

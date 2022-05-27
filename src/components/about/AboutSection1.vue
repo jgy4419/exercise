@@ -23,11 +23,6 @@
     </div>
 </template>
 
-<script>
-export default {
-    
-}
-</script>
 
 <style lang="scss" scoped>
 .contain{
@@ -36,6 +31,7 @@ export default {
         width: 100vw;
         height: 300px;
         .backImage{
+            margin-top: 20px;
             position: absolute;
             z-index: 1;
             background-image: url('https://thumb.zumst.com/530x0/https:/static.news.zumst.com/images/132/2021/12/27/546720b89eff47ca8e7f1bc5b28f3ccc.jpg');
@@ -64,6 +60,7 @@ export default {
         }
     }
     .section {
+        margin-top: 20px;
         position: relative;
         width: 100vw;
         height: 300px;

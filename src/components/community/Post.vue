@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'; 
 import {mapState} from 'vuex';
 export default {
     // 데이터가 추가적으로 저장이 되면 
