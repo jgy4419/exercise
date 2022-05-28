@@ -7,20 +7,20 @@
             </select>
         </div>
         <div class="inner">
-                <div class="post" v-for="data, i in post.title.length" :key="i">
-                    <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
-                        <div :style="{backgroundImage:`url('${post.img[i]}')`}" class="titleImg"
-                        @click="urlChange(post.user_id[i], post.board_id[i], post.post_id[i])"/>
-                        <div class="bottom">
-                            <p style="display: none">글 ID: {{post.post_id[i]}}</p>
-                            <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
-                            <p>닉네임 / 아이디 : {{post.user_id[i]}}</p>
-                            <p>날짜: {{post.date[i]}}</p>
-                            {{searchRes}}
-                            <p>{{$store.state.Search.searchValue}}</p>
-                        </div>
-                    </router-link>
+            <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
+                <div class="post" v-for="data, i in post.title.length" :key="i"
+                @click="urlChange(post.user_id[i], post.board_id[i], post.post_id[i])">
+                    <div :style="{backgroundImage:`url('${post.img[i]}')`}" class="titleImg"/>
+                    <div class="bottom">
+                        <p style="display: none">글 ID: {{post.post_id[i]}}</p>
+                        <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
+                        <p>닉네임 / 아이디 : {{post.user_id[i]}}</p>
+                        <p>날짜: {{post.date[i]}}</p>
+                        {{searchRes}}
+                        <p>{{$store.state.Search.searchValue}}</p>
+                    </div>
                 </div>
+            </router-link>
             <div class="btnBox">
                 <button @click="moreData" class="moreBtn">더 보기</button>
             </div>
@@ -256,12 +256,13 @@ export default {
     .inner{
         position: absolute;
         top: 0;
-        display: flex;
-        flex-wrap: wrap;
         // align-items: center;
         justify-content: space-between;
         width: 70vw;
         height: 100%;
+        .postUrl{
+            display: flex;
+            flex-wrap: wrap;
             .post{
                 width: 300px;
                 height: 300px;
@@ -287,8 +288,14 @@ export default {
                 .bottom{
                     width: 90%;
                     margin: auto;
+                    .title{
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
                 }
             // }
+            }
         }
 
         .btnBox{
@@ -343,13 +350,12 @@ export default {
     }
     @media screen and (max-width: 768px){
         .inner{
-            display: block;
-            .post{
-                width: 100%;
+            .postUrl{
+                display: block;
+                .post{
+                    width: 100%;
+                }
             }
-    //         .post{
-    //             width: 90%;
-    //         }
         }
     }
 }

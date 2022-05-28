@@ -2,7 +2,8 @@
     <div class="main">
         <div class="section">
             <Section1/>
-            <!-- <MainNotice/> -->
+            <!-- <Slide class="slide"/> -->
+            <MainNotice class="mainNotice"/>
             <Section2 class="section2"/>
             <Section3/>
         </div>
@@ -11,18 +12,30 @@
 </template>
 
 <script>
-import Section1 from './MainSection1.vue'
-// import MainNotice from './MainNotice.vue';
-import Section2 from './MainSection2.vue'
-import Section3 from './MainSection3.vue'
+import Section1 from './MainSection1.vue';
+import MainNotice from './MainNotice.vue';
+// import Slide from './Slide.vue';
+import Section2 from './MainSection2.vue';
+import Section3 from './MainSection3.vue';
 export default {
     components: {
         Section1,
-        // MainNotice,
+        MainNotice,
+        // Slide,
         Section2,
         Section3,
     },
     mounted(){
+        const upBtn = document.querySelector('.upBtn');
+        document.addEventListener('scroll', () => {
+            let currentScrollValue = document.documentElement.scrollTop;
+            if(currentScrollValue > 1000){
+                upBtn.style.display = 'block'
+            }else{
+                upBtn.style.display = 'none';
+            }
+        })
+
         if(document.cookie){
             let getUserInformation = JSON.parse(localStorage.getItem('userInformation'));
             this.$store.dispatch('User/loginUserAction', {
@@ -58,6 +71,9 @@ export default {
         }
         .section2{
             margin-top: 15%;
+        }
+        .mainNotice{
+            position: relative;
         }
         .upBtn{
             position: fixed;

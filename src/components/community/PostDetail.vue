@@ -156,7 +156,9 @@ export default {
             console.log('댓글 수정');
         },
         commentDelete(){
-            console.log('댓글 삭제');
+            if(confirm('댓글을 지우시겠습니까?')){
+                alert('삭제되었습니다.');
+            }
         }
         
     }

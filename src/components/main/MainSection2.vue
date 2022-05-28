@@ -67,12 +67,12 @@ export default {
                 let currentScrollValue = document.documentElement.scrollTop;
                 for(let i = 0; i < title.length; i++){
                     // 1700, 2200 // 3 2
-                    if(currentScrollValue > screenHeight / 3.0 && currentScrollValue < screenHeight / 2.2){
+                    if(currentScrollValue > screenHeight / 2.6 && currentScrollValue < screenHeight / 1.8){
                         img.style.backgroundImage = `url(${img2})`;
                         title[2].classList.add('event');
                         textInner[1].classList.add('event');
                         // 2200
-                    }else if(currentScrollValue > screenHeight / 2.2){
+                    }else if(currentScrollValue > screenHeight / 1.8){
                         img.style.backgroundImage = `url(${img3})`;
                         title[3].classList.add('event');
                         textInner[2].classList.add('event');
