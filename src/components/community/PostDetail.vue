@@ -23,12 +23,17 @@
             <hr>
             <div class="commentList">
                 <div class="comments" v-for="data, i in comment.commentDetail.length" :key="i">
-                    <div class="commentSetBox">
-                        <p @click="commentEdit()">수정</p>
-                        <p @click="commentDelete()">삭제</p>
+                    <div v-if="commentState === 1" class="commentSetBox">
+                        <p @click="commentEdit(i)">수정</p>
+                        <p @click="commentDelete(i)">삭제</p>
                     </div>
                     <p class="commentUserId">{{comment.userId[i]}}</p>
-                    <p class="commentTitle">{{comment.commentDetail[i]}}</p>
+                    <p v-if="commentState === 1" class="commentTitle">{{comment.commentDetail[i]}}</p>
+                    <div class="inputSetCommentBox">
+                        <textArea type="text" minlength="10" maxlength="100" size="10" class="inputSetComment"/>
+                        <button @click="setCommentComplete(i)" class="setBtn setcomplete">수정완료</button>
+                        <button @click="commentBack(), commentState = 1" class="setBtn notSet">돌아가기</button>
+                    </div>
                     <div class="line"/>
                 </div>
             </div>
@@ -63,11 +68,14 @@ export default {
             },
             comment: {
                 userId: [],
-                commentDetail: []
+                commentDetail: [],
+                comments_id: [],
             },
             commentInput: '',
             // 사용자가 차트 데이터를 올렸는지 안 올렸는지 상태. (일단 임시로 1 적용.)
-            chartState: 1, 
+            chartState: 1,
+            commentState: 1,
+            // setCommentState: 0,
         }
     },
     async mounted(){
@@ -103,9 +111,9 @@ export default {
         .then(res => {
             console.log(res);
             for(let i = 0; i < res.data.length; i++){
-                console.log(res.data[i].content);
                 this.comment.commentDetail.push(res.data[i].content);
                 this.comment.userId.push(res.data[i].nickname);
+                this.comment.comments_id.push(res.data[i].Comments_id);
             }
         }).catch(err => {console.log(err)});
         console.log('~~');
@@ -141,9 +149,16 @@ export default {
         },
         setPost(){
             location.replace(`/edit/1/${this.$route.params.id}/${this.$route.params.post}/${this.$route.params.board}`);
+            // let inputSetComment = document.querySelectorAll('.inputSetComment');
+            // axios.get('/api/showComments', {params: {post_id: this.$route.params.post}})
+            // .then(res => {
+            //     inputSetComment[i].innerHTML = res.data.Comments_id[0];
+            //     console.log(res);
+            // }).catch(err => {console.log(err)});
+            // console.log(inputSetComment[i]);
+            // inputSetComment[i].
         },
         deletePost(){
-            console.log(this.$route.params.post);
             if(confirm('정말 게시글을 삭제하시겠습니까?')){
                 alert('삭제되었습니다!');
                 console.log(this.$route.params.post);
@@ -152,12 +167,54 @@ export default {
                 location.replace('/community');
             }
         },
-        commentEdit(){
-            console.log('댓글 수정');
+        commentEdit(i){
+            this.setCommentState = 1;
+            this.commentState = 0;
+            let inputSetCommentBox = document.querySelectorAll('.inputSetCommentBox');
+            let inputSetComment = document.querySelectorAll('.inputSetComment');
+            inputSetCommentBox[i].classList.add('event');
+            axios.get('/api/showComments', {params: {post_id: this.$route.params.post}})
+            .then(res => {
+                inputSetComment[i].innerHTML = res.data[i].content;
+            })
+            .catch(err => console.log(err));
+            
+            console.log(inputSetComment[i]);
         },
-        commentDelete(){
+        setCommentComplete(i){
+            let post_id = this.$route.params.post;
+            let inputSetComment = document.querySelectorAll('.inputSetComment');
+            let userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            axios.patch('/api/updateComment', {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                content: inputSetComment[i].value,
+                nickname: userInformation.nickname,
+                post_id: Number(post_id),
+                comments_id: this.comment.comments_id[i]
+            }).then(res => {
+                console.log(res);
+                location.reload();
+            })
+        },
+        commentBack(){
+            let inputSetCommentBox = document.querySelectorAll('.inputSetCommentBox');
+            for(let i = 0; i < inputSetCommentBox.length; i++){
+                inputSetCommentBox[i].classList.remove('event');
+            }
+        },
+        commentDelete(i){
+            let post_id = this.$route.params.post;
+            console.log(post_id);
             if(confirm('댓글을 지우시겠습니까?')){
+                axios.delete('/api/deleteComment', {params: {
+                    comments_id: this.comment.comments_id[i],
+                    post_id: Number(post_id),
+                }}).then(res => console.log(res))
+                .catch(err => console.log(err));
                 alert('삭제되었습니다.');
+                location.reload();
             }
         }
         
@@ -240,6 +297,28 @@ export default {
                 .commentTitle{
                     font-weight: 500;
                 }
+                .inputSetCommentBox{
+                    display: none;
+                    .inputSetComment{
+                        // position: absolute;
+                        resize: none;
+                        border-radius: 10px;
+                        border: .5px solid #333;
+                        width: 100%;
+                        height: 70px;
+                        padding: 10px;
+                    }
+                    .setBtn{
+                        background-color: transparent;
+                        font-weight: 500;
+                        // text-align: left;
+                        border: 0px;
+                        
+                    }
+                }
+                .inputSetCommentBox.event{
+                    display: block;
+                }
                 .commentSetBox{
                     position: absolute;
                     right: 12%;
@@ -275,6 +354,7 @@ export default {
                     width: 100%;
                     height: 50px;
                     padding: 10px;
+                    resize: none;
                 }
             }
             .btn{

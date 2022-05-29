@@ -3,7 +3,7 @@
         <div class="inner">
             <!-- <form action="/writeBoard" method="POST" enctype="multipart/form-data"> -->
                 <div class="writeHeader">
-                    <input type="text" class="title" placeholder="제목을 입력하세요">
+                    <input v-model="postDetail.title" type="text" class="title" placeholder="제목을 입력하세요">
                     <hr/>
                     <div class="category">
                         <label class="categoryText" for="">카테고리를 선택하세요</label>
@@ -18,7 +18,7 @@
                 <button class="photographic_path" @click="deleteImg()">배경사진 초기화</button>
                 <hr class="line">
                 <div class="editor-page">
-                    <div id="summernote">오늘 한 운동에 대해서 말씀해주세요!</div>
+                    <div :v-model="postDetail.writing" id="summernote">오늘 운동한 내용을 말해주세요~!</div>
                 </div>
                 <div class="btnBox">
                     <button :class="btn.class[i]" v-for="btns, i in btn.btnName" :key="i">
@@ -45,60 +45,70 @@ export default {
             },
             category: ['카테고리1', '카테고리2', '카테고리3'],
             changeImg: '',
+            postDetail: {
+                title: '',
+                writing: ''
+            }
         }
     },
-    mounted() {
+    async mounted() {
+        // 라우트 변수들
+        let route = {
+            nickname: this.$route.params.id,
+            post_id: this.$route.params.post,
+            board_id: this.$route.params.board
+        };
         let writeState = this.$route.params.edit;
-        console.log(this.$route.params.edit);
+        console.log(this.$route.params);
         // 만약 url에서 edit 설정 부분이 1이면 
         if(writeState == 1){
+            let writing = document.getElementById('summernote');
+            let title = document.querySelector('.title');
             this.btn.btnName[1] = '수정하기';
             // url의 id, post, board 부분의 동일한 값을 DB에서 가져와서 넣어줌.
             axios.get('/api/getPostAll', {params: {
-                nickname: this.$route.params.id,
-                post_id: this.$route.params.post,
+                // nickname: this.$route.params.id,
+                // post_id: this.$route.params.post,
+                limit: 0,
                 board_id: this.$route.params.board,
             }}).then(res => {
-                console.log(res);
-            }).catch(err => console.log(err));
-            // axios.get('api/updatePost', {params: {
-            //     nickname: this.$route.params.id,
-            //     post_id: this.$route.params.post,
-            //     board_id: this.$route.params.board,
-            // }}).then(res => {
-            //     this.write.title = res.data.title;
-            //     this.write.titleImg = res.data.titleImg;
-            //     this.write.content = res.data.content;
-            //     console.log(`백엔드에서 가져온 값은 ${res}
-            //     프론트에 넣은 값은 ${this.write.title} ${this.write.titleImg} ${this.write.content}`);
-            // }).catch(err => console.log(err));
-        }
-
-        $(document).ready(function summernoteSandbox() {
-            var $editor = $('#summernote');
-            
-            $editor.summernote({
-                disableResizeEditor: false,
-                codeviewFilter: true,
-                codeviewIframeFilter: true,
-                height: 200,
-                maximumImageFileSize: 1048576,
-                callbacks:{
-                        onImageUploadError: function uploadImageError(msg){
-                        alert(msg);
+                for(let i = 0; i < res.data.length; i++){
+                    if(this.$route.params.post == res.data[i].post_id){
+                        console.log(res.data[i]);
+                        writing.innerHTML = res.data[i].comment;
+                        title.value = res.data[i].title;
+                        console.log(writing);
                     }
-                },
-                toolbar: [
-                ['operation', ['undo', 'redo']],
-                ['style', ['bold', 'italic', 'underline']],
-                ['color', ['color']],       
-                ['font', ['strikethrough', 'superscript', 'subscript', 'clear']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['insert', ['link','picture', 'hr']],
-                ['view', ['codeview']],
-                ]
+                }
+            }).catch(err => console.log(err));
+        }
+        setTimeout(() => {
+            $(document).ready(function summernoteSandbox() {
+                var $editor = $('#summernote');
+                
+                $editor.summernote({
+                    disableResizeEditor: false,
+                    codeviewFilter: true,
+                    codeviewIframeFilter: true,
+                    height: 200,
+                    maximumImageFileSize: 1048576,
+                    callbacks:{
+                            onImageUploadError: function uploadImageError(msg){
+                            alert(msg);
+                        }
+                    },
+                    toolbar: [
+                    ['operation', ['undo', 'redo']],
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['color', ['color']],       
+                    ['font', ['strikethrough', 'superscript', 'subscript', 'clear']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link','picture', 'hr']],
+                    ['view', ['codeview']],
+                    ]
+                });
             });
-        });
+        }, 300)
         let userInformation = JSON.parse(localStorage.getItem("userInformation"));
         // 어떤 유저가 들어왔는지 확인.
         let writeUser = this.$store.state.User.storeMail;
@@ -152,16 +162,26 @@ export default {
             comment = decode(userEntry);
             frm.append('title', title.value);
             frm.append('photographic_path', photographic_path.files[0]);
-            frm.append('content', comment);
             frm.append('availabilty_comments', 1)
             if(writeState == 1){
-                frm.append('nickname', this.$route.params.id);
-                frm.append('post_id', this.$route.params.post);
-                frm.append('board_id', this.$route.params.board);
-                axios.patch('/api/updatePost', )
+                // frm.append('nickname', route.nickname);
+                frm.append('post_id', parseInt(route.post_id));
+                frm.append('comment', comment);
+                // frm.append('board_id', this.$route.params.board);
+                axios.patch('/api/updatePost', frm, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(res => {
+                    console.log(res);
+                    location.href = '/community';
+                }).catch(err => {
+                    console.log(err);
+                })
             }else if(writeState == 0){
                 frm.append('board_id', Number(1));
                 frm.append('nickname', nickName);
+                frm.append('content', comment);
                 axios.post('/api/createPost', frm, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
