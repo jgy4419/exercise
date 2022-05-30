@@ -42,11 +42,11 @@
                             <li class="liCategory">카테고리</li>
                             <hr>
                             <li class="categoryList" @click="$store.dispatch('Community/categoryChange', {
-                                categoryValue: category[i],
+                                categoryValue: $store.state.Community.categorys[i],
                                 count: i
                             })"
                              v-for="a, i in categoryCount" :key="i">
-                                {{category[i]}}
+                                {{$store.state.Community.categorys[i]}}
                             </li>
                         </ul>
                         <!-- 관리자 카테고리 수정 -->
@@ -54,6 +54,7 @@
                             <div v-for="managerInput, i in managerInput" :key="i">
                                 <label for="addCategory">{{managerInput}}</label><input @keyup.enter="categoryAdd()" v-model="categoryVal[i]" id="addCategory"/>
                             </div>
+                            <button @click="categoryAdd()">카테고리 추가</button>
                         </div>
                     </aside>
                     <div class="post">
@@ -87,7 +88,6 @@ export default {
             // myPage/여기에 임시로 jgy4419 넣음.
             headerUrl: '/write/0',
             searchValue: '', // searchInput에 입력하고 enter 누르면 값 변경
-            category: ['all', 'category1', 'category2', 'category3'],
             categoryCount: 4,
             searchResult: '', // input 창 누르는 중일 때
             res: '', // input 창 입력 끝났을 때
@@ -109,15 +109,16 @@ export default {
         }
     },
     mounted(){
+        axios.get('/api/showAnotherBoard', )
         // community 페이지에 돌아오거면 검색 창 빈칸으로 변경시켜주기.
         this.$store.dispatch('Search/searchAction', {
             inputRes: ''
         })
         console.log(this.storeGrantion_level);
         // 로컬스토리지의 유저 정보를 가져옴.
-        // let userInformation = JSON.parse(localStorage.getItem('userInformation'));
+        let userInformation = JSON.parse(localStorage.getItem('userInformation'));
         // 유저 정보 중 grant가 1이면 관리자
-        if(this.storeGrantion_level === 0){ 
+        if(userInformation.grant === 0){ 
             this.manager = true;
         }else{
             this.manager = false;
@@ -138,10 +139,13 @@ export default {
         categoryAdd(){
             // console.log('category추가 user는', this.$store.state.User.storeMail);
             axios.post('/api/createBoard', {
+                // 
                 member_id: this.$store.state.User.storeMail, 
+                // 게시판 이름
                 board_name: this.categoryVal[0],
                 code: this.categoryVal[1],
-                availability: this.categoryVal[2]
+                // 게시판 사용 유무 (0이면 안쓰고 1이면 사용.)                
+                availability: this.categoryVal[2] // 1
             })
             .then(res => {console.log(res)})
             .catch(err => console.log(err))
@@ -153,7 +157,7 @@ export default {
             }else{
                 this.headerUrl = '/write/0';
             }
-        }
+        },
     },
 }
 </script>

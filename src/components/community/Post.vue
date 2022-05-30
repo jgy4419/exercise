@@ -57,7 +57,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('Community', ['categoryName', 'categoryState', 'post']),
+        ...mapState('Community', ['categoryName', 'categoryState', 'post', 'category']),
         ...mapState('Search', ['searchRes']),
     },
     props:{
@@ -65,8 +65,15 @@ export default {
     },
     watch: {
         // vuex의 categoryName값이 변경되면 getPost(데이터 불러오는 함수)를 호출한다.
-        categoryName(){
-            this.getPost();
+        categoryName(after){
+            console.log(after);
+            if(after === '전체'){
+                this.getPost();
+            }else if(after === '자유게시판'){
+                this.changePost(2);
+            }else if(after === '운동게시판'){
+                this.changePost(3);
+            }
         },
         // 검색창이 변경될 때마다 
         propsRes(result){
@@ -103,7 +110,6 @@ export default {
 
     },
     mounted(){
-        console.log(this.$route.name);
         this.postCount = 0;
         this.urlChange();
         this.getPost();
@@ -177,6 +183,28 @@ export default {
                 })
                 .catch(err => console.log(err));
             }
+        },
+        // 카테고리가 변경되면 나타나는 게시물들
+        changePost(boardID){
+            this.post.title = [];
+            this.post.id = [];
+            this.post.img = [];
+            this.post.date = [];
+            this.post.board_id = [];
+            this.post_id = [];
+            console.log(boardID);
+            axios.get('/api/showAnotherBoard', {params: {board_id: boardID}})
+            .then(res => {
+            for(let i = 0; i < res.data.length; i++){
+                    this.post.post_id.push(res.data[i].post_id);
+                    this.post.board_id.push(res.data[i].board_id);
+                    this.post.title.push(res.data[i].title);
+                    this.post.user_id.push(res.data[i].nickname);
+                    this.post.date.push(res.data[i].creation_datetime);
+                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
+                }
+                console.log(res);
+            }).catch(err => {console.log(err)});
         },
         urlChange(userId, boardId, postId){
             if(document.cookie){

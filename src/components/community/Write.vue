@@ -1,32 +1,30 @@
 <template>
     <div class="contain">
         <div class="inner">
-            <!-- <form action="/writeBoard" method="POST" enctype="multipart/form-data"> -->
-                <div class="writeHeader">
-                    <input v-model="postDetail.title" type="text" class="title" placeholder="제목을 입력하세요">
-                    <hr/>
-                    <div class="category">
-                        <label class="categoryText" for="">카테고리를 선택하세요</label>
-                        <select name="categoryChoice" class="categoryChoice">
-                            <option v-for="category in category" :key="category"
-                             value="카테고리1">{{category}}</option>
-                        </select>
-                    </div>
+            <div class="writeHeader">
+                <input v-model="postDetail.title" type="text" class="title" placeholder="제목을 입력하세요">
+                <hr/>
+                <div class="category">
+                    <label class="categoryText" for="">카테고리를 선택하세요</label>
+                    <select name="categoryChoice" class="categoryChoice">
+                        <option class="categoryOptions" v-for="category in $store.state.Community.categorys" :key="category"
+                            :value="category">{{category}}</option>
+                    </select>
                 </div>
-                <img class="writeImage" style="display:none" src='https://mblogthumb-phinf.pstatic.net/MjAxODAzMDNfMTc5/MDAxNTIwMDQxNzQwODYx.qQDg_PbRHclce0n3s-2DRePFQggeU6_0bEnxV8OY1yQg.4EZpKfKEOyW_PXOVvy7wloTrIUzb71HP8N2y-YFsBJcg.PNG.osy2201/1_%2835%ED%8D%BC%EC%84%BC%ED%8A%B8_%ED%9A%8C%EC%83%89%29_%ED%9A%8C%EC%83%89_%EB%8B%A8%EC%83%89_%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4_180303.png?type=w800' alt="프로필">
-                <label class="photographic_path" for="photographic_path">대표 이미지를 선택해주세요.</label><input class="hidden" id="photographic_path" type="file"/>
-                <button class="photographic_path" @click="deleteImg()">배경사진 초기화</button>
-                <hr class="line">
-                <div class="editor-page">
-                    <div :v-model="postDetail.writing" id="summernote">오늘 운동한 내용을 말해주세요~!</div>
-                </div>
-                <div class="btnBox">
-                    <button :class="btn.class[i]" v-for="btns, i in btn.btnName" :key="i">
-                        <i :class="btn.iClass[i]" ></i>
-                        {{btns}}
-                    </button>
-                </div>
-            <!-- </form> -->
+            </div>
+            <img class="writeImage" style="display:none" src='https://mblogthumb-phinf.pstatic.net/MjAxODAzMDNfMTc5/MDAxNTIwMDQxNzQwODYx.qQDg_PbRHclce0n3s-2DRePFQggeU6_0bEnxV8OY1yQg.4EZpKfKEOyW_PXOVvy7wloTrIUzb71HP8N2y-YFsBJcg.PNG.osy2201/1_%2835%ED%8D%BC%EC%84%BC%ED%8A%B8_%ED%9A%8C%EC%83%89%29_%ED%9A%8C%EC%83%89_%EB%8B%A8%EC%83%89_%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4_180303.png?type=w800' alt="프로필">
+            <label class="photographic_path" for="photographic_path">대표 이미지를 선택해주세요.</label><input class="hidden" id="photographic_path" type="file"/>
+            <button class="photographic_path" @click="deleteImg()">배경사진 초기화</button>
+            <hr class="line">
+            <div class="editor-page">
+                <div :v-model="postDetail.writing" id="summernote">오늘 운동한 내용을 말해주세요~!</div>
+            </div>
+            <div class="btnBox">
+                <button :class="btn.class[i]" v-for="btns, i in btn.btnName" :key="i">
+                    <i :class="btn.iClass[i]" ></i>
+                    {{btns}}
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -43,15 +41,17 @@ export default {
                 btnName: ['', '올리기'],
                 btnType: ['button', 'button'],
             },
-            category: ['카테고리1', '카테고리2', '카테고리3'],
+            // category: ['카테고리1', '카테고리2', '카테고리3'],
             changeImg: '',
             postDetail: {
                 title: '',
-                writing: ''
+                writing: '',
+                postCount: 1,
             }
         }
     },
     async mounted() {
+        console.log(this.postDetail);
         // 라우트 변수들
         let route = {
             nickname: this.$route.params.id,
@@ -82,6 +82,7 @@ export default {
                 }
             }).catch(err => console.log(err));
         }
+        // setTimeout 안쓰고 구현 해보기.
         setTimeout(() => {
             $(document).ready(function summernoteSandbox() {
                 var $editor = $('#summernote');
@@ -117,9 +118,16 @@ export default {
             history.go(-1);
             location.href = '/community';
         });
+        // board = this.postDetail.postCount;
         document.querySelector('.submit').addEventListener('click', function(){
+            let board = 1; // 기본 카테고리 번호 (전체 게시물)
+            let categoryChoice = document.querySelector('.categoryChoice');
+
+            if(categoryChoice.value === '자유게시판') board = 2;
+            else if(categoryChoice.value === '운동게시판') board = 3;
+            else board = 1;
+
             var enteredText, decoded, sanitized = null;
-            // let board_id = this.$store.state.User.storeMail; // user id
             let nickName = userInformation.nickname;
             // 글 제목
             let title = document.querySelector('.title');
@@ -163,6 +171,7 @@ export default {
             frm.append('title', title.value);
             frm.append('photographic_path', photographic_path.files[0]);
             frm.append('availabilty_comments', 1)
+            frm.append('board_id', board);
             if(writeState == 1){
                 // frm.append('nickname', route.nickname);
                 frm.append('post_id', parseInt(route.post_id));
@@ -179,7 +188,7 @@ export default {
                     console.log(err);
                 })
             }else if(writeState == 0){
-                frm.append('board_id', Number(1));
+                console.log('0번째 글');
                 frm.append('nickname', nickName);
                 frm.append('content', comment);
                 axios.post('/api/createPost', frm, {

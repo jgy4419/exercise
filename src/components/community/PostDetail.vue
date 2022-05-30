@@ -93,8 +93,7 @@ export default {
             // https://codepen.io/csmccoy/pen/yLNBpyW?editors=1010
             return $("<textarea/>").html(text).text();
         }
-        // 백엔드에서 직접 게시글 가져오기.
-        await axios.get('/api/getPostAll', {params: {board_id: 1, limit: 0}})
+        await axios.get('/api/getPostAll', {params: {board_id: this.$route.params.board, limit: 0}})
         .then(res => {
             for(let i = 0; i < res.data.length; i++){
                 if(this.$route.params.id === res.data[i].nickname && this.$route.params.board == res.data[i].board_id && this.$route.params.post == res.data[i].post_id){
