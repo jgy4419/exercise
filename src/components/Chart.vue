@@ -1,74 +1,128 @@
 <template>
   <div>
-    <canvas class="chart" id = "chart" width="1000" height="100"></canvas>
+    <p class="exerciseName">{{chart.data.exerciseName}}</p>
+    <canvas class="chart" id = "chart" width="1000" height="200"></canvas>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 export default {
+  data(){
+    return{
+      myChart: null,
+      chart: {
+        data: {
+          nickname: '',
+          exerciseName: '', 
+          number_of_sets: 0,
+          maximun_value_of_sets: 0,
+          minimum_value_of_sets: 0,
+          setsTime: '',
+          test2: [],
+          setsCount:[],
+          exerciseMinPower: 0,
+          exerciseMaxPower: 0,
+          data1: [],
+          data2: [],
+          data3: [],
+          chartColor: ['#3e95cd', '#8e5ea2', '#3cba9f'],
+        },
+      }
+    };
+  },
+  async mounted(){  
+    await axios.get('http://localhost:8000/exercise')
+    .then(res => {
+      console.log(res);
+      // 전체 세트만큼 넣기 (this.setsCount 배열)
+      for(let i = 1; i < res.data.number_of_sets + 1; i++){
+        this.chart.data.setsCount.push(`${i}세트`);
+      }
+      console.log(this.chart.data.setsCount);
+      
+      this.chart.data.nickname = res.data.nickname;
+      this.chart.data.exerciseName = res.data.workout_name;
+      this.maximun_value_of_sets = res.data.maximun_value_of_sets;
+      this.chart.data.minimum_value_of_sets = res.data.minimum_value_of_sets;
+      this.chart.data.setsTime = res.data.total_workout_time;
+      this.chart.data.exerciseMinPower = res.data.minimum_value_of_sets;
+      this.chart.data.exerciseMaxPower = res.data.maximun_value_of_sets;
+
+      // 운동 데이터 들어감.
+      res.data.sets[0].emg_data.forEach(element => {
+        this.chart.data.data1.push(element)
+        console.log(element);
+      });
+      res.data.sets[1].emg_data.forEach(element => {
+        this.chart.data.data2.push(element)
+        console.log(element);
+      });
+      res.data.sets[2].emg_data.forEach(element => {
+        this.chart.data.data3.push(element)
+        console.log(element);
+      });
+    }).catch(err => console.log(err));
+    this.fillData();
+  },
   methods: {
     fillData(){
+      // this.setsCount = 
       const ctx = document.getElementById('chart').getContext('2d');
+      const dataList = [...this.chart.data.data1];
+      // this.chart.data.setsCount 세트 나열,
+      // this.chart.data.chart.Color 색 나열
+      
+      //inaminaworld.tistory.com/184 참고하기
+      // for(let i = 0; i < this.chart.data.setsCount; i++){
+      //   for(let obj in dataset){
+      //     data.push(this.chart.data.data1)
+      //   }
+      // }
+      console.log(dataList);
       this.myChart = new Chart(ctx, {
           type: 'line',
           data: {
-          labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
-          datasets: [{ 
-          data: [86,114,106,106,107,111,133,221,783,2478],
-          label: "Africa",
-          borderColor: "#3e95cd",
-          fill: false
-        }, { 
-          data: [282,350,411,502,635,809,947,1402,3700,5267],
-          label: "Asia",
-          borderColor: "#8e5ea2",
-          fill: false
-        }, { 
-          data: [168,170,178,190,203,276,408,547,675,734],
-          label: "Europe",
-          borderColor: "#3cba9f",
-          fill: false
-        }, { 
-          data: [40,20,10,16,24,38,74,167,508,784],
-          label: "Latin America",
-          borderColor: "#e8c3b9",
-          fill: false
-        }, { 
-            data: [6,3,2,2,7,26,82,172,312,433],
-            label: "North America",
-            borderColor: "#c45850",
-            fill: false
-          }
-        ]
-      },
-      options: {
-          title: {
-            display: true,
-            text: 'World population per region (in millions)'
+            labels: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000],
+            datasets: [{
+              data: [...this.chart.data.data1],
+              label: this.chart.data.setsCount[0],
+              borderColor: "#3e95cd",
+              fill: false
+            }, { 
+              data: [...this.chart.data.data2],
+              label: this.chart.data.setsCount[1],
+              borderColor: "#8e5ea2",
+              fill: false
+            }, { 
+              data: [...this.chart.data.data3],
+              label: this.chart.data.setsCount[2],
+              borderColor: "#3cba9f",
+              fill: false
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: 'World population per region (in millions)'
+            }
           }
         }
-      });
+      );
     }
-  },
-  mounted(){
-    this.fillData();
-  },
-  data(){
-    return{
-      myChart: null
-    };
   }
 }
 </script>
 
 <style lang="scss" scoped>
-// .chart{
-//     width: 100vw;
-//     height: 100vh;
-// }
 div{
-  color: rgba(219, 252, 171, 0.2)
+  color: rgba(219, 252, 171, 0.2);
+  .exerciseName{
+    font-weight: 700;
+    font-size: 20px;
+    color: #333;
+  }
 }
 </style>

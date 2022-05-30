@@ -6,7 +6,7 @@
                 <hr/>
                 <div class="category">
                     <label class="categoryText" for="">카테고리를 선택하세요</label>
-                    <select name="categoryChoice" class="categoryChoice">
+                    <select name="categoryChoice" class="categoryChoice" @change="categoryChange($event)">
                         <option class="categoryOptions" v-for="category in $store.state.Community.categorys" :key="category"
                             :value="category">{{category}}</option>
                     </select>
@@ -15,6 +15,7 @@
             <img class="writeImage" style="display:none" src='https://mblogthumb-phinf.pstatic.net/MjAxODAzMDNfMTc5/MDAxNTIwMDQxNzQwODYx.qQDg_PbRHclce0n3s-2DRePFQggeU6_0bEnxV8OY1yQg.4EZpKfKEOyW_PXOVvy7wloTrIUzb71HP8N2y-YFsBJcg.PNG.osy2201/1_%2835%ED%8D%BC%EC%84%BC%ED%8A%B8_%ED%9A%8C%EC%83%89%29_%ED%9A%8C%EC%83%89_%EB%8B%A8%EC%83%89_%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4_180303.png?type=w800' alt="프로필">
             <label class="photographic_path" for="photographic_path">대표 이미지를 선택해주세요.</label><input class="hidden" id="photographic_path" type="file"/>
             <button class="photographic_path" @click="deleteImg()">배경사진 초기화</button>
+            <label class="sensor_btn" v-if="postDetail.postCount === 3" for="sensor_btn">센서 데이터 추가</label><input class="hidden" id="sensor_btn" type="file"/>
             <hr class="line">
             <div class="editor-page">
                 <div :v-model="postDetail.writing" id="summernote">오늘 운동한 내용을 말해주세요~!</div>
@@ -51,7 +52,7 @@ export default {
         }
     },
     async mounted() {
-        console.log(this.postDetail);
+
         // 라우트 변수들
         let route = {
             nickname: this.$route.params.id,
@@ -131,8 +132,6 @@ export default {
             let nickName = userInformation.nickname;
             // 글 제목
             let title = document.querySelector('.title');
-            // let category = document.querySelector('.categoryChoice');
-            // let photographic_path = document.querySelector('.writeImage');
             let photographic_path = document.getElementById('photographic_path');
             console.log(photographic_path.files[0]);
 
@@ -210,6 +209,14 @@ export default {
         })
     },
     methods:{
+        categoryChange(val){
+            console.log(val.target.value);
+            if(val.target.value === '운동게시판'){
+                this.postDetail.postCount = 3;
+            }else{
+                this.postDetail.postCount = 1;
+            }
+        },
         // input에 style을 enter 누르면 원래대로 되돌리기..
         // text 두께
         thickness(){
@@ -274,7 +281,7 @@ input, textarea{
             font-weight: 700;
             border: 0;
         }
-        .photographic_path{
+        .photographic_path, .sensor_btn{
             margin-top: 20px;
             display: flex;
             align-items: center;

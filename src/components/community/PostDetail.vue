@@ -73,12 +73,16 @@ export default {
             },
             commentInput: '',
             // 사용자가 차트 데이터를 올렸는지 안 올렸는지 상태. (일단 임시로 1 적용.)
-            chartState: 1,
+            chartState: 0,
             commentState: 1,
             // setCommentState: 0,
         }
     },
     async mounted(){
+        console.log(this.$route.params);
+        if(this.$route.params.board == 3){
+            this.chartState = 1;
+        }
         // 자신이 올린 게시물만 수정/삭제 가능.
         let userInformation = JSON.parse(localStorage.getItem("userInformation"));
         const setPost = document.querySelector('.setPost');
