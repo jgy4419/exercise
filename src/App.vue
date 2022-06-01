@@ -22,7 +22,13 @@ export default {
         localStorage.removeItem('userInformation');
         // 쿠키를 전 시간으로 돌려서 로그아웃 시켜줌.
         document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT';
-    }
+    },
+    // '$route'(){
+    //   if(this.$route.path === '/community'){
+    //     // location.reload();
+    //     console.log('community 사이트');
+    //   }
+    // }
   }
 }
 </script>

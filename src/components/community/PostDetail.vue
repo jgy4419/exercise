@@ -152,14 +152,6 @@ export default {
         },
         setPost(){
             location.replace(`/edit/1/${this.$route.params.id}/${this.$route.params.post}/${this.$route.params.board}`);
-            // let inputSetComment = document.querySelectorAll('.inputSetComment');
-            // axios.get('/api/showComments', {params: {post_id: this.$route.params.post}})
-            // .then(res => {
-            //     inputSetComment[i].innerHTML = res.data.Comments_id[0];
-            //     console.log(res);
-            // }).catch(err => {console.log(err)});
-            // console.log(inputSetComment[i]);
-            // inputSetComment[i].
         },
         deletePost(){
             if(confirm('정말 게시글을 삭제하시겠습니까?')){

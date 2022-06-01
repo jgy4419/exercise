@@ -106,13 +106,14 @@ export default {
                     }
                 }
             }).catch(err => console.log(err));
-        }
-
+        },
     },
     mounted(){
         this.postCount = 0;
         this.urlChange();
         this.getPost();
+        let categoryName = document.getElementById('categoryName');
+        categoryName.innerHTML = '전체';
     },
     methods: {
         sortPost(){
