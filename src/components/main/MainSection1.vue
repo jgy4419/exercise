@@ -54,9 +54,8 @@ background: linear-gradient(to right top, #861657, #ffa69e);
  */
 .contain{
     position: relative;
-    height: 800px;
-    // margin-top: 8.5%;
-    // height: 100%;
+    margin-top: 1.5%;
+    height: 100vh;
     .inner{
         position: relative;
         top: 10%;
@@ -64,7 +63,7 @@ background: linear-gradient(to right top, #861657, #ffa69e);
         width: 80%;
         margin: auto;
         .title{
-            color: rgb(29, 15, 15);
+            color: rgb(226, 226, 226);
             font-size: 70px;
             font-weight: 700;
             z-index: 10;
@@ -123,7 +122,7 @@ background: linear-gradient(to right top, #861657, #ffa69e);
         height: 100%;
         // height: 800px;
         box-shadow:  inset 10px 150px 300px #fff;
-        background-image: url('https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg');
+        background-image: url('https://post-phinf.pstatic.net/MjAxOTEyMTFfMjgy/MDAxNTc2MDUwODAxODQ3.qV7kcYtxZZr7ycnGUsmKyj2-eYBThcJbaAf7Xr4uLzAg.T0x40qYIWBL2pXFG51QhCt6N5xSFZVKOZaicP3XGx5Yg.JPEG/image_8240955871576050766062.jpg?type=w1200');
         background-repeat: no-repeat;
         background-size: cover;
         background-position: left;

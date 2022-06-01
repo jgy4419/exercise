@@ -28,12 +28,12 @@
             <br><hr><br>
             <section>
                 <div class="listBox">
-                    <button class="list" v-for="category, i in category" :key="i"
+                    <button class="list" v-for="categorys, i in categorys" :key="i"
                         @click="$store.dispatch('Community/categoryChange', {
-                            categoryValue: category,
+                            categoryValue: categorys,
                             count: i
                         })">
-                        {{category}}
+                        {{categorys}}
                     </button>
                 </div>
                 <div class="section">
@@ -77,7 +77,7 @@ export default {
         Post,
     },
     computed:{
-        ...mapState('Community', ['categoryName', 'categoryState']),
+        ...mapState('Community', ['categoryName', 'categoryState', 'categorys']),
         ...mapState('Search', ['searchRes']),
         ...mapState('User', ['storeGrantion_level']),
         ...mapActions('Community', ['categoryChange']),
@@ -139,7 +139,6 @@ export default {
         categoryAdd(){
             // console.log('category추가 user는', this.$store.state.User.storeMail);
             axios.post('/api/createBoard', {
-                // 
                 member_id: this.$store.state.User.storeMail, 
                 // 게시판 이름
                 board_name: this.categoryVal[0],
@@ -268,6 +267,7 @@ export default {
             height: 100%;
             .listBox{
                 position: relative;
+                display: block;
                 width: 100%;
                 bottom: 30px;
                 margin: auto;

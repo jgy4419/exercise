@@ -75,7 +75,6 @@ export default {
             // 사용자가 차트 데이터를 올렸는지 안 올렸는지 상태. (일단 임시로 1 적용.)
             chartState: 0,
             commentState: 1,
-            // setCommentState: 0,
         }
     },
     async mounted(){
@@ -212,7 +211,6 @@ export default {
                 location.reload();
             }
         }
-        
     }
 }
 </script>

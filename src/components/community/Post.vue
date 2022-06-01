@@ -7,20 +7,24 @@
             </select>
         </div>
         <div class="inner">
-            <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
-                <div class="post" v-for="data, i in post.title.length" :key="i"
-                @click="urlChange(post.user_id[i], post.board_id[i], post.post_id[i])">
-                    <div :style="{backgroundImage:`url('${post.img[i]}')`}" class="titleImg"/>
-                    <div class="bottom">
-                        <p style="display: none">글 ID: {{post.post_id[i]}}</p>
-                        <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
-                        <p>닉네임 / 아이디 : {{post.user_id[i]}}</p>
-                        <p>날짜: {{post.date[i]}}</p>
-                        {{searchRes}}
-                        <p>{{$store.state.Search.searchValue}}</p>
-                    </div>
+                <div class="post" v-for="data, i in post.title.length" :key="i">
+                    <!-- 시간날 때 수정하기 urlChange 1번 만 쓰기 -->
+                    <router-link style="text-decoration: none; color: #333" class="postUrl" :to="postUrl">
+                        <div :style="{backgroundImage:`url('${post.img[i]}')`}" class="titleImg"
+                        @click="urlChange(post.user_id[i], post.board_id[i], post.post_id[i])"/>
+                        <div @click="urlChange(post.user_id[i], post.board_id[i], post.post_id[i])">
+                            <div class="bottom">
+                                <!-- <p>{{this.post.post_id[i]}}</p> -->
+                                <p style="display: none">글 ID: {{post.post_id[i]}}</p>
+                                <h3 class="title"><strong>글 제목 : {{post.title[i]}}</strong></h3>
+                                <p>닉네임 / 아이디 : {{post.user_id[i]}}</p>
+                                <p>날짜: {{post.date[i]}}</p>
+                                {{searchRes}}
+                                <p>{{$store.state.Search.searchValue}}</p>
+                            </div>
+                        </div>
+                    </router-link>
                 </div>
-            </router-link>
             <div class="btnBox">
                 <button @click="moreData" class="moreBtn">더 보기</button>
             </div>
@@ -86,12 +90,9 @@ export default {
             this.post.user_id = [];
             this.post.post_id = [];
             axios.get('/api/searchtitle', {
-                // 이거.. 추가해야됨
                 params: {title: result}}, 
                 {withCredentials: true})
             .then(res => {
-                console.log('결과는', res.data);
-                
                 if(result === ''){
                     this.getPost();
                 }else{
@@ -140,10 +141,6 @@ export default {
                 this.getPost();
             }
         },
-        /* 
-            getPost()함수가 호출될 때마다. post.title, id, img는 초기값을 빈 배열로 시작.
-            빈 배열로 초기화 시켜주지 않으면 누적돼서 값이 생기는 문제가 생김.
-        */
         getPost(){
             let userInformation = JSON.parse(localStorage.getItem("userInformation"));
             this.post.title = [];
@@ -187,24 +184,20 @@ export default {
         },
         // 카테고리가 변경되면 나타나는 게시물들
         changePost(boardID){
-            this.post.title = [];
-            this.post.id = [];
-            this.post.img = [];
-            this.post.date = [];
-            this.post.board_id = [];
-            this.post_id = [];
-            console.log(boardID);
+            this.post.title = []; this.post.id = []; this.post.img = [];
+            this.post.date = []; this.post.board_id = []; this.post.post_id = []; this.post_id = [];
             axios.get('/api/showAnotherBoard', {params: {board_id: boardID}})
             .then(res => {
             for(let i = 0; i < res.data.length; i++){
-                    this.post.post_id.push(res.data[i].post_id);
-                    this.post.board_id.push(res.data[i].board_id);
-                    this.post.title.push(res.data[i].title);
-                    this.post.user_id.push(res.data[i].nickname);
-                    this.post.date.push(res.data[i].creation_datetime);
-                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
-                }
-                console.log(res);
+                console.log(res.data[i].post_id);
+                this.post.post_id.push(res.data[i].post_id);
+                this.post.board_id.push(res.data[i].board_id);
+                this.post.title.push(res.data[i].title);
+                this.post.user_id.push(res.data[i].nickname);
+                this.post.date.push(res.data[i].creation_datetime);
+                this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
+            }
+            console.log(res);
             }).catch(err => {console.log(err)});
         },
         urlChange(userId, boardId, postId){
@@ -289,43 +282,44 @@ export default {
         justify-content: space-between;
         width: 70vw;
         height: 100%;
-        .postUrl{
-            display: flex;
-            flex-wrap: wrap;
+        display: flex;
+        flex-wrap: wrap;
             .post{
                 width: 300px;
                 height: 300px;
+                box-sizing: border-box;
                 box-shadow: 4px 12px 30px 6px rgb(231, 231, 231);
                 margin-right: 20px;
                 margin-top: 50px;
                 border-radius: 10px;
                 cursor: pointer;
-                .titleImg{
-                    border-radius: 5px;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    background-size: 100%;
-                    width: 100%;
-                    height: 50%;
-                    background-color: rgb(184, 184, 184);
-                    transition: .3s;
-                }
-                .titleImg:hover{
-                    background-size: 120%;
-                    transition: .3s;
-                }
-                .bottom{
-                    width: 90%;
-                    margin: auto;
-                    .title{
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
+                .postUrl{
+                    .titleImg{
+                        border-radius: 5px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: 100%;
+                        width: 100%;
+                        height: 50%;
+                        background-color: rgb(184, 184, 184);
+                        transition: .3s;
+                    }
+                    .titleImg:hover{
+                        background-size: 120%;
+                        transition: .3s;
+                    }
+                    .bottom{
+                        width: 90%;
+                        margin: auto;
+                        .title{
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
                     }
                 }
             // }
             }
-        }
 
         .btnBox{
             display: flex;

@@ -64,31 +64,21 @@ export default {
 
 <style lang="scss" scoped>
     .main{
-        .section {
-            position: relative;
-            width: 100vw;
-            height: 86vh;
-        }
-        .section2{
-            margin-top: 15%;
-        }
         .mainNotice{
             position: relative;
         }
         .upBtn{
             position: fixed;
+            display: none;
             z-index: 10;
             bottom: 10%;
             right: 10%;
-            // background-color: #93B5C6;
             background-color: transparent;
             color: #333;
-            // color: #fff;
             width: 50px;
             height:50px;
             font-size: 16px;
             border: 0;
-            // border: 3px solid rgb(220, 220, 220);
             box-shadow: 0px 2px 10px 0px rgb(231, 231, 231);
             border-radius: 10px;
         }
