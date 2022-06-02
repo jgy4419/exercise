@@ -112,9 +112,8 @@ export default {
     mounted(){
         this.postCount = 0;
         this.urlChange();
+        this.changePost();
         this.getPost();
-        let categoryName = document.getElementById('categoryName');
-        categoryName.innerHTML = '전체';
     },
     methods: {
         sortPost(){
@@ -263,7 +262,7 @@ export default {
         bottom: 50px;
         z-index: 99;
         width: 70vw;
-        display: flex;
+        display: flex; 
         justify-content: space-between;
         .sort{
             border: 0;
