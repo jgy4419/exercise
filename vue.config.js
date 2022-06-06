@@ -8,7 +8,10 @@ module.exports = {
             '^/api': ''
           } 
         } 
-      } 
+      },
+      // devServer: { 
+      //   proxy: 'http://localhost:8080'
+      // }
     },
     outputDir: '../backend/public',
     //../backend/public  //② 배포 파일의 위치를 지정

@@ -1,21 +1,38 @@
 <template>
-    <div>
-        센서 데이터
+    <div class="contain">
+        <p class="title">센서 데이터</p>
+        <div class="charts">
+            <Chart/>
+        </div>
     </div>
 </template>
 <script>
-import axios from 'axios';
+import Chart from '../Chart.vue';
+// import axios from 'axios';
 export default {
-    mounted(){
-        let userInformation = JSON.parse(localStorage.getItem('userInformation'));
-        console.log(userInformation.nickname);
-        axios.get('/api/sensorData', {params: {nickname: userInformation.nickname}})
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+    data(){
+        return{
+            emgDatas: [],
+        }
+    },
+    components: {
+        Chart
     }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.contain {
+    position: relative;
+    width: 100%;
+    height: 800px;
+    bottom: 70px;
+    .title{
+        font-size: 30px;
+        font-weight: 700;
+    }
+    .charts{
+        margin-top: 8%;
+    }
+}
 </style>

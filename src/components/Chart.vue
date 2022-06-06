@@ -1,16 +1,22 @@
 <template>
-  <div>
+  <div class="contain">
     <p class="exerciseName">{{chart.data.exerciseName}}</p>
-    <canvas class="chart" id = "chart" width="1000" height="200"></canvas>
+    <div class="chartStyle">
+      <p>{{emgDatas[0]}}</p>
+      <canvas class="chart" id = "chart" width="80vw" height="200"></canvas>
+    </div>
   </div>
 </template>
 
 <script>
-// import axios from 'axios';
 import chartData from '../../../Backend/public/json/exerciseSensorData';
 import { Chart, registerables } from 'chart.js';
+import axios from 'axios';
 Chart.register(...registerables);
 export default {
+  // props: {
+  //   emgDatas: Array,
+  // },
   data(){
     return{
       myChart: null,
@@ -33,42 +39,78 @@ export default {
           chartColor: ['#3e95cd', '#8e5ea2', '#3cba9f'],
         },
       },
-      dataSets: []
+      dataSets: [],
+      emgDatas: [],
     };
   },
-   async mounted(){  
-    let innerChart = chartData.exercise;
-    console.log(innerChart);
-    // console.log(innerChart);
-    // await axios.get(chartData.exercise)
-    // .then(res => {
-    //   console.log(res);
-      // 전체 세트만큼 넣기 (this.setsCount 배열)
-      for(let i = 1; i < innerChart.number_of_sets + 1; i++){
-          this.chart.data.setsCount.push(`${i}세트`);
-      }
-      this.chart.data.setCount = innerChart.number_of_sets;
-      this.chart.data.exerciseName = innerChart.workout_name;
-
-      // 운동 데이터 들어
-      for(let i = 0; i < this.chart.data.setCount; i++){
-        innerChart.sets[i].emg_data.forEach(element => {
-          this.chart.data.dataValues.push(element)
-        });
-      }
-    // }).catch(err => console.log(err));
-    this.fillData();
+  async mounted(){
+    let userInformation = JSON.parse(localStorage.getItem('userInformation'));
+    //   console.log(userInformation.nickname);
+    await axios.get('/api/sensorData', {params: {nickname: userInformation.nickname}})
+    .then(res => {
+        console.log(res.data[0].emg_data_path)
+        for(let i = 0; i < res.data.length; i++){
+          this.emgDatas.push(res.data[i].emg_data_path)
+        }
+    })
+    .catch(err => console.log(err))
+  
+    this.getDatas(this.emgDatas);
   },
   methods: {
-    fillData(){
+    getDatas(datas){
+      console.log(datas);
+      import(`../../../Backend/public/emgData/${datas[0]}`)
+      .then(res => {
+        let innerChart = chartData.exercise;
+        console.log(innerChart);
+
+        let inChart = res.default;
+        console.log(chartData.exercise);
+        console.log(inChart);
+        for(let i = 1; i < res.default.number_of_sets + 1; i++){
+            this.chart.data.setsCount.push(`${i}세트`);
+        }
+        console.log(this.chart.data.setsCount[0]);
+        this.chart.data.setCount = res.default.number_of_sets;
+        console.log(this.chart.data.setCount);
+        this.chart.data.exerciseName = res.default.workout_name;
+        console.log(this.chart.data.exerciseName);
+        // 운동 데이터 들어감
+        for(let i = 0; i < this.chart.data.setCount; i++){
+          console.log(inChart.sets[i].emg_data);
+          JSON.parse(inChart.sets[i].emg_data).forEach(element => {
+            this.chart.data.dataValues.push(element)
+          });
+        }
+        this.fillData(res);
+      })
+    },  
+    fillData(data){
+      console.log(JSON.parse(data.default.sets[0].emg_data));
+      let setsArray = JSON.parse(data.default.sets[0].emg_data).length / data.default.number_of_sets
+      let setsData = [];
+      console.log(setsArray);
+      // let dataLists = [];
+      // let datasets = this.chart.data.dataValues;
+
+      // 전체 개수에서 세트수 만큼 나눈 값 넣어주기.
+      // let valueSlice = JSON.parse(data.default.sets[0].emg_data).length / data.default.number_of_sets;
+      let result = [];
+      for(let i = 0; i < data.default.number_of_sets; i++){
+        setsData.push(JSON.parse(data.default.sets[i].emg_data));
+        console.log(setsData[i]);
+      }
+      console.log(setsData);
+      // // 전체 운동한 근전도 센서 값의 개수만큼 반복 세트당 10번 측정하므로 10씩 증가(변경할 수도 있음)
+      for(let i = 0; i < setsData.length; i++){
+        // result 값에 근전도 측정 값 전체 값의 10개씩 빼와서 result에 저장.
+        result.push(setsData[i]);
+      }
+      console.log(result);
       let dataLists = [];
       let datasets = this.chart.data.dataValues;
-      let result = [];
-      // 전체 운동한 근전도 센서 값의 개수만큼 반복 세트당 10번 측정하므로 10씩 증가(변경할 수도 있음)
-      for(let i = 0; i < this.chart.data.dataValues.length; i+= 10){
-        // result 값에 근전도 측정 값 전체 값의 10개씩 빼와서 result에 저장.
-        result.push(this.chart.data.dataValues.slice(i, i + 10));
-      }
+      console.log(this.chart.data.dataValues);
 
       for(let i = 0; i < this.chart.data.setCount; i++){
         datasets = {
@@ -83,13 +125,18 @@ export default {
       this.myChart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000],
+            labels: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000],
             datasets: [...dataLists]
           },
           options: {
             title: {
               display: true,
+              responsive: false,
               text: 'World population per region (in millions)'
+            },
+            animation: {
+              animateScale: true,
+              animateRotate: true,
             }
           }
         }
@@ -100,12 +147,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div{
+.contain{
   color: rgba(219, 252, 171, 0.2);
   .exerciseName{
     font-weight: 700;
     font-size: 20px;
     color: #333;
+  }
+  .chartStyle{
+    position: relative;
+    width: 80vw;
+    height: 300px;
+  }
+  @media screen and (max-width: 768px){
+    .chartStyle{
+      // width: 80vw;
+      // height: 400px;
+      .chart{
+        width: 80vw;
+        height: 400px;
+      }
+    }
   }
 }
 </style>
