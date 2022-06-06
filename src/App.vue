@@ -1,6 +1,5 @@
 <template>
   <Header/>
-  <!-- <router-view/> -->
 </template>
 
 <script>
@@ -13,22 +12,22 @@ export default {
   data(){
     return{
       day: new Date().getDate(),
+      minute: new Date().getMinutes(),
     }
   },
-  watch: {
-    // "일"이 지나면 로그아웃 시켜준.
-    day: function(){
-        console.log('logout!');
-        localStorage.removeItem('userInformation');
-        // 쿠키를 전 시간으로 돌려서 로그아웃 시켜줌.
-        document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT';
-    },
-    // '$route'(){
-    //   if(this.$route.path === '/community'){
-    //     // location.reload();
-    //     console.log('community 사이트');
+  mounted(){
+    // setInterval(() => {
+    //   let test = this.$store.state.User.expire;
+    //   console.log(test);
+    // }, 500);
+    // setTimeout(() => {
+    //   if(localStorage.userInformation && Date.now() > this.$store.state.User.expire){
+    //       alert(this.$store.state.User.expire);
+    //       alert('로그아웃 되었습니다.');
+    //       location.reload();
+    //       localStorage.removeItem('userInformation');
     //   }
-    // }
+    // }, 10000)
   }
 }
 </script>

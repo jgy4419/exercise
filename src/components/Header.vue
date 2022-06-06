@@ -18,9 +18,7 @@
         <ul>
           <li class="myBoxli" v-for="menu, i in menuList.text" :key="i">
             <router-link :to="menuList.url[i]">
-              <!-- <a :href="menuList.url[i]"> -->
-                {{menuList.text[i]}}
-              <!-- </a> -->
+              {{menuList.text[i]}}
             </router-link>
           </li>
         </ul>
@@ -30,10 +28,10 @@
           <div class="line" v-for="a in 3" :key="a"></div>
       </div>
       <nav class="mobileMenu">
-          <ul v-for="list, i in login" :key="i">
-            <router-link :to="url[i]">
+          <ul v-for="list, i in mobile.login.length" :key="i">
+            <router-link :to="mobile.url[i]">
               <li class="mobileMenuList">
-                  {{list}}
+                  {{mobile.login[i]}}
               </li>
             </router-link>
           </ul>
@@ -52,6 +50,10 @@ export default {
     return{
       url: ['/about', '/community'],
       login: ['오운완?', 'community'],
+      mobile: {
+        url: ['/about', '/community'],
+        login: ['오운완?', 'community']
+      },
       menuList: {
           text: ['MyPage', 'settings', 'logout'],
           url: ['/mypage', '/settings', '/'],
@@ -65,29 +67,43 @@ export default {
     '$route' (){
       let myInformationBox = document.querySelector('.myInformationBox');
       myInformationBox.classList.remove('event');
+      
     }
   },
   mounted(){
-    // if(this.$route)
     console.log(this.$route.path)
 
     let userInformation = JSON.parse(localStorage.getItem("userInformation"));
-    // 만약 사이트에 쿠키가 저장되어 있으면 logint -> logout이 있는 메뉴로 변경. 
-    console.log(this.login);
+    // 만약 사이트에 쿠키가 저장되어 있으면 logint -> logout이 있는 메뉴로 변경.
     let myBoxli = document.querySelectorAll('.myBoxli');
-
     let myBtn = document.querySelector('.myBtn');
 
     if(localStorage.userInformation){
       this.login = [];
       this.url = [];
-      myBtn.style.display = 'inline'
+      myBtn.style.display = 'inline';
       this.myBtnImg = `${userInformation.profile_img_path}`;
-      console.log(this.myBtnImg);
+
       // 로그인 유무에 따라 header 메뉴 구성 변경.
       this.login.push('오운완?', 'community');
       this.url.push('/about', '/community');
-      // 로그인 이후 menu[4]번째 즉, logout 버튼을 누르면 웹에서 쿠키 제거 즉, 로그아웃 시켜줌.
+
+      this.mobile.url.push('/mypage', '/settings', '/');
+      this.mobile.login.push('MyPage', 'settings', 'logout')
+      // 로그인 이후 menu[4]번째 즉, logout 버튼을 누르면 웹에서 쿠키 제
+
+      // let mobileMenuList = document.querySelectorAll('.mobileMenuList');
+
+      // let logoutBtn = [myBoxli[2], mobileMenuList[3]];
+      // for(let i = 0; i < logoutBtn.length; i++){
+      //   logoutBtn[i].addEventListener('click', function(){
+      //     console.log('logout!');
+      //     localStorage.removeItem('userInformation');
+      //     // 쿠키를 전 시간으로 돌려서 로그아웃 시켜줌.
+      //     document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
+      //     location.replace('/');
+      //   })
+      // }
       myBoxli[2].addEventListener('click', function(){
         console.log('logout!');
         localStorage.removeItem('userInformation');
@@ -96,12 +112,16 @@ export default {
         location.replace('/');
       })
     }else if(!localStorage.userInformation){
-      this.login = [];
-      this.url = [];
-      myBtn.style.display = 'none'
+      this.login = []; this.url = [];
+      this.mobile.url = []; this.mobile.login = [];
+      myBtn.style.display = 'none';
+      document.querySelector('.webMenu').style.bottom = '-7px';
       // 로그인 유무에 따라 header 메뉴 구성 변경.
       this.login.push('오운완?', 'community', 'login', 'join');
       this.url.push('/about', '/community', '/login', '/login/join');
+
+      this.mobile.url.push('/about', '/community', '/login', '/join');
+      this.mobile.login.push('오운완', 'community', 'login', 'join');
     }
   },
   methods: {
@@ -133,6 +153,7 @@ export default {
 }
 .header{
   position: relative;
+  background-color: #fff;
   z-index: 100;
   width: 100vw;
   nav{
@@ -155,8 +176,11 @@ export default {
     .logo:hover{
       color: #333;
     }
-    // .webMenu{
+    .webMenu{
+      position: relative;
       .menuBtn{
+        position: relative;
+        bottom: 10px;
         width: 100px;
         font-size: 14px;
         font-weight: 700;
@@ -165,12 +189,12 @@ export default {
         position: relative;
         background-size: cover;
         left: 10px;
-        top: 10px;
+        // top: 10px;
         width: 35px;
         height: 35px;
         background-color: rgb(233, 233, 233);
       }
-    // }
+    }
     button{
       width: 80px;
       height: 40px;
@@ -292,7 +316,7 @@ export default {
         font-size: 25px;
         font-weight: 700;
         // width: 200px;
-        color: #333;
+        color: #fff;
         text-align: right;
         padding: 4% 20%;
       }
@@ -317,6 +341,7 @@ export default {
     }
   }
    @media screen and (max-width: 768px){
+     background-color: transparent;
     nav{
       .webMenu{
           display: none;

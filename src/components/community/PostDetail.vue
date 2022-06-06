@@ -157,8 +157,9 @@ export default {
                 alert('삭제되었습니다!');
                 console.log(this.$route.params.post);
                 axios.delete('/api/deletePost', {params: {post_id: this.$route.params.post}})
-                .catch(err => console.log(err))
-                location.replace('/community');
+                .catch(err => console.log(err));
+                this.$router.go(-1);
+                // location.replace('/community');
             }
         },
         commentEdit(i){

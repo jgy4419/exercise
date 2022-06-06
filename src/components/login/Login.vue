@@ -57,8 +57,9 @@ export default {
                     // 결과로 받아온 result 배열의 길이가 0이 아니면 로그인 성공.
                 }else if(res.data.result.length !== 0){
                     // DB에서 찾으면 cookie에 값을 넣어줌.
-                    let date = new Date(Date.now() + 86400e3);
+                    // let date = new Date(Date.now() + 86400e3);
                     // 로그인 시 회원 정보 로컬스토리지에 저장.categoryName  
+                    
                     let userInformation = {
                         mail: res.data.result[0].mail,
                         grant: Number(res.data.result[0].grantion_level),
@@ -70,12 +71,21 @@ export default {
                         nickname: res.data.result[0].nickname,
                         profile_img_path: `http://localhost:3000/img/userProfile/${res.data.result[0].profile_img_path}`,
                     } 
+                    // 하루를 밀리초로 86400000
+                    // let logoutTime = Date.now() + 5000;
                     
                     localStorage.setItem('userInformation', JSON.stringify(userInformation));
+                    // console.log(sessionStorage);
 
-                    console.log('', res.data);
-                    date = date.toUTCString();
-                    document.cookie = `user=${res.data.token}; expires=` + date;
+                    // console.log('', res.data);
+                    // date = date.toUTCString();
+                    // document.cookie = `user=${res.data.token}; expires=` + date;
+                    // if(Date.now() > this.$store.state.User.expire){
+                    //     alert(this.$store.state.User.expire);
+                    //     alert('로그아웃 되었습니다.');
+                    //     location.reload();
+                    //     localStorage.removeItem('userInformation');
+                    // }
                     location.replace('/');
                 }
             })

@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import chartData from '../../../Backend/public/json/exerciseSensorData';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 export default {
@@ -36,23 +37,26 @@ export default {
     };
   },
    async mounted(){  
-    await axios.get('http://localhost:8000/exercise')
-    .then(res => {
-      console.log(res.data);
+    let innerChart = chartData.exercise;
+    console.log(innerChart);
+    // console.log(innerChart);
+    // await axios.get(chartData.exercise)
+    // .then(res => {
+    //   console.log(res);
       // 전체 세트만큼 넣기 (this.setsCount 배열)
-      for(let i = 1; i < res.data.number_of_sets + 1; i++){
+      for(let i = 1; i < innerChart.number_of_sets + 1; i++){
           this.chart.data.setsCount.push(`${i}세트`);
       }
-      this.chart.data.setCount = res.data.number_of_sets;
-      this.chart.data.exerciseName = res.data.workout_name;
+      this.chart.data.setCount = innerChart.number_of_sets;
+      this.chart.data.exerciseName = innerChart.workout_name;
 
       // 운동 데이터 들어
       for(let i = 0; i < this.chart.data.setCount; i++){
-        res.data.sets[i].emg_data.forEach(element => {
+        innerChart.sets[i].emg_data.forEach(element => {
           this.chart.data.dataValues.push(element)
         });
       }
-    }).catch(err => console.log(err));
+    // }).catch(err => console.log(err));
     this.fillData();
   },
   methods: {

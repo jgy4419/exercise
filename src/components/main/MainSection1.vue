@@ -36,11 +36,6 @@ export default {
                 }, 300);
             }
         },
-        // loginOrCommunity(){
-        //     if(!document.cookie){
-        //         this.startBtn = '/login'
-        //     }
-        // }
     }   
 }
 </script>
@@ -105,7 +100,7 @@ background: linear-gradient(to right top, #861657, #ffa69e);
         .btn:hover{
             background-color: transparent;
             color: #333;
-            box-shadow: 4px 12px 30px 6px rgb(163, 163, 163);
+            background-color: #fff;
             border: 0;
         }
         .btn a{
@@ -121,8 +116,9 @@ background: linear-gradient(to right top, #861657, #ffa69e);
         width: 100vw;
         height: 100%;
         // height: 800px;
-        box-shadow:  inset 10px 150px 300px #fff;
-        background-image: url('https://post-phinf.pstatic.net/MjAxOTEyMTFfMjgy/MDAxNTc2MDUwODAxODQ3.qV7kcYtxZZr7ycnGUsmKyj2-eYBThcJbaAf7Xr4uLzAg.T0x40qYIWBL2pXFG51QhCt6N5xSFZVKOZaicP3XGx5Yg.JPEG/image_8240955871576050766062.jpg?type=w1200');
+        // box-shadow:  inset 10px 10px 10px #fff;
+        filter: blur(2px);
+        background-image: url('https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112');
         background-repeat: no-repeat;
         background-size: cover;
         background-position: left;

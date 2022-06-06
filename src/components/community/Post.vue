@@ -127,27 +127,19 @@ export default {
                 this.post.board_id = []; this.post_id = [];
                 for(let i = 0; i < res.data.length; i++){
                     console.log(res);
-                    this.post.post_id.push(res.data[i].post_id);
-                    this.post.board_id.push(res.data[i].board_id);
-                    this.post.title.push(res.data[i].title);
-                    this.post.user_id.push(res.data[i].nickname);
-                    this.post.date.push(res.data[i].creation_datetime);
-                    this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
-                    this.post.postCount = res.data.length;
+                    this.post.post_id.push(res.data[i].post_id); this.post.board_id.push(res.data[i].board_id);
+                    this.post.title.push(res.data[i].title); this.post.user_id.push(res.data[i].nickname); this.post.postCount = res.data.length;
+                    this.post.date.push(res.data[i].creation_datetime); this.post.img.push(`http://localhost:3000/img/postPhoto/${res.data[i].photographic_path}`);
                 }
             }).catch(err => console.log(err));
-            }else{
+            }else if(sort.value === '최신순'){
                 this.getPost();
             }
         },
         getPost(){
             let userInformation = JSON.parse(localStorage.getItem("userInformation"));
-            this.post.title = [];
-            this.post.id = [];
-            this.post.img = [];
-            this.post.date = [];
-            this.post.board_id = [];
-            this.post_id = [];
+            this.post.title = []; this.post.id = []; this.post.img = [];
+            this.post.date = []; this.post.board_id = []; this.post_id = [];
             if(this.$route.name === 'MyPage'){
                 console.log('내가 올린 게시물');
                 axios.get('/api/myPagePost', {params: {nickname: userInformation.nickname, limit: 0}})
@@ -209,6 +201,7 @@ export default {
             let userInformation = JSON.parse(localStorage.getItem("userInformation"));
             console.log('더 보기', this.postCount);
             // ex) 9개 post를 추가적으로 더 가져오기.
+            console.log(this.$route.name);
             if(this.$route.name === 'MyPage'){
                 console.log('내가 올린 게시물');
                 console.log(this.post.count);
@@ -372,11 +365,8 @@ export default {
     }
     @media screen and (max-width: 768px){
         .inner{
-            .postUrl{
-                display: block;
-                .post{
-                    width: 100%;
-                }
+            .post{
+                width: 100%;
             }
         }
     }
