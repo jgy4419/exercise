@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import chartData from '../../../Backend/public/json/exerciseSensorData';
+// import chartData from '../../../Backend/public/json/exerciseSensorData';
 import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
 Chart.register(...registerables);
@@ -60,25 +60,24 @@ export default {
   methods: {
     getDatas(datas){
       console.log(datas);
-      import(`../../../Backend/public/emgData/${datas[0]}`)
+      import(`../../../Backend/public/emgData/${datas[10]}`)
+      // import('../../../Backend/public/emgData/오운완_20220605_190012_431.json')
       .then(res => {
-        let innerChart = chartData.exercise;
-        console.log(innerChart);
-
+        console.log(res.default);
+        // let innerChart = chartData.exercise;
+        // console.log(innerChart);  
+  
         let inChart = res.default;
-        console.log(chartData.exercise);
-        console.log(inChart);
         for(let i = 1; i < res.default.number_of_sets + 1; i++){
             this.chart.data.setsCount.push(`${i}세트`);
         }
-        console.log(this.chart.data.setsCount[0]);
+        // 세트 수
         this.chart.data.setCount = res.default.number_of_sets;
-        console.log(this.chart.data.setCount);
+        // 운동 이름
         this.chart.data.exerciseName = res.default.workout_name;
-        console.log(this.chart.data.exerciseName);
-        // 운동 데이터 들어감
+        // 운동 전체 세트의 데이터가 들어감
         for(let i = 0; i < this.chart.data.setCount; i++){
-          console.log(inChart.sets[i].emg_data);
+          console.log(inChart.sets[i]);
           JSON.parse(inChart.sets[i].emg_data).forEach(element => {
             this.chart.data.dataValues.push(element)
           });
@@ -87,22 +86,19 @@ export default {
       })
     },  
     fillData(data){
-      console.log(JSON.parse(data.default.sets[0].emg_data));
+      // 전체 개수에서 세트수 만큼 나눈 값 넣어주기.
       let setsArray = JSON.parse(data.default.sets[0].emg_data).length / data.default.number_of_sets
       let setsData = [];
       console.log(setsArray);
-      // let dataLists = [];
-      // let datasets = this.chart.data.dataValues;
 
-      // 전체 개수에서 세트수 만큼 나눈 값 넣어주기.
-      // let valueSlice = JSON.parse(data.default.sets[0].emg_data).length / data.default.number_of_sets;
       let result = [];
       for(let i = 0; i < data.default.number_of_sets; i++){
+        // setData에는 전체 세트의 emg 데이터 값 넣어줌
         setsData.push(JSON.parse(data.default.sets[i].emg_data));
         console.log(setsData[i]);
       }
       console.log(setsData);
-      // // 전체 운동한 근전도 센서 값의 개수만큼 반복 세트당 10번 측정하므로 10씩 증가(변경할 수도 있음)
+      // 전체 운동한 근전도 센서 값의 개수만큼 반복 세트당 10번 측정하므로 10씩 증가(변경할 수도 있음)
       for(let i = 0; i < setsData.length; i++){
         // result 값에 근전도 측정 값 전체 값의 10개씩 빼와서 result에 저장.
         result.push(setsData[i]);

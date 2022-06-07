@@ -26,7 +26,7 @@ export default {
     position: relative;
     width: 100%;
     height: 800px;
-    bottom: 70px;
+    bottom: 40px;
     .title{
         font-size: 30px;
         font-weight: 700;
