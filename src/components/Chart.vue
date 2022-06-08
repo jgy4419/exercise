@@ -20,6 +20,8 @@ export default {
   data(){
     return{
       myChart: null,
+      // 차트개수
+      chartCount: 0,
       chart: {
         data: {
           nickname: '',
@@ -48,7 +50,7 @@ export default {
     //   console.log(userInformation.nickname);
     await axios.get('/api/sensorData', {params: {nickname: userInformation.nickname}})
     .then(res => {
-        console.log(res.data[0].emg_data_path)
+      // 로그인 된 닉네임으로 올린 근전도 센서 파일들 불러오기.
         for(let i = 0; i < res.data.length; i++){
           this.emgDatas.push(res.data[i].emg_data_path)
         }
@@ -60,30 +62,33 @@ export default {
   methods: {
     getDatas(datas){
       console.log(datas);
-      import(`../../../Backend/public/emgData/${datas[10]}`)
-      // import('../../../Backend/public/emgData/오운완_20220605_190012_431.json')
-      .then(res => {
-        console.log(res.default);
-        // let innerChart = chartData.exercise;
-        // console.log(innerChart);  
-  
-        let inChart = res.default;
-        for(let i = 1; i < res.default.number_of_sets + 1; i++){
-            this.chart.data.setsCount.push(`${i}세트`);
-        }
-        // 세트 수
-        this.chart.data.setCount = res.default.number_of_sets;
-        // 운동 이름
-        this.chart.data.exerciseName = res.default.workout_name;
-        // 운동 전체 세트의 데이터가 들어감
-        for(let i = 0; i < this.chart.data.setCount; i++){
-          console.log(inChart.sets[i]);
-          JSON.parse(inChart.sets[i].emg_data).forEach(element => {
-            this.chart.data.dataValues.push(element)
-          });
-        }
-        this.fillData(res);
-      })
+      this.chartCount = datas.length;
+      // for(let i = 0; i < datas.length; i++){
+        import(`../../../Backend/public/emgData/${datas[10]}`)
+        // import('../../../Backend/public/emgData/오운완_20220605_190012_431.json')
+        .then(res => {
+          console.log(res.default);
+          // let innerChart = chartData.exercise;
+          // console.log(innerChart);  
+    
+          let inChart = res.default;
+          for(let i = 1; i < res.default.number_of_sets + 1; i++){
+              this.chart.data.setsCount.push(`${i}세트`);
+          }
+          // 세트 수
+          this.chart.data.setCount = res.default.number_of_sets;
+          // 운동 이름
+          this.chart.data.exerciseName = res.default.workout_name;
+          // 운동 전체 세트의 데이터가 들어감
+          for(let i = 0; i < this.chart.data.setCount; i++){
+            console.log(inChart.sets[i]);
+            JSON.parse(inChart.sets[i].emg_data).forEach(element => {
+              this.chart.data.dataValues.push(element)
+            });
+          }
+          this.fillData(res);
+        }).catch(err => console.log(err))
+      // }
     },  
     fillData(data){
       // 전체 개수에서 세트수 만큼 나눈 값 넣어주기.
@@ -134,7 +139,7 @@ export default {
               animateScale: true,
               animateRotate: true,
             }
-          }
+          },
         }
       );
     }
@@ -152,7 +157,7 @@ export default {
   }
   .chartStyle{
     position: relative;
-    width: 80vw;
+    width: 70vw;
     height: 300px;
   }
   @media screen and (max-width: 768px){

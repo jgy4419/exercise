@@ -9,7 +9,7 @@ export const User = {
         storeSex: '',
         storeNickName: '',
         storeGrantion_level: 1,
-        expire: 0,
+        expire: 0
     }),
     mutations: {    
         loginUser(state, {mail, grant, expire}){

@@ -111,6 +111,7 @@ export default {
                 });
             });
         }, 300)
+
         let userInformation = JSON.parse(localStorage.getItem("userInformation"));
         // 어떤 유저가 들어왔는지 확인.
         let writeUser = this.$store.state.User.storeMail;
@@ -119,6 +120,7 @@ export default {
             history.go(-1);
             location.href = '/community';
         });
+
         // board = this.postDetail.postCount;
         document.querySelector('.submit').addEventListener('click', function(){
             let board = 1; // 기본 카테고리 번호 (전체 게시물)
@@ -169,9 +171,10 @@ export default {
             comment = decode(userEntry);
             frm.append('title', title.value);
             frm.append('photographic_path', photographic_path.files[0]);
-            frm.append('availabilty_comments', 1)
+            frm.append('availabilty_comments', 1);
             frm.append('board_id', board);
-            if(writeState == 1){
+            if(writeState == 1){ // writeState가 1일 때 수정
+                console.log(photographic_path.files[0]);
                 // frm.append('nickname', route.nickname);
                 frm.append('post_id', parseInt(route.post_id));
                 frm.append('comment', comment);
@@ -238,7 +241,7 @@ export default {
                     const changeImage = document.querySelector('.writeImage');
                     changeImage.style.display = "block";
                     changeImage.src = e.target.result;
-
+                    console.log(changeImage.files[0]);
                     this.changeImg = changeImage.files[0];
                     console.log(this.changeImg);
                 }
