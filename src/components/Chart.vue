@@ -3,7 +3,7 @@
     <p class="exerciseName">{{chart.data.exerciseName}}</p>
     <div class="chartStyle">
       <p>{{emgDatas[0]}}</p>
-      <canvas class="chart" id = "chart" width="80vw" height="200"></canvas>
+      <canvas v-for="a, i in this.chart.chartId.length" :key="i" class="chart" :id="chart.chartId[i]" width="80vw" height="200"></canvas>
     </div>
   </div>
 </template>
@@ -23,6 +23,7 @@ export default {
       // 차트개수
       chartCount: 0,
       chart: {
+        chartId: [],
         data: {
           nickname: '',
           // 운동 이름
@@ -56,21 +57,20 @@ export default {
         }
     })
     .catch(err => console.log(err))
-  
-    this.getDatas(this.emgDatas);
+    for(let i = 0; i < 10; i++){
+      this.getDatas(this.emgDatas, i);
+    }
   },
   methods: {
-    getDatas(datas){
-      console.log(datas);
+    getDatas(datas, length){
+      console.log(datas[length]);
       this.chartCount = datas.length;
-      // for(let i = 0; i < datas.length; i++){
-        import(`../../../Backend/public/emgData/${datas[10]}`)
-        // import('../../../Backend/public/emgData/오운완_20220605_190012_431.json')
+      // let result;
+      // for(let k = 0; k < this.chartCount; k++){
+        this.chart.chartId.push(`chart${length}`);
+        import(`../../../Backend/public/emgData/${datas[length]}`)
         .then(res => {
-          console.log(res.default);
-          // let innerChart = chartData.exercise;
-          // console.log(innerChart);  
-    
+                    console.log(res);
           let inChart = res.default;
           for(let i = 1; i < res.default.number_of_sets + 1; i++){
               this.chart.data.setsCount.push(`${i}세트`);
@@ -81,53 +81,56 @@ export default {
           this.chart.data.exerciseName = res.default.workout_name;
           // 운동 전체 세트의 데이터가 들어감
           for(let i = 0; i < this.chart.data.setCount; i++){
-            console.log(inChart.sets[i]);
+            // console.log(inChart.sets[i]);
             JSON.parse(inChart.sets[i].emg_data).forEach(element => {
               this.chart.data.dataValues.push(element)
             });
           }
-          this.fillData(res);
+          // console.log(datas);
+          // result = res
+          this.fillData(res, length);
         }).catch(err => console.log(err))
       // }
+      
     },  
-    fillData(data){
+    fillData(data, length){
       // 전체 개수에서 세트수 만큼 나눈 값 넣어주기.
-      let setsArray = JSON.parse(data.default.sets[0].emg_data).length / data.default.number_of_sets
+      // let setsArray = JSON.parse(data.default.sets[0].emg_data).length / data.default.number_of_sets
       let setsData = [];
-      console.log(setsArray);
+      console.log(data);
 
       let result = [];
       for(let i = 0; i < data.default.number_of_sets; i++){
         // setData에는 전체 세트의 emg 데이터 값 넣어줌
         setsData.push(JSON.parse(data.default.sets[i].emg_data));
-        console.log(setsData[i]);
+        // console.log(setsData[i]);
       }
-      console.log(setsData);
       // 전체 운동한 근전도 센서 값의 개수만큼 반복 세트당 10번 측정하므로 10씩 증가(변경할 수도 있음)
       for(let i = 0; i < setsData.length; i++){
         // result 값에 근전도 측정 값 전체 값의 10개씩 빼와서 result에 저장.
         result.push(setsData[i]);
       }
-      console.log(result);
+      // 여기부터 손 보기
       let dataLists = [];
       let datasets = this.chart.data.dataValues;
-      console.log(this.chart.data.dataValues);
-
-      for(let i = 0; i < this.chart.data.setCount; i++){
+      for(let j = 0; j < this.chart.data.setCount; j++){
         datasets = {
-          label: this.chart.data.setsCount[i],
-          data: result[i],
+          label: this.chart.data.setsCount[j],
+          // data: result[i],
+          data: result[j].slice(0, result[j].length),
           borderColor: this.chart.data.chartColor,
           fill: false 
         }
+        // console.log(datasets.data);
         dataLists.push(datasets);
       }
-      const ctx = document.getElementById('chart').getContext('2d');
+      // console.log(dataLists); 
+      const ctx = document.getElementById(`chart${length}`).getContext('2d');
       this.myChart = new Chart(ctx, {
           type: 'line',
           data: {
             labels: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000],
-            datasets: [...dataLists]
+            datasets: dataLists
           },
           options: {
             title: {

@@ -95,8 +95,8 @@ export default {
                     height: 200,
                     maximumImageFileSize: 1048576,
                     callbacks:{
-                            onImageUploadError: function uploadImageError(msg){
-                            alert(msg);
+                        onImageUploadError: function uploadImageError(msg){
+                        alert(msg);
                         }
                     },
                     toolbar: [
@@ -137,10 +137,7 @@ export default {
             let photographic_path = document.getElementById('photographic_path');
             console.log(photographic_path.files[0]);
 
-            let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
-            console.log(summernoteContent);
-
-            console.log(title.value);
+            // let summernoteContent = $('#summernote').summernote('code'); // 썸머노트 내용
             function decode(text) {
                 // https://codepen.io/csmccoy/pen/yLNBpyW?editors=1010
                 return $("<textarea/>").html(text).text();
@@ -203,7 +200,6 @@ export default {
                 })
                 .catch(err => console.log(err))
             }
-            // location.href = '/community';
         });
 
         const backImg = document.getElementById('photographic_path');

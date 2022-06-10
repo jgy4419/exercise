@@ -1,9 +1,6 @@
 <template>
     <div class="contain">
         <p class="title">센서 데이터</p>
-        <p>보고싶은 데이터를 고르세요!</p>
-        <button>날짜로 보기</button>
-        <button>파일 명으로 보기</button>
         <br/>
         <!-- date 값을 받고 닉네임이랑, 날짜가 동일한 차트 불러오도록 하기. -->
         <input type="date"/>
