@@ -78,6 +78,11 @@ export default {
         }
     },
     async mounted(){
+        if(!localStorage.userInformation){
+            alert('로그인 후 상세보기가 가능합니다!');
+            location.replace('/login');
+        }
+
         console.log(this.$route.params);
         if(this.$route.params.board == 3){
             this.chartState = 1;
@@ -180,6 +185,7 @@ export default {
             let post_id = this.$route.params.post;
             let inputSetComment = document.querySelectorAll('.inputSetComment');
             let userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            alert(inputSetComment[i].value);
             axios.patch('/api/updateComment', {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -191,7 +197,7 @@ export default {
             }).then(res => {
                 console.log(res);
                 location.reload();
-            })
+            }).catch(err => console.log(err));
         },
         commentBack(){
             let inputSetCommentBox = document.querySelectorAll('.inputSetCommentBox');

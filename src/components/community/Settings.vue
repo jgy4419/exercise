@@ -122,10 +122,7 @@ export default {
             const changeImage = document.querySelector('.changeImage');
             // 이미지 파일을 백엔드한테 전송하기 위해서는 .files[0]을 넣어서 보내주기.
             this.changeImg = fileName.files[0];
-            // console.log(fileName.files[0]);
-            // '../../../repeatFunc/loadImage' 파일의 uploadImg 함수
             uploadImg(fileName, changeImage, this.changeImg);
-            // console.log(this.changeImg);
         },
         deleteImg(){
             const changeImage = document.querySelector('.changeImage');
@@ -135,12 +132,6 @@ export default {
             console.log(changeImage.src)
         },
         save(){
-            // 저장된 내용들을 수정시켜준다.
-            /*
-                this.set.intro[0]은 변경된 유저 이름.
-                this.set.intro[1]은 변경된 유저의 자기소개.
-                this.changeImg은 변경된 이미지.
-            */
             let userInformation = JSON.parse(localStorage.getItem("userInformation"));
             let frm = new FormData();
             frm.append('mail', userInformation.mail);
@@ -213,12 +204,7 @@ export default {
     text-decoration: underline;
 }
 .contain {
-    // background: linear-gradient(
-    //     to bottom right,
-    //     #FFDEF2, #E6F0FF
-    // );
     width: 100vw;
-    // height: 900px;
     .inner{
         margin: auto;
         width: 700px;
@@ -401,6 +387,30 @@ export default {
                 }
                 p{
                     font-size: 10px;
+                }
+            }
+        }
+        @media screen and (max-width: 900px){
+            .inner{
+                .set{
+                    .imgSet{
+                        .changeImg, .imgDeleteBtn{
+                            border-radius: 5px;
+                            font-size: 12px;
+                            height: 30px;
+                        }
+                    }
+                    .introSet{
+                        font-size: 12px;
+                    }
+                }
+                .userSecession{
+                    span{
+                        font-size: 15px;
+                    }
+                    .secessionBtn{
+                        height: 30px;
+                    }
                 }
             }
         }

@@ -1,14 +1,14 @@
 <template>
     <div>
-        <div class="container">
+        <div class="contain">
             <div class="inner">
                 <!-- <form action="/api/login" method="post" class="login">  -->
                 <div class="login">
                     <p>로그인</p>
-                    <div>
-                        <input type="text" v-model="logins.mail" name="mail" placeholder="아이디를 입력하세요!"/>
+                    <div class="inputBox">
+                        <input type="text" v-model="logins.mail" name="mail" placeholder="이메일를 입력하세요!"/>
                     </div>
-                    <div>
+                    <div class="inputBox">
                         <input type="password" v-model="logins.password" name="password" placeholder="비밀번호를 입력하세요!"/>
                     </div>
                     <!-- <router-link to="/community"> -->
@@ -47,13 +47,8 @@ export default {
             axios.post('/api/login', {mail: this.logins.mail, password: this.logins.password})
             .then(res => {
                 console.log(res);
-                // console.log('토큰 값 : ', res.data.token);
-                // console.log('result 값 : ', res.data.result[0].mail);
-                // 로그인 창에 id/pw가 DB에 있으면 result 안에 회원 정보를 담은 배열 반환
-                // 결과로 받아온 result 배열의 길이가 0이면 로그인 안 된 걸로.
                 if(res.data.result.length === 0){
                     alert('아이디나 비밀번호가 잘 못 되었습니다.');
-                    // location.href = '/login';
                     // 결과로 받아온 result 배열의 길이가 0이 아니면 로그인 성공.
                 }else if(res.data.result.length !== 0){
                     // DB에서 찾으면 cookie에 값을 넣어줌.
@@ -70,22 +65,9 @@ export default {
                         sex: res.data.result[0].sex,
                         nickname: res.data.result[0].nickname,
                         profile_img_path: `http://localhost:3000/img/userProfile/${res.data.result[0].profile_img_path}`,
-                    } 
-                    // 하루를 밀리초로 86400000
-                    // let logoutTime = Date.now() + 5000;
+                    }
                     
                     localStorage.setItem('userInformation', JSON.stringify(userInformation));
-                    // console.log(sessionStorage);
-
-                    // console.log('', res.data);
-                    // date = date.toUTCString();
-                    // document.cookie = `user=${res.data.token}; expires=` + date;
-                    // if(Date.now() > this.$store.state.User.expire){
-                    //     alert(this.$store.state.User.expire);
-                    //     alert('로그아웃 되었습니다.');
-                    //     location.reload();
-                    //     localStorage.removeItem('userInformation');
-                    // }
                     location.replace('/');
                 }
             })
@@ -96,7 +78,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container{
+.contain{
     position: absolute;
     margin: auto;
     top: 20%;
@@ -127,7 +109,7 @@ export default {
             }
             .loginBtn{
                 margin-top: 20px;
-                width: 280px;
+                width: 300px;
                 height: 50px;
                 background-color: #93B5C6;
                 color: #fcf3f3;
@@ -153,29 +135,33 @@ export default {
             cursor: pointer;
         }
     }
-    @media screen and (max-width: 750px){
-        .container{
-            width: 10vw;
+}
+@media screen and (max-width: 750px){
+        .contain{
+            margin: auto;
             .inner{
+                // width: 100%;
+                position: absolute;
+                justify-content: center;
                 p{
                     margin: auto;
                     font-size: 18px;
                 }
                 .login{
-                    input{
+                    .inputBox input{
                         font-size: 12px;
-                        width: 300px;
+                        width: 250px;
                         height: 50px;
                     }
-                    // .loginBtn{
-                    //     width: 100%;
-                    // }
+                    .loginBtn{
+                        width: 250px;
+                    }
+                }
+                .loginList{
+                    margin-right: 20px;
+                    font-size: 12px;
                 }
             }
-        }
-        .loginList{
-            margin-right: -40px;
-            font-size: 12px;
         }
     }
     @media screen and (max-width: 500px){
@@ -198,5 +184,4 @@ export default {
             }
         }
     }
-}
 </style>

@@ -112,6 +112,12 @@ export default {
     @media screen and (max-width: 1000px){
         .inner{
             width: 80vw;
+            .myPageModal{
+                .btn{
+                    width: 80px;
+                    font-size: 15px;
+                }
+            }
         }
     }
 }

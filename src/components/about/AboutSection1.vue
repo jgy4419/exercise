@@ -4,7 +4,6 @@
             <div class="backImage"/>
             <div class="headerInner">
                 <p class="mainText">
-                    <!-- 오늘 운동 완료했니? -->
                     <span class="importantText">오</span>늘 <span class="importantText">운</span>동 <span class="importantText">완</span>료했니?
                 </p>
             </div>
@@ -84,14 +83,21 @@
             .headerInner{
                 width: 400px;
                 .mainText{
-                    font-size: 30px;
+                    font-size: 35px;
+                    margin-top: 10%;
                 }
             }
         }
         .section{
-            height: 400px;
+            height: 300px;
             .sectionInner{
                 width: 400px;
+                .introductionTitle{
+                    font-size: 20px;
+                }
+                .introduction1{
+                    font-size: 15px;
+                }
             }
         }
     }

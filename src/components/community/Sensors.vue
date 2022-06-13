@@ -2,8 +2,6 @@
     <div class="contain">
         <p class="title">센서 데이터</p>
         <br/>
-        <!-- date 값을 받고 닉네임이랑, 날짜가 동일한 차트 불러오도록 하기. -->
-        <input type="date"/>
         <div class="charts">
             <Chart/>
         </div>

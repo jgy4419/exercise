@@ -27,7 +27,7 @@ export default {
     },
     data(){
         return{
-            inquiry: ['페이지 개선사항', '추가기능', '하드웨어기능'],
+            inquiry: ['페이지 개선사항', '모바일 및 센서 문의', '추가기능'],
             profile: ['https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4', 'https://avatars.githubusercontent.com/u/76980526?v=4'],
             name: ['정규영', '박세승', '문정환'],
             dev: ['FrontEnd', 'Backend', 'Backend'],

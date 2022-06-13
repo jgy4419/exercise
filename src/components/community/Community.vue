@@ -121,13 +121,13 @@ export default {
         })
         console.log(this.storeGrantion_level);
         // 로컬스토리지의 유저 정보를 가져옴.
-        let userInformation = JSON.parse(localStorage.getItem('userInformation'));
-        // 유저 정보 중 grant가 1이면 관리자
-        if(userInformation.grant === 0){ 
-            this.manager = true;
-        }else{
-            this.manager = false;
-        }
+        // let userInformation = JSON.parse(localStorage.getItem('userInformation'));
+        // // 유저 정보 중 grant가 1이면 관리자
+        // if(userInformation.grant === 0){ 
+        //     this.manager = true;
+        // }else{
+        //     this.manager = false;
+        // }
 
     },
     watch: {
