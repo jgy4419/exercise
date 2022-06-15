@@ -159,7 +159,7 @@ export default {
   }
   // 첫 번째 데이터 안 나와서.. 나중에 스타일 없이도 사라지게 수정하기.
   .inner:nth-child(1){
-    // display: none;
+    display: none;
   }
   @media screen and (max-width: 768px){
     .chartStyle{
